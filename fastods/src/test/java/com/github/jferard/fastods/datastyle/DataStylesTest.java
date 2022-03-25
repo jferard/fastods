@@ -148,11 +148,12 @@ public class DataStylesTest {
                 ds.getTimeDataStyle());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testNull() {
-        new DataStyles(null, this.ds.getCurrencyDataStyle(), this.ds.getDateDataStyle(),
-                this.ds.getFloatDataStyle(), this.ds.getPercentageDataStyle(),
-                this.ds.getTimeDataStyle());
+        Assert.assertThrows(IllegalArgumentException.class, () ->
+                new DataStyles(null, this.ds.getCurrencyDataStyle(), this.ds.getDateDataStyle(),
+                        this.ds.getFloatDataStyle(), this.ds.getPercentageDataStyle(),
+                        this.ds.getTimeDataStyle()));
     }
 
     @Test

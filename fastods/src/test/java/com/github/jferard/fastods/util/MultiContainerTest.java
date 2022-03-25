@@ -106,10 +106,11 @@ public class MultiContainerTest {
         }
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public final void testCreateAfterFreeze() {
         this.container.freeze();
-        this.container.add("a", Dest.CONTENT_AUTOMATIC_STYLES, 1);
+        Assert.assertThrows(IllegalStateException.class,
+                () -> this.container.add("a", Dest.CONTENT_AUTOMATIC_STYLES, 1));
     }
 
     @Test

@@ -149,11 +149,12 @@ public class TableModelTest {
         PowerMock.verifyAll();
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public final void testGetRowNegative() throws IOException {
         PowerMock.resetAll();
         PowerMock.replayAll();
-        this.model.getRow(this.table, this.appender, -1);
+        Assert.assertThrows(IllegalArgumentException.class,
+                () -> this.model.getRow(this.table, this.appender, -1));
         PowerMock.verifyAll();
     }
 
@@ -198,13 +199,14 @@ public class TableModelTest {
         PowerMock.verifyAll();
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public final void testMergeCovered() throws IOException {
         PowerMock.resetAll();
         PowerMock.replayAll();
         this.model.setCellMerge(this.table, this.appender, 0, 0, 22, 22);
         assert this.model.getRow(this.table, this.appender, 2).getOrCreateCell(1).isCovered();
-        this.model.setCellMerge(this.table, this.appender, 2, 1, 2, 2);
+        Assert.assertThrows(IllegalArgumentException.class,
+                () -> this.model.setCellMerge(this.table, this.appender, 2, 1, 2, 2));
         PowerMock.verifyAll();
     }
 
@@ -298,12 +300,13 @@ public class TableModelTest {
         Assert.assertEquals("value", item.getValue());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testSetRowsSpannedNeg() throws IOException {
         PowerMock.resetAll();
 
         PowerMock.replayAll();
-        this.model.setRowsSpanned(this.table, this.appender, 2, 2, -1);
+        Assert.assertThrows(IllegalArgumentException.class,
+                () -> this.model.setRowsSpanned(this.table, this.appender, 2, 2, -1));
 
         PowerMock.verifyAll();
 
@@ -320,14 +323,15 @@ public class TableModelTest {
 
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testSetRowsSpannedCovered() throws IOException {
         PowerMock.resetAll();
 
         PowerMock.replayAll();
         this.model.setCellMerge(this.table, this.appender, 1, 1, 5, 5);
         assert this.model.getRow(this.table, this.appender, 2).getOrCreateCell(2).isCovered();
-        this.model.setRowsSpanned(this.table, this.appender, 2, 2, 2);
+        Assert.assertThrows(IllegalArgumentException.class,
+                () -> this.model.setRowsSpanned(this.table, this.appender, 2, 2, 2));
 
         PowerMock.verifyAll();
 
@@ -344,12 +348,13 @@ public class TableModelTest {
 
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testColumnStyle() {
         PowerMock.resetAll();
 
         PowerMock.replayAll();
-        this.model.setColumnStyle(-1, null);
+        Assert.assertThrows(IllegalArgumentException.class,
+                () -> this.model.setColumnStyle(-1, null));
 
         PowerMock.verifyAll();
 

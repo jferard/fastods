@@ -43,20 +43,20 @@ public class FastOdsBusTest {
         Assert.assertTrue(b.isClosed());
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testPutAfterClose() {
         final FastOdsBus<Integer> b = new FastOdsBus<Integer>();
         b.close();
-        b.put(10);
+        Assert.assertThrows(IllegalStateException.class, () -> b.put(10));
     }
 
-    @Test(expected = NoSuchElementException.class)
+    @Test
     public void testGetAfterClose() {
         final FastOdsBus<Integer> b = new FastOdsBus<Integer>();
         b.put(10);
         b.close();
         b.get();
-        b.get();
+        Assert.assertThrows(NoSuchElementException.class, () -> b.get());
     }
 
     @Test

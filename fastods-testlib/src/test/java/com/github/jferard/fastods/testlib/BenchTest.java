@@ -59,9 +59,9 @@ public class BenchTest {
         Assert.assertEquals(-1, this.bench.getWithoutWarmUp().getAvgTime());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testEmptyWithWarmup() {
-        this.bench.getWithWarmUp();
+        Assert.assertThrows(IllegalArgumentException.class, () -> this.bench.getWithWarmUp());
     }
 
     @Test

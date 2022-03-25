@@ -161,11 +161,11 @@ public class TableTest {
         Assert.assertEquals(101, rowCount);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public final void testGetRowNegative() throws IOException {
         PowerMock.resetAll();
         PowerMock.replayAll();
-        this.table.getRow(-1);
+        Assert.assertThrows(IllegalArgumentException.class, () -> this.table.getRow(-1));
         PowerMock.verifyAll();
     }
 
@@ -379,13 +379,13 @@ public class TableTest {
         Assert.assertEquals(entry, e);
     }
 
-    @Test(expected = IOException.class)
+    @Test
     @Deprecated
-    public final void testFlushNoObserver() throws IOException {
+    public final void testFlushNoObserver() {
         PowerMock.resetAll();
 
         PowerMock.replayAll();
-        this.table.asyncFlush();
+        Assert.assertThrows(IOException.class, () -> this.table.asyncFlush());
 
         PowerMock.verifyAll();
     }

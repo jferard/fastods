@@ -70,22 +70,24 @@ public class RowCellWalkerImplTest {
         this.vc = PowerMock.createMock(ValidationsContainer.class);
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public final void testMarkRowsSpanned() {
         PowerMock.resetAll();
 
         PowerMock.replayAll();
-        this.cellWalker.markRowsSpanned(5);
+        Assert.assertThrows(UnsupportedOperationException.class,
+                () -> this.cellWalker.markRowsSpanned(5));
 
         PowerMock.verifyAll();
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public final void testMarkColumnsSpanned() {
         PowerMock.resetAll();
 
         PowerMock.replayAll();
-        this.cellWalker.markColumnsSpanned(5);
+        Assert.assertThrows(UnsupportedOperationException.class,
+                () -> this.cellWalker.markColumnsSpanned(5));
 
         PowerMock.verifyAll();
     }
@@ -236,14 +238,14 @@ public class RowCellWalkerImplTest {
         PowerMock.verifyAll();
     }
 
-    @Test(expected = IndexOutOfBoundsException.class)
+    @Test
     public final void testNext() {
         PowerMock.resetAll();
         expect(this.row.getColumnCount()).andReturn(10);
 
         PowerMock.replayAll();
         this.cellWalker.to(10);
-        this.cellWalker.next();
+        Assert.assertThrows(IndexOutOfBoundsException.class, () -> this.cellWalker.next());
 
         PowerMock.verifyAll();
     }
@@ -262,12 +264,12 @@ public class RowCellWalkerImplTest {
         PowerMock.verifyAll();
     }
 
-    @Test(expected = IndexOutOfBoundsException.class)
+    @Test
     public final void testPreviousIOOBE() {
         PowerMock.resetAll();
 
         PowerMock.replayAll();
-        this.cellWalker.previous();
+        Assert.assertThrows(IndexOutOfBoundsException.class, () -> this.cellWalker.previous());
 
         PowerMock.verifyAll();
     }
@@ -411,14 +413,14 @@ public class RowCellWalkerImplTest {
         PowerMock.verifyAll();
     }
 
-    @Test(expected = IndexOutOfBoundsException.class)
+    @Test
     public final void testMoveNegative() {
         PowerMock.resetAll();
+        final TableRowImpl row = this.initRealRow();
 
         PowerMock.replayAll();
-        final TableRowImpl row = this.initRealRow();
         final RowCellWalker cell = new RowCellWalkerImpl(row);
-        cell.to(-1);
+        Assert.assertThrows(IndexOutOfBoundsException.class, () -> cell.to(-1));
 
         PowerMock.verifyAll();
     }

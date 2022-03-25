@@ -26,9 +26,7 @@ package com.github.jferard.fastods.ref;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -36,8 +34,6 @@ import java.text.ParseException;
 
 public class RangeAddressParserTest {
     public static final LocalCellRef A1 = new LocalCellRef(0, 0, 0);
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
 
     private RangeAddressParser parser;
     private TableNameUtil tableNameUtil;
@@ -48,19 +44,20 @@ public class RangeAddressParserTest {
         this.parser = RangeAddressParser.create(this.tableNameUtil);
     }
 
-    @Test(expected = ParseException.class)
-    public void testMissingQuote() throws ParseException, IOException {
-        this.parser.parse("'f'f'#t.A1:D3");
+    @Test
+    public void testMissingQuote() {
+        Assert.assertThrows(ParseException.class, () -> this.parser.parse("'f'f'#t.A1:D3"));
     }
 
-    @Test(expected = ParseException.class)
-    public void testMissingQuote2() throws ParseException, IOException {
-        this.parser.parse("'f''#t.A1:D3");
+    @Test
+    public void testMissingQuote2() {
+        Assert.assertThrows(ParseException.class, () -> this.parser.parse("'f''#t.A1:D3"));
     }
 
-    @Test(expected = ParseException.class)
-    public void testRandomQuote2() throws ParseException, IOException {
-        this.parser.parse("f'f#t.A1:D3");
+    @Test
+    public void testRandomQuote2() {
+        Assert.assertThrows(ParseException.class, () -> this.parser.parse("f'f#t.A1:D3"));
+
     }
 
     @Test
@@ -97,38 +94,33 @@ public class RangeAddressParserTest {
     }
 
     @Test
-    public void testShort() throws ParseException, UnsupportedEncodingException {
-        this.exception.expect(ParseException.class);
-        this.exception.expectMessage("Expected a `:` symbol: $D$");
-        this.parser.parse("$D$");
+    public void testShort() {
+        Assert.assertThrows("Expected a `:` symbol: $D$", ParseException.class,
+                () -> this.parser.parse("$D$"));
     }
 
     @Test
-    public void testWrongChar() throws ParseException, UnsupportedEncodingException {
-        this.exception.expect(ParseException.class);
-        this.exception.expectMessage("Expected digit (not 0) or $: $D[@]$5");
-        this.parser.parse("A1:$D@$5");
+    public void testWrongChar() {
+        Assert.assertThrows("Expected digit (not 0) or $: $D[@]$5", ParseException.class,
+                () -> this.parser.parse("A1:$D@$5"));
     }
 
     @Test
-    public void testA0() throws ParseException, UnsupportedEncodingException {
-        this.exception.expect(ParseException.class);
-        this.exception.expectMessage("Expected digit (not 0) or $: A[0]");
-        this.parser.parse("A1:A0");
+    public void testA0() {
+        Assert.assertThrows("Expected digit (not 0) or $: A[0]", ParseException.class,
+                () -> this.parser.parse("A1:A0"));
     }
 
     @Test
-    public void test0A() throws ParseException, UnsupportedEncodingException {
-        this.exception.expect(ParseException.class);
-        this.exception.expectMessage("Expected letter or $: [0]A");
-        this.parser.parse("A1:0A");
+    public void test0A() {
+        Assert.assertThrows("Expected letter or $: [0]A", ParseException.class,
+                () -> this.parser.parse("A1:0A"));
     }
 
     @Test
-    public void testA1A() throws ParseException, UnsupportedEncodingException {
-        this.exception.expect(ParseException.class);
-        this.exception.expectMessage("Expected digit: A1[A]");
-        this.parser.parse("A1:A1A");
+    public void testA1A() {
+        Assert.assertThrows("Expected digit: A1[A]", ParseException.class,
+                () -> this.parser.parse("A1:A1A"));
     }
 
 }

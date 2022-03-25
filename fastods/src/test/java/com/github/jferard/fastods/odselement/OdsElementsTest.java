@@ -96,13 +96,14 @@ public class OdsElementsTest {
         PowerMock.verifyAll();
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testFreezeStyles() {
         PowerMock.resetAll();
 
         PowerMock.replayAll();
         this.odsElements.freezeStyles();
-        this.odsElements.addContentStyle(TableCellStyle.DEFAULT_CELL_STYLE);
+        Assert.assertThrows(IllegalStateException.class,
+                () -> this.odsElements.addContentStyle(TableCellStyle.DEFAULT_CELL_STYLE));
 
         PowerMock.verifyAll();
     }
@@ -177,7 +178,7 @@ public class OdsElementsTest {
     public void testAddChildCellStyle() {
         PowerMock.resetAll();
         EasyMock.expect(this.contentElement
-                .addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, CellType.STRING))
+                        .addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, CellType.STRING))
                 .andReturn(null);
 
         PowerMock.replayAll();
@@ -299,7 +300,8 @@ public class OdsElementsTest {
         PowerMock.verifyAll();
         final String pathContent = handler.getEntryAsString("OdsEntry[path=path]");
         Assert.assertEquals("content", pathContent);
-        final String entryAsString = handler.getEntryAsString("UnregisteredOdsEntry[path=META-INF/manifest.xml]");
+        final String entryAsString =
+                handler.getEntryAsString("UnregisteredOdsEntry[path=META-INF/manifest.xml]");
         Assert.assertEquals("", entryAsString);
 
     }

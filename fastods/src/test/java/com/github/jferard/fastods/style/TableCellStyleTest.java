@@ -30,11 +30,9 @@ import com.github.jferard.fastods.attribute.BorderStyle;
 import com.github.jferard.fastods.attribute.CellAlign;
 import com.github.jferard.fastods.attribute.SimpleColor;
 import com.github.jferard.fastods.attribute.SimpleLength;
-import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.FloatStyle;
 import com.github.jferard.fastods.datastyle.FloatStyleBuilder;
 import com.github.jferard.fastods.odselement.OdsElements;
-import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.easymock.EasyMock;
 import org.junit.Assert;
@@ -124,9 +122,9 @@ public class TableCellStyleTest {
                 "</style:style>", tcs);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public final void testNullName() {
-        TableCellStyle.builder(null);
+        Assert.assertThrows(IllegalArgumentException.class, () -> TableCellStyle.builder(null));
     }
 
     @Test
@@ -220,7 +218,8 @@ public class TableCellStyleTest {
 
     @Test
     public final void testRotating() throws IOException {
-        final TableCellStyle style = TableCellStyle.builder("test").textRotating(Angle.deg(35)).build();
+        final TableCellStyle style =
+                TableCellStyle.builder("test").textRotating(Angle.deg(35)).build();
         TestHelper.assertXMLEquals(
                 "<style:style style:name=\"test\" style:family=\"table-cell\" " +
                         "style:parent-style-name=\"Default\"><style:table-cell-properties " +
@@ -240,7 +239,8 @@ public class TableCellStyleTest {
     @Test
     public final void testDataStyle() throws IOException {
         final FloatStyle fs = new FloatStyleBuilder("fs", Locale.US).build();
-        final TableCellStyle style = TableCellStyle.builder("ts").dataStyle(fs).textAlign(CellAlign.LEFT).build();
+        final TableCellStyle style =
+                TableCellStyle.builder("ts").dataStyle(fs).textAlign(CellAlign.LEFT).build();
         TestHelper.assertXMLEquals(
                 "<style:style style:name=\"ts\" style:family=\"table-cell\" " +
                         "style:parent-style-name=\"Default\" style:data-style-name=\"fs\">" +
@@ -251,7 +251,8 @@ public class TableCellStyleTest {
     @Test
     public final void testAddToElements() throws IOException {
         final FloatStyle fs = new FloatStyleBuilder("fs", Locale.US).build();
-        final TableCellStyle style = TableCellStyle.builder("ts").dataStyle(fs).textAlign(CellAlign.LEFT).build();
+        final TableCellStyle style =
+                TableCellStyle.builder("ts").dataStyle(fs).textAlign(CellAlign.LEFT).build();
         final OdsElements elements = PowerMock.createMock(OdsElements.class);
 
         PowerMock.resetAll();

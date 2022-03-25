@@ -29,7 +29,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.powermock.api.easymock.PowerMock;
 
 import java.io.File;
@@ -42,8 +41,6 @@ import java.util.logging.Logger;
  *
  */
 public class FileOpenResultTest {
-    @Rule
-    public final ExpectedException thrown = ExpectedException.none();
     private OdsFactory odsFactory;
 
     @Before
@@ -57,8 +54,7 @@ public class FileOpenResultTest {
         final FileOpenResult fileOpenResult = FileOpen.openFile(".");
 
         Assert.assertSame(FileOpenResult.FILE_IS_DIR, fileOpenResult);
-        this.thrown.expect(IllegalStateException.class);
-        fileOpenResult.getStream();
+        Assert.assertThrows(IllegalStateException.class, () -> fileOpenResult.getStream());
     }
 
     @Test

@@ -26,6 +26,7 @@ package com.github.jferard.fastods.attribute;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.function.ThrowingRunnable;
 
 public class AngleTest {
     @Test
@@ -46,9 +47,9 @@ public class AngleTest {
         Assert.assertEquals("16.0grad", r.toString());
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void testOther() {
         final Angle r = new Angle(12, null);
-        r.getValue();
+        Assert.assertThrows(NullPointerException.class, () -> r.getValue());
     }
 }

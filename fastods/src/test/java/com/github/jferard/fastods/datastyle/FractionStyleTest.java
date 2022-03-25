@@ -25,6 +25,7 @@ package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.TestHelper;
 import com.github.jferard.fastods.attribute.SimpleColor;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -108,9 +109,10 @@ public class FractionStyleTest {
                 fs);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public final void testNull() {
-        new FractionStyleBuilder(null, this.locale);
+        Assert.assertThrows(IllegalArgumentException.class,
+                () -> new FractionStyleBuilder(null, this.locale));
     }
 
     @Test

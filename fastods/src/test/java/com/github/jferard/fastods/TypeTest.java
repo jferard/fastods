@@ -39,8 +39,8 @@ public class TypeTest {
         Assert.assertEquals(Type.HEADER, Type.valueOf("HEADER"));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testValueOfX() {
-        Type.valueOf("x");
+        Assert.assertThrows(IllegalArgumentException.class, () -> Type.valueOf("x"));
     }
 }

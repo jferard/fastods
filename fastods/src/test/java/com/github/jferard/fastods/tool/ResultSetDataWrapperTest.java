@@ -38,6 +38,7 @@ import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.testlib.ResultSetTester;
 import com.mockrunner.mock.jdbc.MockResultSet;
 import org.easymock.EasyMock;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -129,7 +130,7 @@ public class ResultSetDataWrapperTest {
         PowerMock.verifyAll();
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public final void testMetaDataException() throws SQLException, IOException {
         final ResultSet rs = PowerMock.createMock(ResultSet.class);
         final ResultSetDataWrapper wrapper =
@@ -138,13 +139,12 @@ public class ResultSetDataWrapperTest {
         final SQLException e = new SQLException();
 
         PowerMock.resetAll();
-        EasyMock.expect(this.walker.rowIndex()).andReturn(0);
-        EasyMock.expect(this.walker.colIndex()).andReturn(0);
         EasyMock.expect(rs.getMetaData()).andThrow(e);
         this.logger.log(EasyMock.eq(Level.SEVERE), EasyMock.anyString(), EasyMock.eq(e));
 
         PowerMock.replayAll();
-        wrapper.addToTable(this.walker);
+
+        Assert.assertThrows(RuntimeException.class, () -> wrapper.addToTable(this.walker));
 
         PowerMock.verifyAll();
     }
@@ -310,7 +310,7 @@ public class ResultSetDataWrapperTest {
         PowerMock.verifyAll();
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public final void testRSException() throws SQLException, IOException {
         final ResultSet rs = PowerMock.createMock(ResultSet.class);
         final ResultSetDataWrapper wrapper =
@@ -329,7 +329,7 @@ public class ResultSetDataWrapperTest {
         this.logger.log(EasyMock.eq(Level.SEVERE), EasyMock.anyString(), EasyMock.eq(e));
 
         PowerMock.replayAll();
-        wrapper.addToTable(this.walker);
+        Assert.assertThrows(RuntimeException.class, () -> wrapper.addToTable(this.walker));
 
         PowerMock.verifyAll();
     }

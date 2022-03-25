@@ -76,59 +76,59 @@ public class PositionUtilTest {
         Assert.assertEquals(5, CellRef.getRow());
     }
 
-    @Test(expected = ParseException.class)
-    public final void testdBd6d() throws ParseException, IOException {
-        this.util.newCellRef("$B$6$");
+    @Test
+    public final void testdBd6d() {
+        Assert.assertThrows(ParseException.class, () -> this.util.newCellRef("$B$6$"));
     }
 
-    @Test(expected = ParseException.class)
-    public final void testddBd6d() throws ParseException, IOException {
-        this.util.newCellRef("$$B$6$");
+    @Test
+    public final void testddBd6d() {
+        Assert.assertThrows(ParseException.class, () -> this.util.newCellRef("$$B$6$"));
     }
 
-    @Test(expected = ParseException.class)
-    public final void testMinusAB6666() throws ParseException, IOException {
-        this.util.newCellRef("-AB6666");
+    @Test
+    public final void testMinusAB6666() {
+        Assert.assertThrows(ParseException.class, () -> this.util.newCellRef("-AB6666"));
     }
 
-    @Test(expected = ParseException.class)
-    public final void testWeirdPos1() throws ParseException, IOException {
-        this.util.newCellRef("_6");
+    @Test
+    public final void testWeirdPos1() {
+        Assert.assertThrows(ParseException.class, () -> this.util.newCellRef("_6"));
     }
 
-    @Test(expected = ParseException.class)
-    public final void testWeirdPos2() throws ParseException, IOException {
-        this.util.newCellRef("@6");
+    @Test
+    public final void testWeirdPos2() {
+        Assert.assertThrows(ParseException.class, () -> this.util.newCellRef("@6"));
     }
 
-    @Test(expected = ParseException.class)
-    public final void testWeirdPos3() throws ParseException, IOException {
-        this.util.newCellRef("A@6");
+    @Test
+    public final void testWeirdPos3() {
+        Assert.assertThrows(ParseException.class, () -> this.util.newCellRef("A@6"));
     }
 
-    @Test(expected = ParseException.class)
-    public final void testWeirdPos4() throws ParseException, IOException {
-        this.util.newCellRef("A_6");
+    @Test
+    public final void testWeirdPos4() {
+        Assert.assertThrows(ParseException.class, () -> this.util.newCellRef("A_6"));
     }
 
-    @Test(expected = ParseException.class)
-    public final void testWeirdPos5() throws ParseException, IOException {
-        this.util.newCellRef("AA$.");
+    @Test
+    public final void testWeirdPos5() {
+        Assert.assertThrows(ParseException.class, () -> this.util.newCellRef("AA$."));
     }
 
-    @Test(expected = ParseException.class)
-    public final void testWeirdPos6() throws ParseException, IOException {
-        this.util.newCellRef("AA$A");
+    @Test
+    public final void testWeirdPos6() {
+        Assert.assertThrows(ParseException.class, () -> this.util.newCellRef("AA$A"));
     }
 
-    @Test(expected = ParseException.class)
-    public final void testWeirdPos7() throws ParseException, IOException {
-        this.util.newCellRef("AA$9.");
+    @Test
+    public final void testWeirdPos7() {
+        Assert.assertThrows(ParseException.class, () -> this.util.newCellRef("AA$9."));
     }
 
-    @Test(expected = ParseException.class)
-    public final void testWeirdPos8() throws ParseException, IOException {
-        this.util.newCellRef("AA$9A");
+    @Test
+    public final void testWeirdPos8() {
+        Assert.assertThrows(ParseException.class, () -> this.util.newCellRef("AA$9A"));
     }
 
     @Test

@@ -24,6 +24,7 @@
 package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.TestHelper;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -162,9 +163,10 @@ public class DateStyleTest {
                         "</number:date-style>", ds);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public final void testWithNullName() {
-        new DateStyleBuilder(null, this.locale).build();
+        Assert.assertThrows(IllegalArgumentException.class,
+                () -> new DateStyleBuilder(null, this.locale).build());
     }
 
     @Test

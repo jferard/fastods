@@ -69,14 +69,16 @@ public class ConfigItemMapEntrySingletonTest {
                         "</config:config-item-map-entry>", this.singleton);
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void addItem() {
-        this.singleton.add("name", "type", "value");
+        Assert.assertThrows(UnsupportedOperationException.class,
+                () -> this.singleton.add("name", "type", "value"));
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void add() {
-        this.singleton.add(this.item);
+        Assert.assertThrows(UnsupportedOperationException.class,
+                () -> this.singleton.add(this.item));
     }
 
     @Test

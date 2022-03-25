@@ -24,17 +24,12 @@
 package com.github.jferard.fastods.testlib;
 
 import org.junit.Assert;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 /**
  *
  */
 public class DomTesterTest {
-    @Rule
-    public final ExpectedException thrown = ExpectedException.none();
-
     @Test
     public void testEmpty() {
         DomTester.assertEquals("", "");
@@ -55,31 +50,30 @@ public class DomTesterTest {
 
     @Test
     public void testAttributesFail() {
-        this.thrown.expect(AssertionError.class);
-        this.thrown.expectMessage(
-                "XML contents <a b=\"1\" c=\"2\"/> and <a b=\"1\" c=\"2\"/> " + "where equal");
-        DomTester.assertNotEquals("<a b=\"1\" c=\"2\"/>", "<a b=\"1\" c=\"2\"/>");
+        Assert.assertThrows(
+                "XML contents <a b=\"1\" c=\"2\"/> and <a b=\"1\" c=\"2\"/> " + "where equal",
+                AssertionError.class,
+                () -> DomTester.assertNotEquals("<a b=\"1\" c=\"2\"/>", "<a b=\"1\" c=\"2\"/>"));
     }
 
     @Test
     public void testAttributesFail2() {
-        this.thrown.expect(AssertionError.class);
-        DomTester.assertNotEquals("<a b=\"1\" c=\"2\"/>", "<a c=\"2\" b=\"1\"/>");
+        Assert.assertThrows(AssertionError.class,
+                () -> DomTester.assertNotEquals("<a b=\"1\" c=\"2\"/>", "<a c=\"2\" b=\"1\"/>"));
     }
 
     @Test
     public void testAttributesFail3() {
-        this.thrown.expect(AssertionError.class);
-        this.thrown.expectMessage(
-                "Different attributes: a vs a ([b=\"2\", c=\"1\"] vs [b=\"1\", c=\"2\"]");
-        DomTester.assertEquals("<a b=\"2\" c=\"1\"/>", "<a c=\"2\" b=\"1\"/>");
+        Assert.assertThrows(
+                "Different attributes: a vs a ([b=\"2\", c=\"1\"] vs [b=\"1\", c=\"2\"]",
+                AssertionError.class,
+                () -> DomTester.assertEquals("<a b=\"2\" c=\"1\"/>", "<a c=\"2\" b=\"1\"/>"));
     }
 
     @Test
     public void testOrderFail() {
-        this.thrown.expect(AssertionError.class);
-        this.thrown.expectMessage("Different nodes names: a/b vs a/c");
-        DomTester.assertUnsortedEquals("<a><b/><c/></a>", "<a><c/><d/></a>");
+        Assert.assertThrows("Different nodes names: a/b vs a/c", AssertionError.class,
+                () -> DomTester.assertUnsortedEquals("<a><b/><c/></a>", "<a><c/><d/></a>"));
     }
 
     @Test
@@ -134,11 +128,10 @@ public class DomTesterTest {
 
     @Test
     public void testDifferentNodes() {
-        this.thrown.expect(AssertionError.class);
-        this.thrown.expectMessage("Expected was: <a/>\n" +
-                "  Actual was: <b/>\n" +
-                "Different nodes names: a vs b");
         final SortedChildrenTester tester = new SortedChildrenTester();
-        DomTester.assertEquals("<a/>", "<b/>", tester);
+        Assert.assertThrows("Expected was: <a/>\n" +
+                        "  Actual was: <b/>\n" +
+                        "Different nodes names: a vs b", AssertionError.class,
+                () -> DomTester.assertEquals("<a/>", "<b/>", tester));
     }
 }

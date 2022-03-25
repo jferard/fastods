@@ -67,16 +67,17 @@ public class ConfigItemMapIndexedTest {
         Assert.assertFalse(m.isEmpty());
     }
 
-    @Test(expected = IndexOutOfBoundsException.class)
+    @Test
     public void testSet() {
         final ConfigItemMapIndexed m = new ConfigItemMapIndexed("mapindexed");
-        m.set(1, this.set);
+        Assert.assertThrows(IndexOutOfBoundsException.class, () -> m.set(1, this.set));
     }
 
-    @Test(expected = IndexOutOfBoundsException.class)
+    @Test
     public void testRemove() {
         final ConfigItemMapIndexed m = new ConfigItemMapIndexed("mapindexed");
-        m.remove(1);
+        Assert.assertThrows(IndexOutOfBoundsException.class, () -> m.remove(1));
+
     }
 
     @Test

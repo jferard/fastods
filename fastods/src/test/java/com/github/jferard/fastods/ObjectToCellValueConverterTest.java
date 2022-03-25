@@ -57,9 +57,10 @@ public class ObjectToCellValueConverterTest {
         Assert.assertEquals(VoidValue.INSTANCE, this.converter.from(CellType.VOID, null));
     }
 
-    @Test(expected = FastOdsException.class)
-    public void testFromHintFailNull() throws FastOdsException {
-        Assert.assertEquals(VoidValue.INSTANCE, this.converter.from(CellType.FLOAT, null));
+    @Test
+    public void testFromHintFailNull() {
+        Assert.assertThrows(FastOdsException.class,
+                () -> this.converter.from(CellType.FLOAT, null));
     }
 
     @Test
@@ -72,9 +73,10 @@ public class ObjectToCellValueConverterTest {
         Assert.assertEquals(new StringValue("10"), this.converter.from(CellType.STRING, 10));
     }
 
-    @Test(expected = FastOdsException.class)
-    public void testFromHintFailString() throws FastOdsException {
-        this.converter.from(CellType.VOID, FAST_ODS);
+    @Test
+    public void testFromHintFailString() {
+        Assert.assertThrows(FastOdsException.class,
+                () -> this.converter.from(CellType.VOID, FAST_ODS));
     }
 
     @Test
@@ -89,9 +91,10 @@ public class ObjectToCellValueConverterTest {
         Assert.assertEquals(new TextValue(content), this.converter.from(CellType.STRING, content));
     }
 
-    @Test(expected = FastOdsException.class)
-    public void testFromHintFailText() throws FastOdsException {
-        this.converter.from(CellType.VOID, Text.content(FAST_ODS));
+    @Test
+    public void testFromHintFailText() {
+        Assert.assertThrows(FastOdsException.class,
+                () -> this.converter.from(CellType.VOID, Text.content(FAST_ODS)));
     }
 
     @Test
@@ -104,9 +107,9 @@ public class ObjectToCellValueConverterTest {
         Assert.assertEquals(new FloatValue(8.5), this.converter.from(CellType.FLOAT, 8.5));
     }
 
-    @Test(expected = FastOdsException.class)
-    public void testFromHintFailNumber() throws FastOdsException {
-        this.converter.from(CellType.VOID, 8.5);
+    @Test
+    public void testFromHintFailNumber() {
+        Assert.assertThrows(FastOdsException.class, () -> this.converter.from(CellType.VOID, 8.5));
     }
 
     @Test
@@ -119,9 +122,9 @@ public class ObjectToCellValueConverterTest {
         Assert.assertEquals(new BooleanValue(true), this.converter.from(CellType.BOOLEAN, true));
     }
 
-    @Test(expected = FastOdsException.class)
-    public void testFromHintFailBoolean() throws FastOdsException {
-        this.converter.from(CellType.VOID, true);
+    @Test
+    public void testFromHintFailBoolean() {
+        Assert.assertThrows(FastOdsException.class, () -> this.converter.from(CellType.VOID, true));
     }
 
     @Test
@@ -134,9 +137,10 @@ public class ObjectToCellValueConverterTest {
         Assert.assertEquals(new DateValue(DATE_123), this.converter.from(CellType.DATE, 123));
     }
 
-    @Test(expected = FastOdsException.class)
-    public void testFromHintFailDate() throws FastOdsException {
-        this.converter.from(CellType.VOID, DATE_123);
+    @Test
+    public void testFromHintFailDate() {
+        Assert.assertThrows(FastOdsException.class,
+                () -> this.converter.from(CellType.VOID, DATE_123));
     }
 
     @Test
@@ -150,9 +154,10 @@ public class ObjectToCellValueConverterTest {
                 this.converter.from(CellType.DATE, CALENDAR_456));
     }
 
-    @Test(expected = FastOdsException.class)
-    public void testFromHintFailCalendar() throws FastOdsException {
-        this.converter.from(CellType.VOID, CALENDAR_456);
+    @Test
+    public void testFromHintFailCalendar() {
+        Assert.assertThrows(FastOdsException.class,
+                () -> this.converter.from(CellType.VOID, CALENDAR_456));
     }
 
     @Test
@@ -160,9 +165,10 @@ public class ObjectToCellValueConverterTest {
         Assert.assertEquals(new CurrencyValue(5, "USD"), this.converter.from(CellType.CURRENCY, 5));
     }
 
-    @Test(expected = FastOdsException.class)
-    public void testFromHintFailCurrency() throws FastOdsException {
-        this.converter.from(CellType.CURRENCY, "0.47");
+    @Test
+    public void testFromHintFailCurrency() {
+        Assert.assertThrows(FastOdsException.class,
+                () -> this.converter.from(CellType.CURRENCY, "0.47"));
     }
 
     @Test
@@ -171,9 +177,10 @@ public class ObjectToCellValueConverterTest {
                 this.converter.from(CellType.PERCENTAGE, 0.46));
     }
 
-    @Test(expected = FastOdsException.class)
-    public void testFromHintFailPercentage() throws FastOdsException {
-        this.converter.from(CellType.PERCENTAGE, "0.49");
+    @Test
+    public void testFromHintFailPercentage() {
+        Assert.assertThrows(FastOdsException.class,
+                () -> this.converter.from(CellType.PERCENTAGE, "0.49"));
     }
 
     @Test
@@ -182,9 +189,10 @@ public class ObjectToCellValueConverterTest {
                 this.converter.from(CellType.TIME, 165 * 1000));
     }
 
-    @Test(expected = FastOdsException.class)
-    public void testFromHintFailTime() throws FastOdsException {
-        this.converter.from(CellType.TIME, "165");
+    @Test
+    public void testFromHintFailTime() {
+        Assert.assertThrows(FastOdsException.class,
+                () -> this.converter.from(CellType.TIME, "165"));
     }
 
     @Test
@@ -198,9 +206,10 @@ public class ObjectToCellValueConverterTest {
                 this.converter.from(CellType.FLOAT, FloatValue.from(10.0)));
     }
 
-    @Test(expected = FastOdsException.class)
-    public void testFromHintFailCellValue() throws FastOdsException {
-        this.converter.from(CellType.VOID, FloatValue.from(10));
+    @Test
+    public void testFromHintFailCellValue() {
+        Assert.assertThrows(FastOdsException.class,
+                () -> this.converter.from(CellType.VOID, FloatValue.from(10)));
     }
 
 }

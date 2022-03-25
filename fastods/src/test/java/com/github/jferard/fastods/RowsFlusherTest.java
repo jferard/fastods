@@ -38,6 +38,7 @@ import java.util.List;
 
 /**
  * Created by jferard on 09/05/17.
+ *
  * @deprecated test of a deprecated class
  */
 @Deprecated
@@ -78,7 +79,7 @@ public class RowsFlusherTest {
         PowerMock.verifyAll();
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testFlushIntoNullRow() throws Exception {
         final List<TableRowImpl> rows = new ArrayList<TableRowImpl>();
         rows.add(null);
@@ -86,7 +87,8 @@ public class RowsFlusherTest {
         PowerMock.resetAll();
         PowerMock.replayAll();
         final OdsAsyncFlusher flusher = new RowsFlusher(rows);
-        flusher.flushInto(this.util, this.w);
+        Assert.assertThrows(IllegalArgumentException.class,
+                () -> flusher.flushInto(this.util, this.w));
         PowerMock.verifyAll();
     }
 

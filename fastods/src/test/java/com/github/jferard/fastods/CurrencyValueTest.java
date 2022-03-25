@@ -62,9 +62,9 @@ public class CurrencyValueTest {
         Assert.assertEquals(new CurrencyValue(16, "$"), cv2);
     }
 
-    @Test(expected = FastOdsException.class)
+    @Test
     public void testFromObject() throws FastOdsException {
-        CurrencyValue.from(new Object(), "€");
+        Assert.assertThrows(FastOdsException.class, () ->        CurrencyValue.from(new Object(), "€"));
     }
 
     @Test

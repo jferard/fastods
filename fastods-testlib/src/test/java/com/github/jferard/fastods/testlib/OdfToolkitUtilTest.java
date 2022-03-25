@@ -61,10 +61,11 @@ public class OdfToolkitUtilTest {
         Assert.assertEquals("str", OdfToolkitUtil.getStringValue(this.cell));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void testNullParentStyleName() {
         this.cell.setStringValue("str");
-        OdfToolkitUtil.getParentStyleName(this.cell);
+        Assert.assertThrows(NullPointerException.class,
+                () -> OdfToolkitUtil.getParentStyleName(this.cell));
     }
 
     @Test
@@ -109,10 +110,11 @@ public class OdfToolkitUtilTest {
         PowerMock.verifyAll();
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void testAttributeNull() {
         final Node n = new HTMLBodyElementImpl(new HTMLDocumentImpl(), "name");
-        OdfToolkitUtil.getAttribute(n, "attr");
+        Assert.assertThrows(NullPointerException.class,
+                () -> OdfToolkitUtil.getAttribute(n, "attr"));
     }
 
     @Test

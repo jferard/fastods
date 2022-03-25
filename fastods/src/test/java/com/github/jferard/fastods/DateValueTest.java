@@ -96,9 +96,9 @@ public class DateValueTest {
         PowerMock.verifyAll();
     }
 
-    @Test(expected = FastOdsException.class)
+    @Test
     public final void testFromString() throws FastOdsException {
-        DateValue.from("10");
+        Assert.assertThrows(FastOdsException.class, () -> DateValue.from("10"));
     }
 
     @Test

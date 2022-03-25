@@ -100,14 +100,16 @@ public class NameCheckerTest {
                 }));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void wrongChildCellTest() {
-        this.checker.checkStyleName("style@@datastyle");
+        Assert.assertThrows(IllegalArgumentException.class,
+                () -> this.checker.checkStyleName("style@@datastyle"));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void wrongChildCellTest2() {
-        this.checker.checkStyleName("style-:-datastyle");
+        Assert.assertThrows(IllegalArgumentException.class,
+                () -> this.checker.checkStyleName("style-:-datastyle"));
     }
 
     @Test
@@ -115,8 +117,9 @@ public class NameCheckerTest {
         this.checker.checkStyleName("style-_-datastyle");
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void digitTest() {
-        this.checker.checkStyleName("0style-:-datastyle");
+        Assert.assertThrows(IllegalArgumentException.class,
+                () -> this.checker.checkStyleName("0style-:-datastyle"));
     }
 }

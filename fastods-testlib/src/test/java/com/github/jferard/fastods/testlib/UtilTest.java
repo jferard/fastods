@@ -74,7 +74,7 @@ public class UtilTest {
         Assert.assertFalse(mkdir);
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testExistingFile() {
         final File f = PowerMock.createMock(File.class);
 
@@ -83,7 +83,7 @@ public class UtilTest {
         EasyMock.expect(f.isDirectory()).andReturn(false);
 
         PowerMock.replayAll();
-        Util.mkdir(f);
+        Assert.assertThrows(IllegalStateException.class, () -> Util.mkdir(f));
 
         PowerMock.verifyAll();
     }

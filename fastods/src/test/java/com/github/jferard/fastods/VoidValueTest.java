@@ -38,8 +38,8 @@ public class VoidValueTest {
         Assert.assertEquals(VoidValue.INSTANCE, VoidValue.from(VoidValue.INSTANCE));
     }
 
-    @Test(expected = FastOdsException.class)
-    public void testFromString() throws FastOdsException {
-        VoidValue.from("VoidValue.INSTANCE");
+    @Test
+    public void testFromString() {
+        Assert.assertThrows(FastOdsException.class, () -> VoidValue.from("VoidValue.INSTANCE"));
     }
 }

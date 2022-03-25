@@ -82,10 +82,10 @@ public class ContainerTest {
         Assert.assertFalse(this.container.getValues().iterator().hasNext());
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public final void testCreateAfterFreeze() {
         this.container.freeze();
-        this.container.add("a", 1);
+        Assert.assertThrows(IllegalStateException.class, () -> this.container.add("a", 1));
     }
 
     @Test

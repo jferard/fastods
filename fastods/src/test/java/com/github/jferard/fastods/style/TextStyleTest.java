@@ -52,10 +52,10 @@ public class TextStyleTest {
         Assert.assertFalse(style.isHidden());
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testAddToElements() {
         final TextStyle style = TextStyle.builder("ts").build();
-        style.addToElements(null);
+        Assert.assertThrows(UnsupportedOperationException.class, () -> style.addToElements(null));
     }
 
     @Test
@@ -76,9 +76,10 @@ public class TextStyleTest {
                         "</style:style>", style);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public final void testVisibleOnly() {
-        TextStyle.builder("ts").fontSizePercentage(110).build();
+        Assert.assertThrows(IllegalArgumentException.class,
+                () -> TextStyle.builder("ts").fontSizePercentage(110).build());
     }
 
     @Test

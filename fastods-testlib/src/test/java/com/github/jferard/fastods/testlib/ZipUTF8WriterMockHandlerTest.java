@@ -27,9 +27,7 @@ package com.github.jferard.fastods.testlib;
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.powermock.api.easymock.PowerMock;
 import org.xml.sax.SAXException;
 
@@ -40,9 +38,6 @@ import java.io.IOException;
 import java.util.zip.ZipEntry;
 
 public class ZipUTF8WriterMockHandlerTest {
-    @Rule
-    public final ExpectedException thrown = ExpectedException.none();
-
     private ZipUTF8WriterMock mock;
     private ZipUTF8WriterMockHandler handler;
 
@@ -54,7 +49,7 @@ public class ZipUTF8WriterMockHandlerTest {
 
     @Test
     public void testCreate() {
-        final ZipUTF8WriterMockHandler h = ZipUTF8WriterMockHandler.create();
+        ZipUTF8WriterMockHandler.create();
         PowerMock.resetAll();
         PowerMock.replayAll();
         PowerMock.verifyAll();
@@ -79,12 +74,11 @@ public class ZipUTF8WriterMockHandlerTest {
         this.mock.closeEntry();
         this.mock.close();
         this.mock.finish();
-        final Iterable<Object> instance = (Iterable<Object>) this.handler.getInstance(Iterable.class);
+        final Iterable<Object> instance =
+                (Iterable<Object>) this.handler.getInstance(Iterable.class);
 
-        this.thrown.expect(IllegalArgumentException.class);
-        this.thrown.expectMessage(
-                "Method not found: ZipUTF8WriterMock.iterator");
-        Assert.assertNull(instance.iterator());
+        Assert.assertThrows("Method not found: ZipUTF8WriterMock.iterator",
+                IllegalArgumentException.class, () -> instance.iterator());
     }
 
     @Test
@@ -132,7 +126,6 @@ public class ZipUTF8WriterMockHandlerTest {
 
     @Test
     public void testGetBuilder() throws ParserConfigurationException, SAXException, IOException {
-        final ZUW instance = this.handler.getInstance(ZUW.class);
         Assert.assertNull(this.handler.getEntryAsDocument("ok"));
     }
 

@@ -40,13 +40,13 @@ import java.util.zip.ZipEntry;
  * @author Julien Férard
  */
 public class ZipUTF8WriterMockTest {
-    @Test(expected = IOException.class)
-    public void testNoEntry() throws IOException {
+    @Test
+    public void testNoEntry() {
         final ZipUTF8WriterMock mock = ZipUTF8WriterMock.createMock();
-        mock.write("test");
+        Assert.assertThrows(IOException.class, () -> mock.write("test"));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testAbsentEntry() throws IOException {
         final ZipUTF8WriterMock mock = ZipUTF8WriterMock.createMock();
         final ZipUTF8WriterMockHandler mockHandler = new ZipUTF8WriterMockHandler(mock);
@@ -56,7 +56,8 @@ public class ZipUTF8WriterMockTest {
         mock.flush();
         mock.close();
 
-        mockHandler.getEntryAsString("entry2");
+        Assert.assertThrows(IllegalArgumentException.class,
+                () -> mockHandler.getEntryAsString("entry2"));
     }
 
     @Test
@@ -78,7 +79,7 @@ public class ZipUTF8WriterMockTest {
         final ZipUTF8WriterMock mock = ZipUTF8WriterMock.createMock();
         final ZipUTF8WriterMockHandler mockHandler = new ZipUTF8WriterMockHandler(mock);
         mock.putNextEntry(new ZipEntry("entry1"));
-        mock.append(Util.XML_PROLOG +"\n");
+        mock.append(Util.XML_PROLOG + "\n");
         mock.append("<tag>\n");
         mock.append("content\n");
         mock.append("</tag>\n");
@@ -95,17 +96,17 @@ public class ZipUTF8WriterMockTest {
         Assert.assertEquals(Node.TEXT_NODE, content.getNodeType());
     }
 
-    @Test(expected = IOException.class)
+    @Test
     public void testAppendCharWithoutBuilder() throws IOException {
         final ZipUTF8WriterMock mock = ZipUTF8WriterMock.createMock();
-        mock.append('c');
+        Assert.assertThrows(IOException.class, () -> mock.append('c'));
 
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void testComment() {
         final ZipUTF8WriterMock mock = ZipUTF8WriterMock.createMock();
-        mock.setComment("a dummy comment");
+        Assert.assertThrows(RuntimeException.class, () -> mock.setComment("a dummy comment"));
     }
 
 
@@ -122,30 +123,30 @@ public class ZipUTF8WriterMockTest {
         Assert.assertEquals("abc", s);
     }
 
-    @Test(expected = IOException.class)
-    public void testAppendCharSequenceWithoutBuilder() throws IOException {
+    @Test
+    public void testAppendCharSequenceWithoutBuilder() {
         final ZipUTF8WriterMock mock = ZipUTF8WriterMock.createMock();
-        mock.append("c");
+        Assert.assertThrows(IOException.class, () -> mock.append("c"));
 
     }
 
-    @Test(expected = IOException.class)
-    public void testAppendCharSequencePartWithoutBuilder() throws IOException {
+    @Test
+    public void testAppendCharSequencePartWithoutBuilder() {
         final ZipUTF8WriterMock mock = ZipUTF8WriterMock.createMock();
-        mock.append("c", 0, 1);
+        Assert.assertThrows(IOException.class, () -> mock.append("c", 0, 1));
 
     }
 
-    @Test(expected = IOException.class)
-    public void testCloseUnopenedEntry() throws IOException {
+    @Test
+    public void testCloseUnopenedEntry() {
         final ZipUTF8WriterMock mock = ZipUTF8WriterMock.createMock();
-        mock.closeEntry();
+        Assert.assertThrows(IOException.class, () -> mock.closeEntry());
     }
 
-    @Test(expected = IOException.class)
-    public void testCloseWithUnclosedEntry() throws IOException {
+    @Test
+    public void testCloseWithUnclosedEntry() {
         final ZipUTF8WriterMock mock = ZipUTF8WriterMock.createMock();
         mock.putNextEntry(new ZipEntry("1"));
-        mock.close();
+        Assert.assertThrows(IOException.class, () -> mock.close());
     }
 }

@@ -623,11 +623,11 @@ public class TableCellTest {
         this.assertCellXMLEquals("<table:table-cell table:number-columns-spanned=\"8\"/>");
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public final void testMarkColumnsSpannedNeg() {
         PowerMock.resetAll();
         PowerMock.replayAll();
-        this.cell.markColumnsSpanned(-8);
+        Assert.assertThrows(IllegalArgumentException.class, () -> this.cell.markColumnsSpanned(-8));
 
         PowerMock.verifyAll();
     }
@@ -702,11 +702,11 @@ public class TableCellTest {
         PowerMock.verifyAll();
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public final void testMarkRowsSpannedNeg() {
         PowerMock.resetAll();
         PowerMock.replayAll();
-        this.cell.markRowsSpanned(-8);
+        Assert.assertThrows(IllegalArgumentException.class, () -> this.cell.markRowsSpanned(-8));
 
         PowerMock.verifyAll();
     }
@@ -725,11 +725,11 @@ public class TableCellTest {
         PowerMock.verifyAll();
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public final void testMergeNeg() throws IOException {
         PowerMock.resetAll();
         PowerMock.replayAll();
-        this.cell.setCellMerge(-10, 10);
+        Assert.assertThrows(IllegalArgumentException.class, () -> this.cell.setCellMerge(-10, 10));
 
         PowerMock.verifyAll();
     }
@@ -887,7 +887,7 @@ public class TableCellTest {
         EasyMock.expect(this.table.findDefaultCellStyle(11))
                 .andReturn(TableCellStyle.DEFAULT_CELL_STYLE);
         EasyMock.expect(
-                this.stc.addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, floatDataStyle))
+                        this.stc.addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, floatDataStyle))
                 .andReturn(null);
 
         // setNeg
@@ -895,7 +895,7 @@ public class TableCellTest {
                 .andReturn(TableCellStyle.DEFAULT_CELL_STYLE);
         EasyMock.expect(this.stc.addDataStyle(timeDataStyle)).andReturn(true);
         EasyMock.expect(
-                this.stc.addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, timeDataStyle))
+                        this.stc.addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, timeDataStyle))
                 .andReturn(null);
 
         PowerMock.replayAll();

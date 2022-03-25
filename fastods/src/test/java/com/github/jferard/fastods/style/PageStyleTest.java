@@ -112,9 +112,9 @@ public class PageStyleTest {
                 "</style:page-layout>", pageStyle);
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public final void testEmpty() {
-        PageStyle.builder(null).build();
+        Assert.assertThrows(IllegalStateException.class, () -> PageStyle.builder(null).build());
     }
 
     @Test
@@ -266,9 +266,10 @@ public class PageStyleTest {
                 "fo:margin=\"0cm\"/></style:footer-style></style:page-layout>", pageStyle);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public final void testWritingException() {
-        PageStyle.builder("test").writingMode(null);
+        Assert.assertThrows(IllegalArgumentException.class,
+                () -> PageStyle.builder("test").writingMode(null));
     }
 
     @Test

@@ -79,7 +79,7 @@ public abstract class OdsDocumentTest<E extends OdsDocument> {
         Assert.assertEquals(t, ret);
     }
 
-    @Test(expected = FastOdsException.class)
+    @Test
     public void testGetTableByNameFail() throws FastOdsException {
         PowerMock.resetAll();
         TestHelper.initMockDocument(this.odsElements);
@@ -87,7 +87,7 @@ public abstract class OdsDocumentTest<E extends OdsDocument> {
 
         PowerMock.replayAll();
         final E document = this.getDocument();
-        document.getTable("ok");
+        Assert.assertThrows(FastOdsException.class, () -> document.getTable("ok"));
 
         PowerMock.verifyAll();
     }
@@ -156,7 +156,7 @@ public abstract class OdsDocumentTest<E extends OdsDocument> {
         Assert.assertEquals(2, actual);
     }
 
-    @Test(expected = FastOdsException.class)
+    @Test
     public void testGetTableByIndexNeg() throws FastOdsException {
         PowerMock.resetAll();
         TestHelper.initMockDocument(this.odsElements);
@@ -164,12 +164,12 @@ public abstract class OdsDocumentTest<E extends OdsDocument> {
 
         PowerMock.replayAll();
         final E document = this.getDocument();
-        document.getTable(-1);
+        Assert.assertThrows(FastOdsException.class, () -> document.getTable(-1));
 
         PowerMock.verifyAll();
     }
 
-    @Test(expected = FastOdsException.class)
+    @Test
     public void testGetTableByIndexOutOfBounds() throws FastOdsException {
         PowerMock.resetAll();
         TestHelper.initMockDocument(this.odsElements);
@@ -177,7 +177,7 @@ public abstract class OdsDocumentTest<E extends OdsDocument> {
 
         PowerMock.replayAll();
         final E document = this.getDocument();
-        document.getTable(10);
+        Assert.assertThrows(FastOdsException.class, () -> document.getTable(10));
 
         PowerMock.verifyAll();
     }

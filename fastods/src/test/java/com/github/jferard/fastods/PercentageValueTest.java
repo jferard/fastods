@@ -49,9 +49,9 @@ public class PercentageValueTest {
         Assert.assertEquals(cv1, cv2);
     }
 
-    @Test(expected = FastOdsException.class)
+    @Test
     public void testFromObject() throws FastOdsException {
-        PercentageValue.from(new Object());
+        Assert.assertThrows(FastOdsException.class, () -> PercentageValue.from(new Object()));
     }
 
     @Test

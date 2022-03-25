@@ -25,6 +25,7 @@ package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.TestHelper;
 import com.github.jferard.fastods.attribute.SimpleColor;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -125,9 +126,10 @@ public class ScientificNumberStyleTest {
                         "number:min-integer-digits=\"1\"/></number:number-style>", s);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public final void testWithNoName() {
-        new ScientificNumberStyleBuilder(null, this.locale).build();
+        Assert.assertThrows(IllegalArgumentException.class,
+                () -> new ScientificNumberStyleBuilder(null, this.locale));
     }
 
     @Test

@@ -34,10 +34,9 @@ import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.easymock.EasyMock;
+import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
@@ -45,9 +44,6 @@ import java.util.Locale;
 import java.util.logging.Logger;
 
 public class NamedOdsDocumentTest extends OdsDocumentTest<NamedOdsDocument> {
-    @Rule
-    public final ExpectedException thrown = ExpectedException.none();
-
     private Logger logger;
     private XMLUtil xmlUtil;
     private TableCellStyle aStyle;
@@ -120,9 +116,7 @@ public class NamedOdsDocumentTest extends OdsDocumentTest<NamedOdsDocument> {
 
         PowerMock.replayAll();
         final NamedOdsDocument document = this.getDocument();
-        this.thrown.expect(IOException.class);
-        this.thrown.expectMessage("@");
-        document.save();
+        Assert.assertThrows("@", IOException.class, () -> document.save());
 
         PowerMock.verifyAll();
     }
@@ -136,15 +130,13 @@ public class NamedOdsDocumentTest extends OdsDocumentTest<NamedOdsDocument> {
         EasyMock.expectLastCall().andThrow(new RuntimeException("@"));
 
         PowerMock.replayAll();
-        this.thrown.expect(RuntimeException.class);
-        this.thrown.expectMessage("@");
         final NamedOdsDocument d = this.getDocument();
-        d.save();
+        Assert.assertThrows("@", RuntimeException.class, () -> d.save());
 
         PowerMock.verifyAll();
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testFreezeStyles() {
         PowerMock.resetAll();
         TestHelper.initMockDocument(this.odsElements);
@@ -155,7 +147,8 @@ public class NamedOdsDocumentTest extends OdsDocumentTest<NamedOdsDocument> {
         PowerMock.replayAll();
         final NamedOdsDocument document = this.getDocument();
         document.freezeStyles();
-        document.addContentStyle(TableCellStyle.DEFAULT_CELL_STYLE);
+        Assert.assertThrows(IllegalStateException.class,
+                () -> document.addContentStyle(TableCellStyle.DEFAULT_CELL_STYLE));
 
         PowerMock.verifyAll();
     }
@@ -334,7 +327,7 @@ public class NamedOdsDocumentTest extends OdsDocumentTest<NamedOdsDocument> {
         PowerMock.resetAll();
         TestHelper.initMockDocument(this.odsElements);
         EasyMock.expect(this.odsElements
-                .addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, this.aDataStyle))
+                        .addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, this.aDataStyle))
                 .andReturn(style);
 
         PowerMock.replayAll();

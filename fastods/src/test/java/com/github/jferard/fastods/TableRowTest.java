@@ -129,16 +129,18 @@ public class TableRowTest {
         Assert.assertFalse(covered2);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testColumnsSpannedSpanError() {
         PowerMock.resetAll();
         PowerMock.replayAll();
-        this.row.setColumnsSpanned(0, -1);
+
+        Assert.assertThrows(IllegalArgumentException.class,
+                () -> this.row.setColumnsSpanned(0, -1));
 
         PowerMock.verifyAll();
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testColumnsSpannedCellError() {
         PowerMock.resetAll();
         EasyMock.expect(TableColdCell.create(this.xmlUtil))
@@ -149,22 +151,24 @@ public class TableRowTest {
         PowerMock.replayAll();
         this.row.setColumnsSpanned(0, 2);
         assert this.row.isCovered(1);
-        this.row.setColumnsSpanned(1, 10);
+        Assert.assertThrows(IllegalArgumentException.class,
+                () -> this.row.setColumnsSpanned(1, 10));
 
         PowerMock.verifyAll();
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testRowsSpannedSpanError() throws IOException {
+    @Test
+    public void testRowsSpannedSpanError() {
         PowerMock.resetAll();
         PowerMock.replayAll();
-        this.row.setRowsSpanned(0, -1);
+
+        Assert.assertThrows(IllegalArgumentException.class, () -> this.row.setRowsSpanned(0, -1));
 
         PowerMock.verifyAll();
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testRowsSpannedCellError() throws IOException {
+    @Test
+    public void testRowsSpannedCellError() {
         PowerMock.resetAll();
         EasyMock.expect(TableColdCell.create(this.xmlUtil))
                 .andReturn(new TableColdCell(this.xmlUtil));
@@ -174,16 +178,16 @@ public class TableRowTest {
         PowerMock.replayAll();
         this.row.setColumnsSpanned(0, 2);
         assert this.row.isCovered(1);
-        this.row.setRowsSpanned(1, 5);
+        Assert.assertThrows(IllegalArgumentException.class, () -> this.row.setRowsSpanned(1, 5));
 
         PowerMock.verifyAll();
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testCellMergeError() throws IOException {
+    @Test
+    public void testCellMergeError() {
         PowerMock.resetAll();
         PowerMock.replayAll();
-        this.row.setCellMerge(0, -1, 2);
+        Assert.assertThrows(IllegalArgumentException.class, () -> this.row.setCellMerge(0, -1, 2));
 
         PowerMock.verifyAll();
     }
@@ -227,10 +231,10 @@ public class TableRowTest {
     public final void testAppendRowOpenTag() throws IOException {
         PowerMock.resetAll();
         EasyMock.expect(
-                this.stc.addContentFontFaceContainerStyle(TableCellStyle.DEFAULT_CELL_STYLE))
+                        this.stc.addContentFontFaceContainerStyle(TableCellStyle.DEFAULT_CELL_STYLE))
                 .andReturn(true);
         EasyMock.expect(
-                this.stc.addContentStyle(TableCellStyle.DEFAULT_CELL_STYLE))
+                        this.stc.addContentStyle(TableCellStyle.DEFAULT_CELL_STYLE))
                 .andReturn(true);
 
         PowerMock.replayAll();
@@ -287,7 +291,7 @@ public class TableRowTest {
     }
 
     @Test
-    public final void testRowIndex() throws IOException {
+    public final void testRowIndex() {
         PowerMock.resetAll();
         PowerMock.replayAll();
         Assert.assertEquals(10, this.row.rowIndex());

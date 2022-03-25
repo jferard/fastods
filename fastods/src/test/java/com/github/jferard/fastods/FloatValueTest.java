@@ -70,9 +70,9 @@ public class FloatValueTest {
         Assert.assertEquals(fv2, fv1);
     }
 
-    @Test(expected = FastOdsException.class)
-    public void testFromObject() throws FastOdsException {
-        FloatValue.from(new Object());
+    @Test
+    public void testFromObject() {
+        Assert.assertThrows(FastOdsException.class, () -> FloatValue.from(new Object()));
     }
 
     @Test

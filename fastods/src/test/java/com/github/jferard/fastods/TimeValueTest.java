@@ -49,9 +49,9 @@ public class TimeValueTest {
         Assert.assertEquals(tv1, tv2);
     }
 
-    @Test(expected = FastOdsException.class)
-    public void testFromString() throws FastOdsException {
-        TimeValue.from("");
+    @Test
+    public void testFromString() {
+        Assert.assertThrows(FastOdsException.class, () -> TimeValue.from(""));
     }
 
     @Test

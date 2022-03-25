@@ -100,9 +100,9 @@ public class AttrListTest {
         Assert.assertEquals(-1, this.attrList.compareTo(attrList2));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void testCompareWithNull() {
-        Assert.assertEquals(1, this.attrList.compareTo(null));
+        Assert.assertThrows(NullPointerException.class, ()-> this.attrList.compareTo(null));
     }
 
     @Test

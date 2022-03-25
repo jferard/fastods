@@ -87,9 +87,9 @@ public class ConfigItemMapEntrySequenceTest {
         this.sequence.remove(0);
     }
 
-    @Test(expected = IndexOutOfBoundsException.class)
+    @Test
     public void remove2() {
-        this.sequence.remove(10);
+        Assert.assertThrows(IndexOutOfBoundsException.class, () -> this.sequence.remove(10));
     }
 
     @Test

@@ -57,9 +57,9 @@ public class BooleanValueTest {
         Assert.assertEquals(bv1, bv2);
     }
 
-    @Test(expected = FastOdsException.class)
-    public final void testFromBooleanObject() throws FastOdsException {
-        BooleanValue.from(new Object());
+    @Test
+    public final void testFromBooleanObject() {
+        Assert.assertThrows(FastOdsException.class, () -> BooleanValue.from(new Object()));
     }
 
     @Test

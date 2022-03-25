@@ -106,14 +106,14 @@ public class SQLToCellValueConverterTest {
         PowerMock.verifyAll();
     }
 
-    @Test(expected = FastOdsException.class)
+    @Test
     public void testFromHintFailBlob() throws FastOdsException {
         final MockBlob blob = new MockBlob(FASTODS.getBytes(CHARSET));
         EasyMock.expect(this.wrappedConverter.from(CellType.VOID, blob))
                 .andThrow(new FastOdsException(""));
 
         PowerMock.replayAll();
-        this.converter.from(CellType.VOID, blob);
+        Assert.assertThrows(FastOdsException.class, () -> this.converter.from(CellType.VOID, blob));
 
         PowerMock.verifyAll();
     }
@@ -137,14 +137,14 @@ public class SQLToCellValueConverterTest {
         PowerMock.verifyAll();
     }
 
-    @Test(expected = FastOdsException.class)
+    @Test
     public void testFromHintFailClob() throws FastOdsException {
         final MockClob clob = new MockClob(FASTODS);
         EasyMock.expect(this.wrappedConverter.from(CellType.VOID, clob))
                 .andThrow(new FastOdsException(""));
 
         PowerMock.replayAll();
-        this.converter.from(CellType.VOID, clob);
+        Assert.assertThrows(FastOdsException.class, () -> this.converter.from(CellType.VOID, clob));
 
         PowerMock.verifyAll();
     }
@@ -193,7 +193,7 @@ public class SQLToCellValueConverterTest {
         PowerMock.verifyAll();
     }
 
-    @Test(expected = FastOdsException.class)
+    @Test
     public void testFromHintFailSQLXML() throws FastOdsException {
         PowerMock.resetAll();
         final MockSQLXML sqlxml = new MockSQLXML(FASTODS);
@@ -201,7 +201,8 @@ public class SQLToCellValueConverterTest {
                 .andThrow(new FastOdsException(""));
 
         PowerMock.replayAll();
-        this.converter.from(CellType.VOID, sqlxml);
+        Assert.assertThrows(FastOdsException.class,
+                () -> this.converter.from(CellType.VOID, sqlxml));
 
         PowerMock.verifyAll();
     }
@@ -224,14 +225,15 @@ public class SQLToCellValueConverterTest {
         PowerMock.verifyAll();
     }
 
-    @Test(expected = FastOdsException.class)
+    @Test
     public void testFromHintFailDate() throws FastOdsException {
         PowerMock.resetAll();
         EasyMock.expect(this.wrappedConverter.from(CellType.VOID, SQL_DATE))
                 .andThrow(new FastOdsException(""));
 
         PowerMock.replayAll();
-        this.converter.from(CellType.VOID, SQL_DATE);
+        Assert.assertThrows(FastOdsException.class,
+                () -> this.converter.from(CellType.VOID, SQL_DATE));
 
         PowerMock.verifyAll();
     }
@@ -254,14 +256,15 @@ public class SQLToCellValueConverterTest {
         PowerMock.verifyAll();
     }
 
-    @Test(expected = FastOdsException.class)
+    @Test
     public void testFromHintFailTime() throws FastOdsException {
         PowerMock.resetAll();
         EasyMock.expect(this.wrappedConverter.from(CellType.VOID, SQL_TIME))
                 .andThrow(new FastOdsException(""));
 
         PowerMock.replayAll();
-        this.converter.from(CellType.VOID, SQL_TIME);
+        Assert.assertThrows(FastOdsException.class,
+                () -> this.converter.from(CellType.VOID, SQL_TIME));
         PowerMock.verifyAll();
     }
 
@@ -283,14 +286,15 @@ public class SQLToCellValueConverterTest {
         PowerMock.verifyAll();
     }
 
-    @Test(expected = FastOdsException.class)
+    @Test
     public void testFromHintFailTimestamp() throws FastOdsException {
         PowerMock.resetAll();
         EasyMock.expect(this.wrappedConverter.from(CellType.VOID, SQL_TS))
                 .andThrow(new FastOdsException(""));
 
         PowerMock.replayAll();
-        this.converter.from(CellType.VOID, SQL_TS);
+        Assert.assertThrows(FastOdsException.class,
+                () -> this.converter.from(CellType.VOID, SQL_TS));
 
         PowerMock.verifyAll();
     }
@@ -332,7 +336,7 @@ public class SQLToCellValueConverterTest {
         PowerMock.verifyAll();
     }
 
-    @Test(expected = FastOdsException.class)
+    @Test
     public void testFromHintIntervalNo() throws FastOdsException {
         PowerMock.resetAll();
         final Object interval = new Object();
@@ -341,12 +345,13 @@ public class SQLToCellValueConverterTest {
                 .andThrow(new FastOdsException(""));
 
         PowerMock.replayAll();
-        this.converter.from(CellType.TIME, interval);
+        Assert.assertThrows(FastOdsException.class,
+                () -> this.converter.from(CellType.TIME, interval));
 
         PowerMock.verifyAll();
     }
 
-    @Test(expected = FastOdsException.class)
+    @Test
     public void testFromHintFailInterval() throws FastOdsException {
         PowerMock.resetAll();
         final Object interval = new Object();
@@ -354,29 +359,31 @@ public class SQLToCellValueConverterTest {
                 .andThrow(new FastOdsException(""));
 
         PowerMock.replayAll();
-        this.converter.from(CellType.VOID, interval);
+        Assert.assertThrows(FastOdsException.class,
+                () -> this.converter.from(CellType.VOID, interval));
 
         PowerMock.verifyAll();
     }
 
-    @Test(expected = RuntimeException.class)
-    public void testFromXMLFails() throws FastOdsException {
+    @Test
+    public void testFromXMLFails() {
         final SQLXML xml = new MockSQLXML("malformed xml");
         PowerMock.resetAll();
 
         PowerMock.replayAll();
-        this.converter.from(xml);
+        Assert.assertThrows(RuntimeException.class, () -> this.converter.from(xml));
 
         PowerMock.verifyAll();
     }
 
-    @Test(expected = FastOdsException.class)
-    public void testFromXMLStringFails() throws FastOdsException {
+    @Test
+    public void testFromXMLStringFails() {
         final SQLXML xml = new MockSQLXML("malformed xml");
         PowerMock.resetAll();
 
         PowerMock.replayAll();
-        this.converter.from(CellType.STRING, xml);
+        Assert.assertThrows(FastOdsException.class,
+                () -> this.converter.from(CellType.STRING, xml));
 
         PowerMock.verifyAll();
     }

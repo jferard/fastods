@@ -35,12 +35,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.powermock.api.easymock.PowerMock;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.EOFException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -63,12 +61,9 @@ import java.util.zip.ZipInputStream;
  *
  */
 public class AnonymousOdsFileWriterTest {
+    public static final int EMPTY_DOCUMENT_SIZE_LEVEL0 = 12784;
     private static final int EMPTY_DOCUMENT_SIZE = 5214; // 5226;
     private static final int DELTA = 50;
-    public static final int EMPTY_DOCUMENT_SIZE_LEVEL0 = 12784;
-
-    @Rule
-    public ExpectedException thrown = ExpectedException.none(); // TODO
     private ZipUTF8WriterBuilderImpl builder;
 
     private Logger logger;
@@ -90,16 +85,15 @@ public class AnonymousOdsFileWriterTest {
         this.odsFactory = OdsFactory.create(this.logger, Locale.US);
     }
 
-    @Test(expected = IOException.class)
-    public final void testFileIsDir() throws IOException {
+    @Test
+    public final void testFileIsDir() {
         final Logger l = PowerMock.createNiceMock(Logger.class);
         final OdsFactory of = OdsFactory.create(l, Locale.US);
 
         PowerMock.resetAll();
-        TestHelper.initMockDocument(this.odsElements);
 
         PowerMock.replayAll();
-        of.createWriter().saveAs(".");
+        Assert.assertThrows(IOException.class, () -> of.createWriter().saveAs("."));
 
         PowerMock.verifyAll();
     }
@@ -343,14 +337,15 @@ public class AnonymousOdsFileWriterTest {
         PowerMock.verifyAll();
     }
 
-    @Test(expected = IOException.class)
-    public final void testSaveAsNullFile() throws IOException {
+    @Test
+    public final void testSaveAsNullFile() {
         PowerMock.resetAll();
         TestHelper.initMockDocument(this.odsElements);
 
         PowerMock.replayAll();
         final AnonymousOdsDocument document = this.getAnonymousDocument();
-        new AnonymousOdsFileWriter(this.logger, document).saveAs((File) null);
+        Assert.assertThrows(IOException.class,
+                () -> new AnonymousOdsFileWriter(this.logger, document).saveAs((File) null));
 
         PowerMock.verifyAll();
     }
@@ -389,14 +384,15 @@ public class AnonymousOdsFileWriterTest {
         PowerMock.verifyAll();
     }
 
-    @Test(expected = IOException.class)
-    public final void testSaveWithWriterDir() throws IOException {
+    @Test
+    public final void testSaveWithWriterDir() {
         PowerMock.resetAll();
         TestHelper.initMockDocument(this.odsElements);
 
         PowerMock.replayAll();
         final AnonymousOdsDocument document = this.getAnonymousDocument();
-        new AnonymousOdsFileWriter(this.logger, document).saveAs(".", this.builder);
+        Assert.assertThrows(IOException.class,
+                () -> new AnonymousOdsFileWriter(this.logger, document).saveAs(".", this.builder));
 
         PowerMock.verifyAll();
     }

@@ -473,14 +473,14 @@ public class TableCellWalkerTest {
         PowerMock.verifyAll();
     }
 
-    @Test(expected = IndexOutOfBoundsException.class)
+    @Test
     public final void testPreviousIOOBE() throws IOException {
         PowerMock.resetAll();
         this.initWalker(0);
 
         PowerMock.replayAll();
         this.cellWalker = new TableCellWalker(this.table);
-        this.cellWalker.previous();
+        Assert.assertThrows(IndexOutOfBoundsException.class, () -> this.cellWalker.previous());
 
         PowerMock.verifyAll();
     }

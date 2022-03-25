@@ -82,9 +82,10 @@ public class XMLUtilTest {
         Assert.assertEquals("m\nl\nj\nt", this.xu.escapeXMLContent("m\nl\nj\nt"));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testFormatIntervalNegValue() {
-        this.xu.formatTimeInterval(-1, 0, 0, 0, 0, 0);
+        Assert.assertThrows(IllegalArgumentException.class,
+                () -> this.xu.formatTimeInterval(-1, 0, 0, 0, 0, 0));
     }
 
     // XML Schema 3.2.6.1 Lexical representation examples
