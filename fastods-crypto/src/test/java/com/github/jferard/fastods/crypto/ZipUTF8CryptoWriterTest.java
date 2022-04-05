@@ -45,6 +45,7 @@ import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 
 public class ZipUTF8CryptoWriterTest {
     @Test
@@ -94,7 +95,7 @@ public class ZipUTF8CryptoWriterTest {
         EasyMock.expect(encrypter.generateIV()).andReturn(iv);
         EasyMock.expect(encrypter.compress(data)).andReturn(data);
         EasyMock.expect(encrypter.encrypt(data, hashedPassword, salt, iv
-        ))
+                ))
                 .andReturn("bar".getBytes(CharsetUtil.UTF_8));
         EasyMock.expect(encrypter.getDataChecksum(data))
                 .andReturn("baz".getBytes(CharsetUtil.UTF_8));
@@ -159,7 +160,9 @@ public class ZipUTF8CryptoWriterTest {
             InvalidAlgorithmParameterException {
         final StandardEncrypter encrypter = PowerMock.createMock(StandardEncrypter.class);
         final EncryptParameters parameters = PowerMock.createMock(EncryptParameters.class);
-        final byte[] data = "foo".getBytes(CharsetUtil.UTF_8);
+        final byte[] data = "foobar".getBytes(CharsetUtil.UTF_8);
+        final byte[] cdata = "foo".getBytes(CharsetUtil.UTF_8);
+        final byte[] cedata = "bar".getBytes(CharsetUtil.UTF_8);
         final char[] password = {65, 66, 67};
         final byte[] hashedPassword = Util.getPasswordChecksum(password, "SHA-256");
         final byte[] salt = new byte[16];
@@ -168,17 +171,16 @@ public class ZipUTF8CryptoWriterTest {
         PowerMock.resetAll();
         EasyMock.expect(encrypter.generateSalt()).andReturn(salt);
         EasyMock.expect(encrypter.generateIV()).andReturn(iv);
-        EasyMock.expect(encrypter.compress(data)).andReturn(data);
-        EasyMock.expect(encrypter.encrypt(data, hashedPassword, salt, iv
-        ))
-                .andReturn("bar".getBytes(CharsetUtil.UTF_8));
-        EasyMock.expect(encrypter.getDataChecksum(data))
+        EasyMock.expect(encrypter.compress(data)).andReturn(cdata);
+        EasyMock.expect(encrypter.encrypt(cdata, hashedPassword, salt, iv
+        )).andReturn(cedata);
+        EasyMock.expect(encrypter.getDataChecksum(cdata))
                 .andReturn("baz".getBytes(CharsetUtil.UTF_8));
-        EasyMock.expect(encrypter.buildParameters(3, 3, 1996459178l,
-                "YmF6", "AAAAAAAAAAAAAAAAAAAAAA==", "AAAAAAAAAAAAAAAAAAAAAA=="))
+        EasyMock.expect(encrypter.buildParameters(6, 3, 1996459178l,
+                        "YmF6", "AAAAAAAAAAAAAAAAAAAAAA==", "AAAAAAAAAAAAAAAAAAAAAA=="))
                 .andReturn(parameters);
-        EasyMock.expect(parameters.getCompressedSize()).andReturn(3L).times(2);
-        EasyMock.expect(parameters.getUncompressedSize()).andReturn(3);
+        EasyMock.expect(parameters.getCompressedThenEncryptedDataSize()).andReturn(3L).times(2);
+        EasyMock.expect(parameters.getPlainDataSize()).andReturn(5).times(2);
         EasyMock.expect(parameters.getCrc32()).andReturn(0x76ff8caaL);
         parameters.appendXMLContent(EasyMock.isA(XMLUtil.class), EasyMock.isA(Appendable.class));
 
@@ -207,29 +209,29 @@ public class ZipUTF8CryptoWriterTest {
                 // Local file header
                 'P', 'K', 3, 4, 20, 0, 8, 8, 8, 0, 127, 127, 127, 127, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 21, 0, 0, 0, 'M', 'E', 'T', 'A', '-', 'I', 'N', 'F', '/', 'm', 'a', 'n', 'i',
-                'f', 'e', 's', 't', '.', 'x', 'm', 'l', 85, -115, 75, 14, -62, 48, 12, 68, -81, 18,
-                121, 31, -66, 27, 100, 53, -19, -82, 39, -128, 3, 68, -83, 11, -111, 18, -89, 106,
-                82, 68, 57, 61, 1, -87, 105, -40, 88, -10, -52, 120, 94, -43, -68, -100, 21, 79,
-                -102, -126, -15, -84, -32, -72, 59, -128, 32, -18, 124, 111, -8, -82, -32, 118, 109,
-                -27, 5, -102, -70, 114, -102, -51, 64, 33, -30, -70, -120, -12, -58, 33, -97, 10,
-                -26, -119, -47, -21, 96, 2, -78, 118, 20, 48, 118, -24, 71, -30, -34, 119, -77, 35,
-                -114, -8, -97, -57, 31, 104, 45, -61, -126, 127, -126, -126, 54, 24, 75, 50, 125,
-                79, -117, -56, -39, 97, -74, 86, -114, 58, 62, 20, 124, 39, 108, -114, -93, -34,
-                104, 25, -105, -111, 20, 20, 114, 46, 47, -76, 96, -34, 41, 116, 78, -84, -3, 86,
-                -100, 97, -91, -70, -38, -11, 7,
+                'f', 'e', 's', 't', '.', 'x', 'm', 'l', 85, -115, 93, 10, -62, 48, 16, -124, -81,
+                18, -10, 61, -2, -127, 32, 75, -45, -66, -11, 4, 122, -128, -48, 110, 53, -112, 108,
+                74, -109, -118, -11, -12, 70, -95, 105, 124, 89, 118, 103, 102, -25, -85, -102,
+                -105, -77, -30, 73, 83, 48, -98, 21, 28, 119, 7, 16, -60, -99, -17, 13, -33, 21,
+                -36, -82, -83, -68, 64, 83, 87, 78, -77, 25, 40, 68, 92, 23, -111, -34, 56, -28, 83,
+                -63, 60, 49, 122, 29, 76, 64, -42, -114, 2, -58, 14, -3, 72, -36, -5, 110, 118, -60,
+                17, -1, -13, -8, 3, -83, 101, 88, -16, 79, 80, -48, 6, 99, 73, -90, -17, 105, 17,
+                57, 59, -52, -42, -54, 81, -57, -121, -126, -17, -124, -51, 113, -44, 27, 45, -29,
+                50, -110, -126, 66, -50, -27, -123, 22, -52, 59, -123, -50, -119, -75, -33, -118,
+                51, -84, 84, 87, -69, -2, 0,
                 // Data descriptor
-                'P', 'K', 7, 8, 48, 10, -117, -128, -99, 0, 0, 0, 42, 1, 0, 0,
+                'P', 'K', 7, 8, 26, -9, 29, -1, -98, 0, 0, 0, 42, 1, 0, 0,
                 // Central directory file header
-                'P', 'K', 1, 2, 10, 0, 10, 0, 0, 8, 0, 0, 127, 127, 127, 127, -86, -116, -1, 118, 3,
-                0, 0, 0, 3, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'p', 'a',
-                't', 'h',
+                'P', 'K', 1, 2, 10, 0, 10, 0, 0, 8, 0, 127, 127, 127, 127, 84, -86, -116, -1, 118,
+                3, 0, 0, 0, 3, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'p',
+                'a', 't', 'h',
                 // Central directory file header
-                'P', 'K', 1, 2, 20, 0, 20, 0, 8, 8, 8, 0, 127, 127, 127, 127, 48, 10, -117,
-                -128, -99, 0, 0, 0, 42, 1, 0, 0, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 37, 0,
-                0, 0, 'M', 'E', 'T', 'A', '-', 'I', 'N', 'F', '/', 'm', 'a', 'n', 'i', 'f',
+                'P', 'K', 1, 2, 20, 0, 20, 0, 8, 8, 8, 127, 127, 127, 127, 84, 26, -9, 29, -1, -98,
+                0, 0, 0, 42, 1, 0, 0, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 37, 0, 0, 0, 'M',
+                'E', 'T', 'A', '-', 'I', 'N', 'F', '/', 'm', 'a', 'n', 'i', 'f',
                 'e', 's', 't', '.', 'x', 'm', 'l',
                 // EOCD
-                'P', 'K', 5, 6, 0, 0, 0, 0, 2, 0, 2, 0, 117, 0, 0, 0, 5, 1, 0, 0, 0, 0}, bytes);
+                'P', 'K', 5, 6, 0, 0, 0, 0, 2, 0, 2, 0, 117, 0, 0, 0, 6, 1, 0, 0, 0, 0}, bytes);
     }
 
     @Test
@@ -239,6 +241,8 @@ public class ZipUTF8CryptoWriterTest {
         final StandardEncrypter encrypter = PowerMock.createMock(StandardEncrypter.class);
         final EncryptParameters parameters = PowerMock.createMock(EncryptParameters.class);
         final byte[] data = "foobar".getBytes(CharsetUtil.UTF_8);
+        final byte[] cdata = "foo".getBytes(CharsetUtil.UTF_8);
+        final byte[] cedata = "bar".getBytes(CharsetUtil.UTF_8);
         final char[] password = {65, 66, 67};
         final byte[] hashedPassword = Util.getPasswordChecksum(password, "SHA-256");
         final byte[] salt = new byte[16];
@@ -247,17 +251,16 @@ public class ZipUTF8CryptoWriterTest {
         PowerMock.resetAll();
         EasyMock.expect(encrypter.generateSalt()).andReturn(salt);
         EasyMock.expect(encrypter.generateIV()).andReturn(iv);
-        EasyMock.expect(encrypter.compress(data)).andReturn(data);
-        EasyMock.expect(encrypter.encrypt(data, hashedPassword, salt, iv
-        ))
-                .andReturn("bar".getBytes(CharsetUtil.UTF_8));
-        EasyMock.expect(encrypter.getDataChecksum(data))
+        EasyMock.expect(encrypter.compress(data)).andReturn(cdata);
+        EasyMock.expect(encrypter.encrypt(cdata, hashedPassword, salt, iv
+        )).andReturn(cedata);
+        EasyMock.expect(encrypter.getDataChecksum(cdata))
                 .andReturn("baz".getBytes(CharsetUtil.UTF_8));
         EasyMock.expect(encrypter.buildParameters(6, 3, 1996459178l,
-                "YmF6", "AAAAAAAAAAAAAAAAAAAAAA==", "AAAAAAAAAAAAAAAAAAAAAA=="))
+                        "YmF6", "AAAAAAAAAAAAAAAAAAAAAA==", "AAAAAAAAAAAAAAAAAAAAAA=="))
                 .andReturn(parameters);
-        EasyMock.expect(parameters.getCompressedSize()).andReturn(3L).times(2);
-        EasyMock.expect(parameters.getUncompressedSize()).andReturn(3);
+        EasyMock.expect(parameters.getCompressedThenEncryptedDataSize()).andReturn(3L).times(2);
+        EasyMock.expect(parameters.getPlainDataSize()).andReturn(6).times(2);
         EasyMock.expect(parameters.getCrc32()).andReturn(0x76ff8caaL);
         parameters.appendXMLContent(EasyMock.isA(XMLUtil.class), EasyMock.isA(Appendable.class));
 
@@ -281,33 +284,35 @@ public class ZipUTF8CryptoWriterTest {
         this.overrideLastMod(bytes, 323);
         Assert.assertArrayEquals(new byte[]{
                 // Local file header
-                'P', 'K', 3, 4, 10, 0, 0, 8, 0, 0, 127, 127, 127, 127, -86, -116, -1, 118, 3, 0, 0, 0,
+                'P', 'K', 3, 4, 10, 0, 0, 8, 0, 0, 127, 127, 127, 127, -86, -116, -1, 118, 3, 0, 0,
+                0,
                 3, 0, 0, 0, 4, 0, 0, 0, 'p', 'a', 't', 'h', 'b', 'a', 'r',
                 // Local file header
-                'P', 'K', 3, 4, 20, 0, 8, 8, 8, 0, 127, 127, 127, 127, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                'P', 'K', 3, 4, 20, 0, 8, 8, 8, 0, 127, 127, 127, 127, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0,
                 0, 21, 0, 0, 0, 'M', 'E', 'T', 'A', '-', 'I', 'N', 'F', '/', 'm', 'a', 'n', 'i',
                 'f', 'e', 's', 't', '.', 'x', 'm', 'l', 85, -115, 75, 14, -62, 48, 12, 68, -81, 18,
-                121, 31, -66, 27, 100, 53, -19, -82, 39, -128, 3, 68, -83, 11, -111, 18, -89, 106,
-                82, 68, 57, 61, 1, -87, 105, -40, 88, -10, -52, 120, 94, -43, -68, -100, 21, 79,
-                -102, -126, -15, -84, -32, -72, 59, -128, 32, -18, 124, 111, -8, -82, -32, 118, 109,
-                -27, 5, -102, -70, 114, -102, -51, 64, 33, -30, -70, -120, -12, -58, 33, -97, 10,
-                -26, -119, -47, -21, 96, 2, -78, 118, 20, 48, 118, -24, 71, -30, -34, 119, -77, 35,
-                -114, -8, -97, -57, 31, 104, 45, -61, -126, 127, -126, -126, 54, 24, 75, 50, 125,
-                79, -117, -56, -39, 97, -74, 86, -114, 58, 62, 20, 124, 39, 108, -114, -93, -34,
-                104, 25, -105, -111, 20, 20, 114, 46, 47, -76, 96, -34, 41, 116, 78, -84, -3, 86,
-                -100, 97, -91, -70, -38, -11, 7,
+                121, 31, 126, 11, -124, -84, -90, -35, -11, 4, 112, -128, -88, 117, 33, 82, -30, 84,
+                77, -118, 40, -89, 39, 32, 53, 13, 27, -53, -98, 25, -49, -85, -102, -105, -77, -30,
+                73, 83, 48, -98, 21, 28, 119, 7, 16, -60, -99, -17, 13, -33, 21, -36, -82, -83, -68,
+                64, 83, 87, 78, -77, 25, 40, 68, 92, 23, -111, -34, 56, -28, 83, -63, 60, 49, 122,
+                29, 76, 64, -42, -114, 2, -58, 14, -3, 72, -36, -5, 110, 118, -60, 17, -1, -13, -8,
+                3, -83, 101, 88, -16, 79, 80, -48, 6, 99, 73, -90, -17, 105, 17, 57, 59, -52, -42,
+                -54, 81, -57, -121, -126, -17, -124, -51, 113, -44, 27, 45, -29, 50, -110, -126, 66,
+                -50, -27, -123, 22, -52, 59, -123, -50, -119, -75, -33, -118, 51, -84, 84, 87, -69,
+                -2, 0,
                 // Data descriptor
-                'P', 'K', 7, 8, 48, 10, -117, -128, -99, 0, 0, 0, 42, 1, 0, 0,
+                'P', 'K', 7, 8, -113, -119, -42, -64, -98, 0, 0, 0, 42, 1, 0, 0,
                 // Central directory file header
-                'P', 'K', 1, 2, 10, 0, 10, 0, 0, 8, 0, 0, 127, 127, 127, 127, -86, -116, -1, 118, 3, 0,
-                0, 0, 3, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'p', 'a',
-                't', 'h',
+                'P', 'K', 1, 2, 10, 0, 10, 0, 0, 8, 0, 127, 127, 127, 127, 84, -86, -116, -1, 118,
+                3, 0, 0, 0, 3, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'p',
+                'a', 't', 'h',
                 // Central directory file header
-                'P', 'K', 1, 2, 20, 0, 20, 0, 8, 8, 8, 0, 127, 127, 127, 127, 48, 10, -117, -128, -99,
-                0, 0, 0, 42, 1, 0, 0, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 37, 0, 0, 0, 'M',
-                'E', 'T', 'A', '-', 'I', 'N', 'F', '/', 'm', 'a', 'n', 'i', 'f', 'e', 's', 't', '.',
-                'x', 'm', 'l',
+                'P', 'K', 1, 2, 20, 0, 20, 0, 8, 8, 8, 127, 127, 127, 127, 84, -113, -119, -42, -64,
+                -98, 0, 0, 0, 42, 1, 0, 0, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 37, 0, 0, 0,
+                'M', 'E', 'T', 'A', '-', 'I', 'N', 'F', '/', 'm', 'a', 'n', 'i', 'f', 'e', 's', 't',
+                '.', 'x', 'm', 'l',
                 // EOCD
-                'P', 'K', 5, 6, 0, 0, 0, 0, 2, 0, 2, 0, 117, 0, 0, 0, 5, 1, 0, 0, 0, 0}, bytes);
+                'P', 'K', 5, 6, 0, 0, 0, 0, 2, 0, 2, 0, 117, 0, 0, 0, 6, 1, 0, 0, 0, 0}, bytes);
     }
 }

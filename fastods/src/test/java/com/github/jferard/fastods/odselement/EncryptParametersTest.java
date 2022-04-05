@@ -42,6 +42,6 @@ public class EncryptParametersTest {
                         "<manifest:key-derivation manifest:key-derivation-name=\"PBKDF2\" manifest:key-size=\"32\" manifest:iteration-count=\"100000\" manifest:salt=\"SALT\"/>" +
                         "</manifest:encryption-data>",
                 parameters);
-        Assert.assertEquals(10, parameters.getUncompressedSize());
+        Assert.assertEquals(10, parameters.getPlainDataSize());
     }
 }
