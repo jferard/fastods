@@ -42,8 +42,8 @@ public class EncryptParameters implements XMLConvertible {
         return new EncryptParametersBuilder();
     }
 
-    private final int uncompressedSize;
-    private final int compressedSize;
+    private final int plainDataSize;
+    private final int compressedThenEncryptedDataSize;
     private final long crc32;
     private final String compressedCheckSumType;
     private final String compressedCheckSum;
@@ -56,15 +56,15 @@ public class EncryptParameters implements XMLConvertible {
     private final String algorithmName;
     private final String algorithmInitializationVector;
 
-    public EncryptParameters(final int uncompressedSize, final int compressedSize,
+    public EncryptParameters(final int plainDataSize, final int compressedThenEncryptedDataSize,
                              final long crc32, final String compressedCheckSumType,
                              final String compressedCheckSum, final String startKeyGenerationName,
                              final int startKeySize, final String keyDerivationName,
                              final int derivedKeySize, final int derivationIterationCount,
                              final String derivationSalt, final String algorithmName,
                              final String algorithmInitializationVector) {
-        this.uncompressedSize = uncompressedSize;
-        this.compressedSize = compressedSize;
+        this.plainDataSize = plainDataSize;
+        this.compressedThenEncryptedDataSize = compressedThenEncryptedDataSize;
         this.crc32 = crc32;
         this.compressedCheckSumType = compressedCheckSumType;
         this.compressedCheckSum = compressedCheckSum;
@@ -122,15 +122,15 @@ public class EncryptParameters implements XMLConvertible {
     /**
      * @return the size of the uncompressed file
      */
-    public int getUncompressedSize() {
-        return this.uncompressedSize;
+    public int getPlainDataSize() {
+        return this.plainDataSize;
     }
 
     /**
      * @return the size of the compressed file
      */
-    public long getCompressedSize() {
-        return this.compressedSize;
+    public long getCompressedThenEncryptedDataSize() {
+        return this.compressedThenEncryptedDataSize;
     }
 
     /**

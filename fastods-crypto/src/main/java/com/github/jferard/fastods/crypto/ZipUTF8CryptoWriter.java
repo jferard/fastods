@@ -145,17 +145,17 @@ public class ZipUTF8CryptoWriter implements ZipUTF8Writer {
             IllegalBlockSizeException {
         final byte[] salt = this.encrypter.generateSalt();
         final byte[] iv = this.encrypter.generateIV();
-        final byte[] compressedTextBytes = this.encrypter.compress(plainTextBytes);
-        final byte[] encryptedData = this.encrypter.encrypt(
-                compressedTextBytes, this.hashedPassword, salt, iv);
+        final byte[] compressedData = this.encrypter.compress(plainTextBytes);
+        final byte[] compressedThenEncryptedData = this.encrypter.encrypt(
+                compressedData, this.hashedPassword, salt, iv);
         final String compressedCheckSum = Base64.toBase64String(
-                this.encrypter.getDataChecksum(compressedTextBytes));
-        final long crc32 = this.getCrc32(encryptedData);
+                this.encrypter.getDataChecksum(compressedData));
+        final long crc32 = this.getCrc32(compressedThenEncryptedData);
         final OdsEntry entry = this.curEntry.encryptParameters(
                 this.encrypter.buildParameters(
-                        plainTextBytes.length, encryptedData.length, crc32, compressedCheckSum,
+                        plainTextBytes.length, compressedThenEncryptedData.length, crc32, compressedCheckSum,
                         Base64.toBase64String(salt), Base64.toBase64String(iv)));
-        return new EntryAndData(entry, encryptedData);
+        return new EntryAndData(entry, compressedThenEncryptedData);
     }
 
     private long getCrc32(final byte[] encryptedCompressedTextBytes) {

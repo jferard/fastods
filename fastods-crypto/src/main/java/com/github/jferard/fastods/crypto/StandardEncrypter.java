@@ -182,21 +182,22 @@ class StandardEncrypter {
     /**
      * Build the parameters to pass to the encrypted OdsEntry
      *
-     * @param uncompressedSize              size of the uncompressed data
-     * @param compressedSize                size of the compressed data
-     * @param crc32                         check
-     * @param compressedCheckSum            the checksum of the compressed data
-     * @param derivationSalt                salt
-     * @param algorithmInitializationVector iv
+     * @param plainDataSize                   size of the plain text in bytes
+     * @param compressedThenEncryptedDataSize size of the compressed then encrypted data in bytes
+     * @param crc32                           check
+     * @param compressedCheckSum              the checksum of the compressed data
+     * @param derivationSalt                  salt
+     * @param algorithmInitializationVector   iv
      * @return the parameters
      */
-    public EncryptParameters buildParameters(final int uncompressedSize,
-                                             final int compressedSize, final long crc32,
+    public EncryptParameters buildParameters(final int plainDataSize,
+                                             final int compressedThenEncryptedDataSize,
+                                             final long crc32,
                                              final String compressedCheckSum,
                                              final String derivationSalt,
                                              final String algorithmInitializationVector) {
         return this.parametersBuilder
-                .build(uncompressedSize, compressedSize, crc32, compressedCheckSum, derivationSalt,
-                        algorithmInitializationVector);
+                .build(plainDataSize, compressedThenEncryptedDataSize, crc32, compressedCheckSum,
+                        derivationSalt, algorithmInitializationVector);
     }
 }

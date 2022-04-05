@@ -67,7 +67,7 @@ public class EncryptedOdsEntry implements OdsEntry {
             util.appendAttribute(appendable, "manifest:version", this.version);
         }
         util.appendAttribute(appendable, "manifest:size",
-                this.encryptParameters.getUncompressedSize());
+                this.encryptParameters.getPlainDataSize());
         appendable.append(">");
         this.encryptParameters.appendXMLContent(util, appendable);
         appendable.append("</manifest:file-entry>");
@@ -81,10 +81,11 @@ public class EncryptedOdsEntry implements OdsEntry {
     @Override
     public ZipEntry asZipEntry() {
         final ZipEntry zipEntry = new ZipEntry(this.fullPath);
-        zipEntry.setSize(this.encryptParameters.getCompressedSize());
-        zipEntry.setCompressedSize(this.encryptParameters.getCompressedSize());
+        final long size = this.encryptParameters.getCompressedThenEncryptedDataSize();
+        zipEntry.setSize(size); // STORED => same size
+        zipEntry.setCompressedSize(size);
         zipEntry.setCrc(this.encryptParameters.getCrc32());
-        zipEntry.setMethod(ZipEntry.STORED);
+        zipEntry.setMethod(ZipEntry.STORED); // don't compress once more
         return zipEntry;
     }
 

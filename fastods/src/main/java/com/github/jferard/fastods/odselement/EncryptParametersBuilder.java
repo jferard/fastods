@@ -51,19 +51,20 @@ public class EncryptParametersBuilder {
     }
 
     /**
-     * @param uncompressedSize              4.8.13, manifest:size
-     * @param compressedSize                the compressed size
-     * @param crc32                         the CRC-32 checksum of the uncompressed data
-     * @param compressedCheckSum            4.8.2, manifest:checksum
-     * @param derivationSalt                4.8.12, manifest:salt
-     * @param algorithmInitializationVector 4.8.5, manifest:initialisation-vector
+     * @param plainDataSize                   4.8.13, manifest:size
+     * @param compressedThenEncryptedDataSize the size of the data after : 1. compression ; 2. encryption
+     * @param crc32                           the CRC-32 checksum of the uncompressed data
+     * @param compressedCheckSum              4.8.2, manifest:checksum
+     * @param derivationSalt                  4.8.12, manifest:salt
+     * @param algorithmInitializationVector   4.8.5, manifest:initialisation-vector
      * @return the parameters
      */
-    public EncryptParameters build(final int uncompressedSize, final int compressedSize,
+    public EncryptParameters build(final int plainDataSize,
+                                   final int compressedThenEncryptedDataSize,
                                    final long crc32, final String compressedCheckSum,
                                    final String derivationSalt,
                                    final String algorithmInitializationVector) {
-        return new EncryptParameters(uncompressedSize, compressedSize, crc32,
+        return new EncryptParameters(plainDataSize, compressedThenEncryptedDataSize, crc32,
                 this.compressedCheckSumType, compressedCheckSum, this.startKeyGenerationName,
                 this.startKeySize, this.keyDerivationName, this.derivedKeySize,
                 this.derivationIterationCount, derivationSalt, this.algorithmName,
