@@ -105,6 +105,22 @@ public class TextTest {
     }
 
     @Test
+    public void linkURI() throws Exception {
+        final Text t = TextBuilder.create().par().link("a", new URL("http://url").toURI()).build();
+        TestHelper.assertXMLEquals("<text:p><text:a xlink:href=\"http://url\" " +
+                "xlink:type=\"simple\">a</text:a></text:p>", t);
+    }
+
+    @Test
+    public void styledLinkURI() throws Exception {
+        final Text t =
+                TextBuilder.create().par().styledLink("a", this.ts, new URL("http://url").toURI()).build();
+        TestHelper.assertXMLEquals(
+                "<text:p><text:a text:style-name=\"ts\" xlink:href=\"http://url\" " +
+                        "xlink:type=\"simple\">a</text:a></text:p>", t);
+    }
+
+    @Test
     public void linkFile() throws Exception {
         final File f = new File("f");
         final Text t = TextBuilder.create().par().link("a", f).build();

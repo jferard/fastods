@@ -160,6 +160,13 @@ public class ParagraphTest {
         PowerMock.verifyAll();
     }
 
+    @Test
+    public void testElement() throws IOException {
+        final Paragraph paragraph = Paragraph.builder().element(Text.content("text")).build();
+
+        TestHelper.assertXMLEquals("<text:p><text:p>text</text:p></text:p>", paragraph);
+    }
+
     private String getURLStart() {
         final String p = new File(".").toURI().toString();
         return p.substring(0, p.length() - 2);
