@@ -25,17 +25,22 @@ package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.DataStylesBuilder;
+import com.github.jferard.fastods.odselement.OdsEntry;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.odselement.StylesContainerImpl;
+import com.github.jferard.fastods.odselement.UnregisteredOdsEntry;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
 import com.github.jferard.fastods.testlib.DomTester;
+import com.github.jferard.fastods.testlib.ZipUTF8WriterMockHandler;
 import com.github.jferard.fastods.util.FastFullList;
 import com.github.jferard.fastods.util.Protection;
 import com.github.jferard.fastods.util.SVGRectangle;
 import com.github.jferard.fastods.util.XMLUtil;
+import com.github.jferard.fastods.util.ZipUTF8Writer;
 import org.apache.jena.ext.com.google.common.collect.ImmutableMap;
 import org.easymock.EasyMock;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
@@ -482,6 +487,45 @@ public class TableAppenderTest {
     }
 
     @Test
+    public final void testAppendSomeAvailableRowsFrom() throws IOException {
+        final StringBuilder sb = new StringBuilder();
+        final TableRowImpl tr0 = this.newTR("tr0");
+        final TableRowImpl tr1 = this.newTR("tr1");
+
+        PowerMock.resetAll();
+        EasyMock.expect(this.tm.getName()).andReturn("table");
+        EasyMock.expect(this.tm.getStyleName()).andReturn("style");
+        EasyMock.expect(this.tm.getPrintRanges()).andReturn(Collections.emptyList());
+        EasyMock.expect(this.tm.getProtection()).andReturn(null);
+        EasyMock.expect(this.tm.getCustomValueByAttribute()).andReturn(null);
+        EasyMock.expect(this.tm.getForms()).andReturn(null);
+        EasyMock.expect(this.tm.getShapes()).andReturn(null);
+        EasyMock.expect(this.tm.getColumns()).andReturn(FastFullList.newListWithCapacity(0));
+        EasyMock.expect(this.tm.getHeaderRowsCount()).andReturn(0);
+        EasyMock.expect(this.tm.getTableRow(0)).andReturn(tr0);
+        EasyMock.expect(this.tm.getTableRow(1)).andReturn(tr1);
+        EasyMock.expect(this.tm.getTableRowsUsedSize()).andReturn(2);
+
+        PowerMock.replayAll();
+        this.tableAppender.appendSomeAvailableRowsFrom(this.xmlUtil, sb, 0);
+        sb.append("</table:table>");
+
+        PowerMock.verifyAll();
+        DomTester.assertEquals(
+                "<table:table table:name=\"table\" table:style-name=\"style\" " +
+                        "table:print=\"false\">" +
+                        "<table:table-column table:style-name=\"co1\" " +
+                        "table:number-columns-repeated=\"1024\" " +
+                        "table:default-cell-style-name=\"Default\"/>" +
+                        "<table:table-row table:style-name=\"tr0\">" +
+                        "<table:table-cell/>" +
+                        "</table:table-row><table:table-row table:style-name=\"tr1\">" +
+                        "<table:table-cell/></table:table-row>" +
+                        "</table:table>",
+                sb.toString());
+    }
+
+    @Test
     public final void testAppendRowsWithHeaderRows2() throws IOException {
         final StringBuilder sb = new StringBuilder();
         final FastFullList<TableColumnImpl> emptyFullList =
@@ -532,6 +576,31 @@ public class TableAppenderTest {
                 "<table:table-cell/>" +
                 "</table:table-row>" +
                 "</table:table>", sb.toString());
+    }
+
+    @Test
+    public final void testFlushRows() throws IOException {
+        final ZipUTF8WriterMockHandler handler = ZipUTF8WriterMockHandler.create();
+        final ZipUTF8Writer writer = handler.getInstance(ZipUTF8Writer.class);
+
+        final TableRowImpl tr3 = this.newTR("tr3");
+        final TableRowImpl tr4 = this.newTR("tr4");
+
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
+        final UnregisteredOdsEntry entry = new UnregisteredOdsEntry("entrypath");
+        writer.putNextEntry(entry);
+        this.tableAppender.flushRows(this.xmlUtil, writer, Arrays.asList(tr3, tr4));
+
+        PowerMock.verifyAll();
+        Assert.assertEquals(Collections.singleton(entry.toString()), handler.getEntryNames());
+        DomTester.assertEquals(
+                "<table:table-row table:style-name=\"tr3\">" +
+                        "<table:table-cell/></table:table-row>" +
+                        "<table:table-row table:style-name=\"tr4\"><table:table-cell/>" +
+                        "</table:table-row>",
+                handler.getEntryAsString(entry.toString()));
     }
 
     @Test
