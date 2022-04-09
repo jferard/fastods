@@ -33,13 +33,14 @@ import com.github.jferard.fastods.odselement.config.ConfigItemMapEntrySet;
 import com.github.jferard.fastods.odselement.config.ConfigItemMapEntrySingleton;
 import com.github.jferard.fastods.odselement.config.ConfigItemSet;
 import org.easymock.EasyMock;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -53,30 +54,22 @@ public class SettingsTest {
     public void setUp() {
         this.defaultSettings = Settings.create();
         this.blocks = this.defaultSettings.getRootBlocks();
-        PowerMock.resetAll();
     }
 
-    @After
-    public void tearDown() {
-        PowerMock.verifyAll();
-    }
 
     @Test
     public void testSize() {
-        PowerMock.replayAll();
         Assert.assertEquals(2, this.blocks.size());
     }
 
     @Test
     public void testViewSettings() {
-        PowerMock.replayAll();
         final ConfigBlock block = this.blocks.get(0);
         Assert.assertEquals("ooo:view-settings", block.getName());
     }
 
     @Test
     public void testViewSettingsContent() throws IOException {
-        PowerMock.replayAll();
         final ConfigBlock block = this.blocks.get(0);
         TestHelper.assertXMLUnsortedEquals(
                 "<config:config-item-set config:name=\"ooo:view-settings\">" +
@@ -141,7 +134,6 @@ public class SettingsTest {
 
     @Test
     public void testConfigurationSettingsContent() throws IOException {
-        PowerMock.replayAll();
         final ConfigBlock block = this.blocks.get(1);
         TestHelper.assertXMLUnsortedEquals(
                 "<config:config-item-set config:name=\"ooo:configuration-settings\">" +
@@ -208,11 +200,11 @@ public class SettingsTest {
         final ConfigItemMapEntrySingleton singleton =
                 ConfigItemMapEntrySingleton.createSingleton("singleton", item);
 
-        // play
+        PowerMock.resetAll();
         EasyMock.expect(table.getConfigEntry()).andReturn(singleton);
 
         PowerMock.replayAll();
-        final Settings s = this.createVoidSettings();
+        final Settings s = SettingsTest.createVoidSettings();
         s.addTable(table);
         final ConfigBlock block = s.getRootBlocks().get(0);
         TestHelper.assertXMLUnsortedEquals(
@@ -227,13 +219,13 @@ public class SettingsTest {
                         "</config:config-item-map-entry>" + "</config:config-item-map-named>" +
                         "</config:config-item-map-entry>" + "</config:config-item-map-indexed>" +
                         "</config:config-item-set>", block);
+
+        PowerMock.verifyAll();
     }
 
     @Test
     public void testSetMissingViewSettings() throws IOException {
-        PowerMock.replayAll();
-
-        final Settings s = this.createVoidSettings();
+        final Settings s = SettingsTest.createVoidSettings();
         s.setViewSetting("vId", "i", "v");
         TestHelper.assertXMLUnsortedEquals(
                 "<config:config-item-set config:name=\"ooo:view-settings\">" +
@@ -247,9 +239,7 @@ public class SettingsTest {
 
     @Test
     public void testSetViewMissingSettings() throws IOException {
-        PowerMock.replayAll();
-
-        final Settings s = this.createVoidSettings();
+        final Settings s = SettingsTest.createVoidSettings();
         s.setViewSetting("View1", "i", "v");
         TestHelper.assertXMLUnsortedEquals(
                 "<config:config-item-set config:name=\"ooo:view-settings\">" +
@@ -265,8 +255,7 @@ public class SettingsTest {
 
     @Test
     public void testSetViewSettings() throws IOException {
-        PowerMock.replayAll();
-        final Settings s = this.createVoidSettings();
+        final Settings s = SettingsTest.createVoidSettings();
         s.setViewSetting("View1", "ViewId", "View2");
         TestHelper.assertXMLUnsortedEquals(
                 "<config:config-item-set config:name=\"ooo:view-settings\">" +
@@ -277,9 +266,66 @@ public class SettingsTest {
                         "</config:config-item-map-entry>" +
                         "</config:config-item-map-indexed>" +
                         "</config:config-item-set>", s.getRootBlocks().get(0));
+     }
+
+    @Test
+    public void testSetActiveTable() throws IOException {
+        final Table table = PowerMock.createMock(Table.class);
+
+        PowerMock.resetAll();
+        EasyMock.expect(table.getName()).andReturn("foo");
+
+        PowerMock.replayAll();
+        final Settings s = SettingsTest.createVoidSettings();
+        s.setActiveTable(table);
+
+        PowerMock.verifyAll();
+        TestHelper.assertXMLUnsortedEquals(
+                "<config:config-item-set config:name=\"ooo:view-settings\">" +
+                        "<config:config-item-map-indexed config:name=\"Views\">" +
+                        "<config:config-item-map-entry>" +
+                        "<config:config-item config:name=\"ActiveTable\" config:type=\"string\">" +
+                        "foo</config:config-item>"+
+                        "<config:config-item config:name=\"ViewId\" config:type=\"string\">" +
+                        "View1</config:config-item>" +
+                        "</config:config-item-map-entry>" +
+                        "</config:config-item-map-indexed>" +
+                        "</config:config-item-set>", s.getRootBlocks().get(0));
     }
 
-    private Settings createVoidSettings() {
+    @Test
+    public void testSetTables() throws IOException {
+        final Table table = PowerMock.createMock(Table.class);
+
+        final ConfigItem item = new ConfigItem("n", "t", "v");
+        final ConfigItemMapEntrySingleton singleton =
+                ConfigItemMapEntrySingleton.createSingleton("singleton", item);
+
+        PowerMock.resetAll();
+        EasyMock.expect(table.getConfigEntry()).andReturn(singleton);
+
+        PowerMock.replayAll();
+        final Settings s = SettingsTest.createVoidSettings();
+        s.setTables(Collections.emptyList());
+        s.setTables(Collections.singletonList(table));
+        final ConfigBlock block = s.getRootBlocks().get(0);
+        TestHelper.assertXMLUnsortedEquals(
+                "<config:config-item-set config:name=\"ooo:view-settings\">" +
+                        "<config:config-item-map-indexed " + "config:name=\"Views\">" +
+                        "<config:config-item-map-entry>" + "<config:config-item " +
+                        "config:name=\"ViewId\" config:type=\"string\">View1</config:config-item>" +
+                        "<config:config-item-map-named config:name=\"Tables\">" +
+                        "<config:config-item-map-entry " + "config:name=\"singleton\">" +
+                        "<config:config-item config:name=\"n\" " +
+                        "config:type=\"t\">v</config:config-item>" +
+                        "</config:config-item-map-entry>" + "</config:config-item-map-named>" +
+                        "</config:config-item-map-entry>" + "</config:config-item-map-indexed>" +
+                        "</config:config-item-set>", block);
+
+        PowerMock.verifyAll();
+    }
+
+    private static Settings createVoidSettings() {
         final ConfigItemSet viewSettings = new ConfigItemSet("ooo:view-settings");
         final ConfigItemMapEntrySet firstView = ConfigItemMapEntrySet.createSet();
         firstView.add(ConfigItem.create(ConfigElement.VIEW_ID, "View1"));
