@@ -270,6 +270,4 @@ public class StylesContainerTest {
         this.stylesContainer.writeMasterPageStyles(this.util, sb);
         DomTester.assertEquals(xml, sb.toString());
     }
-
-
 }
