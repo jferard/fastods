@@ -55,59 +55,22 @@ import java.util.logging.Logger;
  */
 public class StylesContainerImpl implements StylesContainer {
     private static final FontFace DEFAULT_FONT_FACE = new FontFace("Liberation Sans");
-
-    /**
-     * A cell style, child of a table cell style and a data style/
-     * This class is a key for a Map
-     */
-    private static class ChildCellStyle {
-        private final TableCellStyle style;
-        private final DataStyle dataStyle;
-
-        ChildCellStyle(final TableCellStyle style, final DataStyle dataStyle) {
-            this.style = style;
-            this.dataStyle = dataStyle;
-        }
-
-        @Override
-        public boolean equals(final Object o) {
-            if (this == o) {
-                return true;
-            } else if (!(o instanceof ChildCellStyle)) {
-                return false;
-            } else {
-                final ChildCellStyle other = (ChildCellStyle) o;
-                return this.style.getKey().equals(other.style.getKey()) &&
-                        this.dataStyle.getName().equals(other.dataStyle.getName());
-            }
-        }
-
-        @Override
-        public int hashCode() {
-            return this.style.getKey().hashCode() * 31 + this.dataStyle.getName().hashCode();
-
-        }
-    }
-
     /**
      * A register of existing anonymous styles. Won't be added to document.
      */
-    private final Map<ChildCellStyle, TableCellStyle> anonymousStyleByChildCellStyle;
-
+    private final Map<ChildCellStyleKey, TableCellStyle> anonymousStyleByChildCellStyle;
     /**
      * Data style that will be written in content.xml > automatic-styles
      * Those styles should be hidden
      */
     private final MultiContainer<String, Dest, DataStyle> dataStylesContainer;
     private final Container<String, MasterPageStyle> masterPageStylesContainer;
-
     /**
      * Should be hidden.
      */
     private final Container<String, PageLayoutStyle> pageLayoutStylesContainer;
     private final MultiContainer<String, Dest, ObjectStyle> objectStylesContainer;
     private final Set<FontFace> fontFaces;
-
     /**
      * Create a styles container
      *
@@ -115,18 +78,18 @@ public class StylesContainerImpl implements StylesContainer {
      */
     StylesContainerImpl(final Logger logger) {
         this.objectStylesContainer =
-                new MultiContainer<String, Dest, ObjectStyle>(logger, Dest.class);
-        this.dataStylesContainer = new MultiContainer<String, Dest, DataStyle>(logger, Dest.class);
-        this.masterPageStylesContainer = new Container<String, MasterPageStyle>(logger);
-        this.pageLayoutStylesContainer = new Container<String, PageLayoutStyle>(logger);
-        this.anonymousStyleByChildCellStyle = new HashMap<ChildCellStyle, TableCellStyle>();
-        this.fontFaces = new HashSet<FontFace>();
+                new MultiContainer<>(logger, Dest.class);
+        this.dataStylesContainer = new MultiContainer<>(logger, Dest.class);
+        this.masterPageStylesContainer = new Container<>(logger);
+        this.pageLayoutStylesContainer = new Container<>(logger);
+        this.anonymousStyleByChildCellStyle = new HashMap<>();
+        this.fontFaces = new HashSet<>();
         this.fontFaces.add(DEFAULT_FONT_FACE);
     }
 
     @Override
     public TableCellStyle addChildCellStyle(final TableCellStyle style, final DataStyle dataStyle) {
-        final ChildCellStyle childKey = new ChildCellStyle(style, dataStyle);
+        final ChildCellStyleKey childKey = new ChildCellStyleKey(style, dataStyle);
         TableCellStyle anonymousStyle = this.anonymousStyleByChildCellStyle.get(childKey);
         if (anonymousStyle == null) {
             this.addDataStyle(dataStyle);
@@ -209,7 +172,6 @@ public class StylesContainerImpl implements StylesContainer {
         this.pageLayoutStylesContainer.setMode(mode);
     }
 
-
     @Override
     public boolean addPageLayoutStyle(final PageLayoutStyle pageLayoutStyle) {
         return this.pageLayoutStylesContainer.add(pageLayoutStyle.getName(), pageLayoutStyle);
@@ -220,7 +182,6 @@ public class StylesContainerImpl implements StylesContainer {
         this.setMasterPageStyleMode(mode);
         this.setPageLayoutStyleMode(mode);
     }
-
 
     @Override
     public boolean addPageStyle(final PageStyle ps) {
@@ -451,5 +412,39 @@ public class StylesContainerImpl implements StylesContainer {
          * styles.xml/common-styles
          */
         STYLES_COMMON_STYLES,
+    }
+
+    /**
+     * A cell style, child of a table cell style and a data style/
+     * This class is a key for a Map
+     */
+    static class ChildCellStyleKey {
+        private final TableCellStyle style;
+        private final DataStyle dataStyle;
+
+        ChildCellStyleKey(final TableCellStyle style, final DataStyle dataStyle) {
+            this.style = style;
+            this.dataStyle = dataStyle;
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (!(o instanceof ChildCellStyleKey)) {
+                return false;
+            }
+            final ChildCellStyleKey other = (ChildCellStyleKey) o;
+            return this.style.getKey().equals(other.style.getKey()) &&
+                    this.dataStyle.getName().equals(other.dataStyle.getName());
+
+        }
+
+        @Override
+        public int hashCode() {
+            return this.style.getKey().hashCode() * 31 + this.dataStyle.getName().hashCode();
+
+        }
     }
 }
