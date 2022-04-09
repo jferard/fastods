@@ -57,7 +57,7 @@ import static com.github.jferard.fastods.odselement.MetaElement.OFFICE_VERSION;
  */
 public class ContentElement implements OdsElement {
     private static final Map<String, String> CONTENT_NAMESPACE_BY_PREFIX =
-            new HashMap<String, String>();
+            new HashMap<>();
 
     static {
         CONTENT_NAMESPACE_BY_PREFIX.putAll(StylesElement.STYLES_NAMESPACE_BY_PREFIX);
@@ -102,9 +102,9 @@ public class ContentElement implements OdsElement {
         this.libreOfficeMode = libreOfficeMode;
         this.stylesContainer = stylesContainer;
         this.additionalNamespaceByPrefix = additionalNamespaceByPrefix;
-        this.tables = new UniqueList<Table>();
+        this.tables = new UniqueList<>();
         this.flushPosition = new FlushPosition();
-        this.scriptEvents = new ArrayList<ScriptEventListener>();
+        this.scriptEvents = new ArrayList<>();
         this.validationsContainer = new ValidationsContainer();
     }
 
@@ -335,7 +335,7 @@ public class ContentElement implements OdsElement {
      */
     public void addAutoFilter(final AutoFilter autoFilter) {
         if (this.autoFilters == null) {
-            this.autoFilters = new ArrayList<AutoFilter>();
+            this.autoFilters = new ArrayList<>();
         }
         this.autoFilters.add(autoFilter);
     }
@@ -352,11 +352,11 @@ public class ContentElement implements OdsElement {
     /**
      * Add a new pilot table
      *
-     * @param pilotTable the filter
+     * @param pilotTable the pilot table
      */
     public void addPilotTable(final PilotTable pilotTable) {
         if (this.pilotTables == null) {
-            this.pilotTables = new ArrayList<PilotTable>();
+            this.pilotTables = new ArrayList<>();
         }
         this.pilotTables.add(pilotTable);
     }

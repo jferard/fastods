@@ -26,12 +26,13 @@ package com.github.jferard.fastods.odselement;
 import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.datastyle.BooleanStyleBuilder;
 import com.github.jferard.fastods.datastyle.DataStyle;
+import com.github.jferard.fastods.style.ObjectStyle;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.util.Container.Mode;
 import com.github.jferard.fastods.util.XMLUtil;
-import org.junit.After;
+import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,6 +40,7 @@ import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
 import java.util.Locale;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class StylesContainerTest {
@@ -107,114 +109,199 @@ public class StylesContainerTest {
 
         this.ps1 = PageStyle.builder("a").allMargins(SimpleLength.pt(1.0)).build();
         this.ps2 = PageStyle.builder("a").allMargins(SimpleLength.pt(2.0)).build();
-
-        PowerMock.resetAll();
-        PowerMock.replayAll();
     }
 
-    @After
-    public void tearDown() {
+    @Test
+    public final void testDebug() {
         PowerMock.resetAll();
+        this.logger.log(EasyMock.eq(Level.SEVERE),
+                EasyMock.eq("MultiContainer put({0}, {1}) in {2}"),
+                EasyMock.isA(Object[].class));
+
+        PowerMock.replayAll();
+        this.stylesContainer.debug();
+        this.stylesContainer.addContentStyle(TableCellStyle.DEFAULT_CELL_STYLE);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testFreeze() {
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
+        this.stylesContainer.freeze();
+        Assert.assertThrows(IllegalStateException.class,
+                () -> this.stylesContainer.addContentStyle(TableCellStyle.DEFAULT_CELL_STYLE));
+
+        PowerMock.verifyAll();
     }
 
     // CONTENT
     @Test
     public final void testAddDataStyle() {
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
         final DataStyle dataStyle = new BooleanStyleBuilder("test", this.locale).build();
         this.stylesContainer.addDataStyle(dataStyle);
+
+        PowerMock.verifyAll();
     }
 
     @Test
     public final void testDataStyleCreate() throws IOException {
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
         Assert.assertTrue(this.stylesContainer.addDataStyle(this.ds1));
         this.assertWriteDataStylesXMLEquals(DS1_XML);
+
+        PowerMock.verifyAll();
     }
 
     @Test
     public final void testDataStyleCreateThenUpdate() throws IOException {
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
         Assert.assertTrue(this.stylesContainer.addDataStyle(this.ds1));
         this.stylesContainer.setDataStylesMode(Mode.UPDATE);
         Assert.assertTrue(this.stylesContainer.addDataStyle(this.ds2)); // country: a -> b
         this.assertWriteDataStylesXMLEquals(DS2_XML);
+
+        PowerMock.verifyAll();
     }
 
     @Test
     public final void testDataStyleCreateThenUpdateIfExists() throws IOException {
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
         Assert.assertTrue(this.stylesContainer.addDataStyle(this.ds1));
         this.stylesContainer.setDataStylesMode(Mode.CREATE_OR_UPDATE);
         Assert.assertTrue(this.stylesContainer.addDataStyle(this.ds2));
         this.assertWriteDataStylesXMLEquals(DS2_XML);
+
+        PowerMock.verifyAll();
     }
 
     @Test
     public final void testDataStyleCreateTwice() throws IOException {
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
         Assert.assertTrue(this.stylesContainer.addDataStyle(this.ds1));
         Assert.assertTrue(this.stylesContainer.addDataStyle(this.ds2));
         this.assertWriteDataStylesXMLEquals(DS2_XML);
+
+        PowerMock.verifyAll();
     }
 
     @Test
     public final void testDataStyleUpdate() throws IOException {
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
         this.stylesContainer.setDataStylesMode(Mode.UPDATE);
         Assert.assertFalse(this.stylesContainer.addDataStyle(this.ds2));
         this.assertWriteDataStylesXMLEquals("");
+
+        PowerMock.verifyAll();
     }
 
     @Test
     public final void testDataStyleUpdateIfExists() throws IOException {
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
         this.stylesContainer.setDataStylesMode(Mode.CREATE_OR_UPDATE);
         Assert.assertTrue(this.stylesContainer.addDataStyle(this.ds2));
         this.assertWriteDataStylesXMLEquals(DS2_XML);
+
+        PowerMock.verifyAll();
     }
 
     @Test
     public final void testPageStyleCreate() throws IOException {
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
         Assert.assertTrue(this.stylesContainer.addPageStyle(this.ps1));
         this.assertWriteMasterXMLEquals(PS1_MASTER_XML);
         this.assertWriteLayoutXMLEquals(PS1_LAYOUT_XML);
+
+        PowerMock.verifyAll();
     }
 
 
     @Test
     public final void testPageStyleCreateThenUpdate() throws IOException {
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
         Assert.assertTrue(this.stylesContainer.addPageStyle(this.ps1));
         this.stylesContainer.setPageStyleMode(Mode.UPDATE);
         Assert.assertTrue(this.stylesContainer.addPageStyle(this.ps2));
         this.assertWriteLayoutXMLEquals(PS2_LAYOUT_XML);
 
+        PowerMock.verifyAll();
     }
 
     @Test
     public final void testPageStyleCreateThenUpdateIfExists() throws IOException {
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
         Assert.assertTrue(this.stylesContainer.addPageStyle(this.ps1));
         this.stylesContainer.setPageStyleMode(Mode.CREATE_OR_UPDATE);
         Assert.assertTrue(this.stylesContainer.addPageStyle(this.ps2));
         this.assertWriteLayoutXMLEquals(PS2_LAYOUT_XML);
+
+        PowerMock.verifyAll();
     }
 
     @Test
     public final void testPageStyleCreateTwice() throws IOException {
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
         Assert.assertTrue(this.stylesContainer.addPageStyle(this.ps1));
         Assert.assertFalse(this.stylesContainer.addPageStyle(this.ps2));
         this.assertWriteLayoutXMLEquals(PS1_LAYOUT_XML);
+
+        PowerMock.verifyAll();
     }
 
     @Test
     public final void testPageStyleUpdate() throws IOException {
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
         this.stylesContainer.setPageStyleMode(Mode.UPDATE);
         Assert.assertFalse(this.stylesContainer.addPageStyle(this.ps2));
         this.assertWriteLayoutXMLEquals("");
+
+        PowerMock.verifyAll();
     }
 
     @Test
     public final void testPageStyleUpdateIfExists() throws IOException {
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
         this.stylesContainer.setPageStyleMode(Mode.CREATE_OR_UPDATE);
         Assert.assertTrue(this.stylesContainer.addPageStyle(this.ps2));
         this.assertWriteLayoutXMLEquals(PS2_LAYOUT_XML);
+
+        PowerMock.verifyAll();
     }
 
     @Test
     public void testAddChildCellStyle() {
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
         final TableCellStyle tcs = TableCellStyle.builder("tcs").build();
         final DataStyle ds = new BooleanStyleBuilder("bs", this.locale).build();
 
@@ -227,10 +314,15 @@ public class StylesContainerTest {
         Assert.assertNotNull(childCellStyle);
         Assert.assertEquals("tcs-_-bs", childCellStyle.getName());
         Assert.assertEquals(ds, childCellStyle.getDataStyle());
+
+        PowerMock.verifyAll();
     }
 
     @Test
     public void testWriteVisibleDataStyles() throws IOException {
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
         final DataStyle ds = new BooleanStyleBuilder("bs", this.locale).visible().build();
 
         this.stylesContainer.addDataStyle(ds);
@@ -239,10 +331,15 @@ public class StylesContainerTest {
         this.stylesContainer.writeVisibleDataStyles(this.util, sb);
         DomTester.assertEquals("<number:boolean-style style:name=\"bs\" number:language=\"en\" " +
                 "number:country=\"US\" style:volatile=\"true\"/>", sb.toString());
+
+        PowerMock.verifyAll();
     }
 
     @Test
     public void testStylesCommonStyles() throws IOException {
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
         final TableCellStyle tcs = TableCellStyle.builder("tcs").build();
 
         this.stylesContainer.addStylesStyle(tcs);
@@ -251,23 +348,63 @@ public class StylesContainerTest {
         this.stylesContainer.writeStylesCommonStyles(this.util, sb);
         DomTester.assertEquals("<style:style style:name=\"tcs\" style:family=\"table-cell\" " +
                 "style:parent-style-name=\"Default\"/>", sb.toString());
+
+        PowerMock.verifyAll();
     }
 
     private void assertWriteDataStylesXMLEquals(final String xml) throws IOException {
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
         final Appendable sb = new StringBuilder();
         this.stylesContainer.writeHiddenDataStyles(this.util, sb);
         DomTester.assertEquals(xml, sb.toString());
+
+        PowerMock.verifyAll();
     }
 
     private void assertWriteLayoutXMLEquals(final String xml) throws IOException {
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
         final Appendable sb = new StringBuilder();
         this.stylesContainer.writePageLayoutStyles(this.util, sb);
         DomTester.assertEquals(xml, sb.toString());
+
+        PowerMock.verifyAll();
     }
 
     private void assertWriteMasterXMLEquals(final String xml) throws IOException {
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
         final Appendable sb = new StringBuilder();
         this.stylesContainer.writeMasterPageStyles(this.util, sb);
         DomTester.assertEquals(xml, sb.toString());
+
+        PowerMock.verifyAll();
     }
+
+// REMOVED FROM OdsElementsTest
+//    final StringBuilder sb1 = new StringBuilder();
+//        this.stylesContainer.writeMasterPageStyles(XMLUtil.create(), sb1);
+//        Assert.assertEquals("<style:master-page style:name=\"Mpm1\" " +
+//                "style:page-layout-name=\"Mpm1\"><style:header><text:p><text:span " +
+//                "text:style-name=\"none\"></text:span></text:p></style:header><style:header-left " +
+//                "style:display=\"false\"/><style:footer><text:p><text:span " +
+//                "text:style-name=\"none\"></text:span></text:p></style:footer><style:footer-left " +
+//                "style:display=\"false\"/></style:master-page>", sb1.toString());
+//    final StringBuilder sb2 = new StringBuilder();
+//        this.stylesContainer.writePageLayoutStyles(XMLUtil.create(), sb2);
+//        Assert.assertEquals("<style:page-layout style:name=\"Mpm1\">" +
+//                "<style:page-layout-properties fo:page-width=\"21cm\" fo:page-height=\"29.7cm\" " +
+//                "style:num-format=\"1\" style:writing-mode=\"lr-tb\" " +
+//                "style:print-orientation=\"portrait\" " +
+//                "style:print=\"objects charts drawings zero-values\" fo:margin=\"1.5cm\"/>" +
+//                "<style:header-style>" +
+//                "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
+//                "</style:header-style><style:footer-style>" +
+//                "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
+//                "</style:footer-style>" +
+//                "</style:page-layout>", sb2.toString());
 }

@@ -29,6 +29,7 @@ import com.github.jferard.fastods.util.Container.Mode;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -117,7 +118,8 @@ public class MultiContainer<K, S extends Enum<S>, V> {
             throw new IllegalStateException(
                     "MultiContainer put(" + key + ", " + value + ") in " + subContainer);
         } else if (this.debug && !valueByKey.containsKey(key)) {
-            this.logger.severe("MultiContainer put(" + key + ", " + value + ") in " + subContainer);
+            this.logger.log(Level.SEVERE,
+                    "MultiContainer put({0}, {1}) in {2}", new Object[] { key, value, subContainer});
         }
         valueByKey.put(key, value);
         return true;

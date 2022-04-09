@@ -82,7 +82,7 @@ public class OdsElements implements StylesContainer {
      */
     public static final String SC_SPLIT_FIX = "2";
     public static final Map<String, String> BASE_NAMESPACE_BY_PREFIX =
-            new HashMap<String, String>();
+            new HashMap<>();
 
     private static final OdsElement[] EMPTY_ELEMENTS = {
             new ManifestEntryElement(
@@ -183,7 +183,7 @@ public class OdsElements implements StylesContainer {
         this.contentElement = contentElement;
         this.stylesElement = stylesElement;
         this.stylesContainer = stylesContainer;
-        this.extraElements = new HashSet<OdsElement>();
+        this.extraElements = new HashSet<>();
     }
 
     /**
@@ -283,8 +283,8 @@ public class OdsElements implements StylesContainer {
     }
 
     @Override
-    public boolean addStylesFontFaceContainerStyle(final FontFaceContainerStyle ffcStyle) {
-        return this.stylesContainer.addContentFontFaceContainerStyle(ffcStyle);
+    public boolean addStylesFontFaceContainerStyle(final FontFaceContainerStyle objectStyle) {
+        return this.stylesContainer.addStylesFontFaceContainerStyle(objectStyle);
     }
 
     /**
@@ -628,7 +628,12 @@ public class OdsElements implements StylesContainer {
         this.contentElement.addEvents(events);
     }
 
-    public void addPilotTable(final PilotTable pilot) {
-        this.contentElement.addPilotTable(pilot);
+    /**
+     * Add a new pilot table
+     *
+     * @param pilotTable the pilot table
+     */
+    public void addPilotTable(final PilotTable pilotTable) {
+        this.contentElement.addPilotTable(pilotTable);
     }
 }

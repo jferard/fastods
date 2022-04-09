@@ -25,6 +25,7 @@
 package com.github.jferard.fastods.testlib;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -50,7 +51,7 @@ public class ZipUTF8WriterMock implements Appendable {
      * @return the mock
      */
     public static ZipUTF8WriterMock createMock() {
-        return new ZipUTF8WriterMock(new HashMap<String, StringBuilder>(), new HashSet<String>());
+        return new ZipUTF8WriterMock(new HashMap<>(), new HashSet<>());
     }
     private final Map<String, StringBuilder> builderByEntryName;
     private StringBuilder curBuilder;
@@ -187,7 +188,7 @@ public class ZipUTF8WriterMock implements Appendable {
             throw new IOException();
         }
 
-        this.curBuilder.append(new String(arr, "ISO-8859-1"));
+        this.curBuilder.append(new String(arr, StandardCharsets.ISO_8859_1));
     }
 
     /**
@@ -208,7 +209,7 @@ public class ZipUTF8WriterMock implements Appendable {
     /**
      * @return the names of the registered entries
      */
-    public Set<String> registeredNames() {
+    public Set<String> getRegisteredNames() {
         return this.registeredEntries;
     }
 }

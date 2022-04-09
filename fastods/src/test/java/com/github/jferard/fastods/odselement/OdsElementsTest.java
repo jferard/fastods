@@ -23,10 +23,14 @@
  */
 package com.github.jferard.fastods.odselement;
 
+import com.github.jferard.fastods.FinalizeFlusher;
 import com.github.jferard.fastods.NamedOdsFileWriter;
 import com.github.jferard.fastods.PrepareContentFlusher;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.attribute.CellType;
+import com.github.jferard.fastods.datastyle.BooleanStyle;
+import com.github.jferard.fastods.datastyle.BooleanStyleBuilder;
+import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.odselement.config.ConfigItem;
 import com.github.jferard.fastods.odselement.config.ConfigItemMapEntry;
 import com.github.jferard.fastods.style.PageStyle;
@@ -34,6 +38,7 @@ import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.testlib.ZipUTF8WriterMockHandler;
 import com.github.jferard.fastods.util.AutoFilter;
 import com.github.jferard.fastods.util.Container;
+import com.github.jferard.fastods.util.PilotTable;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 import org.easymock.EasyMock;
@@ -44,6 +49,7 @@ import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -70,7 +76,7 @@ public class OdsElementsTest {
         this.metaElement = PowerMock.createMock(MetaElement.class);
         this.contentElement = PowerMock.createMock(ContentElement.class);
         this.stylesElement = PowerMock.createMock(StylesElement.class);
-        this.stylesContainer = new StylesContainerImpl(this.logger);
+        this.stylesContainer = PowerMock.createMock(StylesContainerImpl.class);
 
         this.odsElements = new OdsElements(this.logger, this.stylesContainer, this.mimetypeElement,
                 this.manifestElement, this.settingsElement, this.metaElement, this.contentElement,
@@ -99,6 +105,9 @@ public class OdsElementsTest {
     @Test
     public void testFreezeStyles() {
         PowerMock.resetAll();
+        this.stylesContainer.freeze();
+        EasyMock.expect(this.stylesContainer.addContentStyle(TableCellStyle.DEFAULT_CELL_STYLE))
+                .andThrow(new IllegalStateException());
 
         PowerMock.replayAll();
         this.odsElements.freezeStyles();
@@ -111,7 +120,9 @@ public class OdsElementsTest {
     @Test
     public void testDebugStyles() {
         PowerMock.resetAll();
-        this.logger.severe(EasyMock.anyString());
+        this.stylesContainer.debug();
+        EasyMock.expect(this.stylesContainer.addContentStyle(TableCellStyle.DEFAULT_CELL_STYLE))
+                .andReturn(true);
 
         PowerMock.replayAll();
         this.odsElements.debugStyles();
@@ -162,16 +173,64 @@ public class OdsElementsTest {
     }
 
     @Test
-    public void testAddStyleToContentAutomaticStyles() throws IOException {
+    public void testSaveAsyncWoPrevious() throws IOException {
+        final NamedOdsFileWriter w = PowerMock.createMock(NamedOdsFileWriter.class);
+
         PowerMock.resetAll();
+
+        PowerMock.resetAll();
+        EasyMock.expect(this.contentElement.getLastTable()).andReturn(null);
+        w.update(EasyMock.isA(PrepareContentFlusher.class));
+        w.update(EasyMock.isA(FinalizeFlusher.class));
+
+        PowerMock.replayAll();
+        this.odsElements.addObserver(w);
+        this.odsElements.saveAsync();
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public void testSaveAsyncWithPrevious() throws IOException {
+        final Table t = PowerMock.createMock(Table.class);
+        final NamedOdsFileWriter w = PowerMock.createMock(NamedOdsFileWriter.class);
+
+        PowerMock.resetAll();
+
+        PowerMock.resetAll();
+        EasyMock.expect(this.contentElement.getLastTable()).andReturn(t);
+        t.asyncFlushEndTable();
+        w.update(EasyMock.isA(FinalizeFlusher.class));
+
+        PowerMock.replayAll();
+        this.odsElements.addObserver(w);
+        this.odsElements.saveAsync();
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public void testAddStyleToContentAutomaticStyles() {
+        PowerMock.resetAll();
+        EasyMock.expect(this.stylesContainer.addContentStyle(TableCellStyle.DEFAULT_CELL_STYLE))
+                .andReturn(true);
 
         PowerMock.replayAll();
         this.odsElements.addContentStyle(TableCellStyle.DEFAULT_CELL_STYLE);
 
         PowerMock.verifyAll();
-        final StringBuilder sb = new StringBuilder();
-        this.stylesContainer.writeContentAutomaticStyles(XMLUtil.create(), sb);
-        Assert.assertEquals("", sb.toString());
+    }
+
+    @Test
+    public void testAddStyleToStylesStyles() {
+        PowerMock.resetAll();
+        EasyMock.expect(this.stylesContainer.addStylesStyle(TableCellStyle.DEFAULT_CELL_STYLE))
+                .andReturn(true);
+
+        PowerMock.replayAll();
+        this.odsElements.addStylesStyle(TableCellStyle.DEFAULT_CELL_STYLE);
+
+        PowerMock.verifyAll();
     }
 
     @Test
@@ -180,6 +239,8 @@ public class OdsElementsTest {
         EasyMock.expect(this.contentElement
                         .addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, CellType.STRING))
                 .andReturn(null);
+        EasyMock.expect(this.stylesContainer.addContentStyle(TableCellStyle.DEFAULT_CELL_STYLE))
+                .andReturn(true);
 
         PowerMock.replayAll();
         this.odsElements.addCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, CellType.STRING);
@@ -188,55 +249,120 @@ public class OdsElementsTest {
     }
 
     @Test
-    public void testAddPageStyle() throws IOException {
+    public void testDirectAddChildCellStyle() {
+        final BooleanStyle b = new BooleanStyleBuilder("b",
+                Locale.US).build();
+        final TableCellStyle ns = PowerMock.createMock(TableCellStyle.class);
+
         PowerMock.resetAll();
+        EasyMock.expect(
+                        this.stylesContainer.addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, b))
+                .andReturn(ns);
+
+        PowerMock.replayAll();
+        this.odsElements.addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, b);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public void testAddPageStyle() {
+        PowerMock.resetAll();
+        EasyMock.expect(this.stylesContainer.addPageStyle(PageStyle.DEFAULT_PAGE_STYLE))
+                .andReturn(true);
 
         PowerMock.replayAll();
         this.odsElements.addPageStyle(PageStyle.DEFAULT_PAGE_STYLE);
 
         PowerMock.verifyAll();
-        final StringBuilder sb1 = new StringBuilder();
-        this.stylesContainer.writeMasterPageStyles(XMLUtil.create(), sb1);
-        Assert.assertEquals("<style:master-page style:name=\"Mpm1\" " +
-                "style:page-layout-name=\"Mpm1\"><style:header><text:p><text:span " +
-                "text:style-name=\"none\"></text:span></text:p></style:header><style:header-left " +
-                "style:display=\"false\"/><style:footer><text:p><text:span " +
-                "text:style-name=\"none\"></text:span></text:p></style:footer><style:footer-left " +
-                "style:display=\"false\"/></style:master-page>", sb1.toString());
-        final StringBuilder sb2 = new StringBuilder();
-        this.stylesContainer.writePageLayoutStyles(XMLUtil.create(), sb2);
-        Assert.assertEquals("<style:page-layout style:name=\"Mpm1\">" +
-                "<style:page-layout-properties fo:page-width=\"21cm\" fo:page-height=\"29.7cm\" " +
-                "style:num-format=\"1\" style:writing-mode=\"lr-tb\" " +
-                "style:print-orientation=\"portrait\" " +
-                "style:print=\"objects charts drawings zero-values\" fo:margin=\"1.5cm\"/>" +
-                "<style:header-style>" +
-                "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
-                "</style:header-style><style:footer-style>" +
-                "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
-                "</style:footer-style>" +
-                "</style:page-layout>", sb2.toString());
     }
 
     @Test
-    public void testAddTableToContent() throws IOException {
-        final NamedOdsFileWriter w = PowerMock.createMock(NamedOdsFileWriter.class);
+    public void testAddContentFontFaceContainerStyle() {
+        PowerMock.resetAll();
+        EasyMock.expect(this.stylesContainer.addContentFontFaceContainerStyle(
+                        TableCellStyle.DEFAULT_CELL_STYLE))
+                .andReturn(true);
+
+        PowerMock.replayAll();
+        this.odsElements.addContentFontFaceContainerStyle(TableCellStyle.DEFAULT_CELL_STYLE);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public void testAddStylesFontFaceContainerStyle() {
+        PowerMock.resetAll();
+        EasyMock.expect(this.stylesContainer.addStylesFontFaceContainerStyle(
+                        TableCellStyle.DEFAULT_CELL_STYLE))
+                .andReturn(true);
+
+        PowerMock.replayAll();
+        this.odsElements.addStylesFontFaceContainerStyle(TableCellStyle.DEFAULT_CELL_STYLE);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testCreateAndAddTableToContent() throws IOException {
         final Table t = PowerMock.createMock(Table.class);
-        final ConfigItemMapEntry e = PowerMock.createMock(ConfigItemMapEntry.class);
+        final NamedOdsFileWriter w = PowerMock.createMock(NamedOdsFileWriter.class);
+        final ConfigItemMapEntry ce = PowerMock.createMock(ConfigItemMapEntry.class);
 
         PowerMock.resetAll();
+        EasyMock.expect(this.contentElement.createTable("foo", 10, 20)).andReturn(t);
         EasyMock.expect(this.contentElement.getLastTable()).andReturn(null);
         EasyMock.expect(this.contentElement.addTable(t)).andReturn(true);
-        EasyMock.expect(t.getConfigEntry()).andReturn(e);
-        this.settingsElement.addTableConfig(e);
+        EasyMock.expect(t.getConfigEntry()).andReturn(ce);
+        this.settingsElement.addTableConfig(ce);
         t.addObserver(w);
         w.update(EasyMock.isA(PrepareContentFlusher.class));
 
         PowerMock.replayAll();
         this.odsElements.addObserver(w);
-        this.odsElements.addTableToContent(t);
+        final Table table = this.odsElements.createTable("foo", 10, 20);
+        this.odsElements.addTableToContent(table);
 
         PowerMock.verifyAll();
+    }
+
+    @Test
+    public void testAddTableToContent() throws IOException {
+        final Table t = PowerMock.createMock(Table.class);
+        final NamedOdsFileWriter w = PowerMock.createMock(NamedOdsFileWriter.class);
+        final ConfigItemMapEntry ce = PowerMock.createMock(ConfigItemMapEntry.class);
+
+        PowerMock.resetAll();
+        EasyMock.expect(this.contentElement.createTable("foo", 10, 20)).andReturn(t);
+        EasyMock.expect(this.contentElement.getLastTable()).andReturn(null);
+        EasyMock.expect(this.contentElement.addTable(t)).andReturn(true);
+        EasyMock.expect(t.getConfigEntry()).andReturn(ce);
+        this.settingsElement.addTableConfig(ce);
+        t.addObserver(w);
+        w.update(EasyMock.isA(PrepareContentFlusher.class));
+
+        PowerMock.replayAll();
+        this.odsElements.addObserver(w);
+        final Table ret = this.odsElements.addTableToContent("foo", 10, 20);
+
+        PowerMock.verifyAll();
+        Assert.assertEquals(t, ret);
+    }
+
+    @Test
+    public void testAddTableToContentNull() throws IOException {
+        final Table t = PowerMock.createMock(Table.class);
+
+        PowerMock.resetAll();
+        EasyMock.expect(this.contentElement.createTable("foo", 10, 20)).andReturn(t);
+        EasyMock.expect(this.contentElement.getLastTable()).andReturn(null);
+        EasyMock.expect(this.contentElement.addTable(t)).andReturn(false);
+
+        PowerMock.replayAll();
+        final Table ret = this.odsElements.addTableToContent("foo", 10, 20);
+
+        PowerMock.verifyAll();
+        Assert.assertNull(ret);
     }
 
     @Test
@@ -262,7 +388,7 @@ public class OdsElementsTest {
     }
 
     @Test
-    public final void testAddExtraDir() throws IOException {
+    public final void testAddExtraDirNoSlash() throws IOException {
         final ZipUTF8WriterMockHandler handler = ZipUTF8WriterMockHandler.create();
         final ZipUTF8Writer writer = handler.getInstance(ZipUTF8Writer.class);
 
@@ -274,6 +400,25 @@ public class OdsElementsTest {
 
         PowerMock.replayAll();
         this.odsElements.addExtraDir("dir");
+        this.odsElements.writeExtras(this.util, writer);
+        writer.finish();
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testAddExtraDirSlash() throws IOException {
+        final ZipUTF8WriterMockHandler handler = ZipUTF8WriterMockHandler.create();
+        final ZipUTF8Writer writer = handler.getInstance(ZipUTF8Writer.class);
+
+        PowerMock.resetAll();
+        this.logger.log(Level.FINER, "Writing extra elements to zip file");
+        this.logger
+                .log(EasyMock.eq(Level.FINEST), EasyMock.eq("Writing ods element: {0} to zip file"),
+                        EasyMock.isA(ManifestEntryElement.class));
+
+        PowerMock.replayAll();
+        this.odsElements.addExtraDir("dir/");
         this.odsElements.writeExtras(this.util, writer);
         writer.finish();
 
@@ -311,7 +456,11 @@ public class OdsElementsTest {
         final Container.Mode mode = Container.Mode.UPDATE;
 
         PowerMock.resetAll();
-
+        this.stylesContainer.setDataStylesMode(Container.Mode.UPDATE);
+        this.stylesContainer.setMasterPageStyleMode(Container.Mode.UPDATE);
+        this.stylesContainer.setPageLayoutStyleMode(Container.Mode.UPDATE);
+        this.stylesContainer.setPageStyleMode(Container.Mode.UPDATE);
+        this.stylesContainer.setObjectStyleMode(Container.Mode.UPDATE);
 
         PowerMock.replayAll();
         this.odsElements.setDataStylesMode(mode);
@@ -323,4 +472,88 @@ public class OdsElementsTest {
         PowerMock.verifyAll();
     }
 
+    @Test
+    public final void testAddDataStyle() {
+        final DataStyle ds = new BooleanStyleBuilder("foo", Locale.US).build();
+
+        PowerMock.resetAll();
+        EasyMock.expect(this.stylesContainer.addDataStyle(ds)).andReturn(true);
+
+        PowerMock.replayAll();
+        this.odsElements.addDataStyle(ds);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testAddNewDataStyleFromCellStyle() {
+        PowerMock.resetAll();
+        EasyMock.expect(this.stylesContainer.addNewDataStyleFromCellStyle(
+                TableCellStyle.DEFAULT_CELL_STYLE)).andReturn(true);
+
+        PowerMock.replayAll();
+        this.odsElements.addNewDataStyleFromCellStyle(TableCellStyle.DEFAULT_CELL_STYLE);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testAddExtraObject() throws IOException {
+        final ZipUTF8WriterMockHandler handler = ZipUTF8WriterMockHandler.create();
+        final ZipUTF8Writer writer = handler.getInstance(ZipUTF8Writer.class);
+
+        PowerMock.resetAll();
+        this.logger.log(Level.FINER, "Writing extra elements to zip file");
+        this.logger.log(EasyMock.eq(Level.FINEST),
+                EasyMock.eq("Writing ods element: {0} to zip file"),
+                EasyMock.isA(ManifestEntryElement.class));
+
+        PowerMock.replayAll();
+        this.odsElements.addExtraObject("path.xml", "text/xml", "1.0");
+        this.odsElements.writeExtras(this.util, writer);
+
+        PowerMock.verifyAll();
+        Assert.assertEquals(1, handler.getRegisteredNames().size());
+        Assert.assertEquals(Optional.of("OdsEntry[path=path.xml/]"),
+                handler.getRegisteredNames().stream().findAny());
+    }
+
+    @Test
+    public final void testSetActiveTable() {
+        final Table t = PowerMock.createMock(Table.class);
+
+        PowerMock.resetAll();
+        this.settingsElement.setActiveTable(t);
+
+        PowerMock.replayAll();
+        this.odsElements.setActiveTable(t);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testAddEvents() {
+        final ScriptEventListener sel = PowerMock.createMock(ScriptEventListener.class);
+
+        PowerMock.resetAll();
+        this.contentElement.addEvents(sel);
+
+        PowerMock.replayAll();
+        this.odsElements.addEvents(sel);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testAddPilotTable() {
+        final PilotTable pt = PowerMock.createMock(PilotTable.class);
+
+        PowerMock.resetAll();
+        this.contentElement.addPilotTable(pt);
+
+        PowerMock.replayAll();
+        this.odsElements.addPilotTable(pt);
+
+        PowerMock.verifyAll();
+    }
 }

@@ -37,7 +37,6 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Set;
-import java.util.zip.ZipEntry;
 
 /**
  * See https://github.com/jferard/fastods/issues/29
@@ -164,5 +163,11 @@ public class ZipUTF8WriterMockHandler implements InvocationHandler {
         return this.mock.getEntryNames();
     }
 
+    /**
+     * @return the names of the entries
+     */
+    public Set<String> getRegisteredNames() {
+        return this.mock.getRegisteredNames();
+    }
 }
 
