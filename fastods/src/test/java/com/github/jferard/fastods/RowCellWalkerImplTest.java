@@ -30,7 +30,9 @@ import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.DataStylesBuilder;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.odselement.StylesContainerImpl;
+import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.util.IntegerRepresentationCache;
+import com.github.jferard.fastods.util.Validation;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.easymock.EasyMock;
 import org.junit.Assert;
@@ -552,6 +554,92 @@ public class RowCellWalkerImplTest {
 
         PowerMock.verifyAll();
         Assert.assertTrue(ret);
+    }
+
+    @Test
+    public final void testSetMatrixFormula() {
+        PowerMock.resetAll();
+        EasyMock.expect(this.row.getOrCreateCell(0)).andReturn(this.cell);
+        this.cell.setMatrixFormula("=A1");
+
+        PowerMock.replayAll();
+        this.cellWalker.setMatrixFormula("=A1");
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testSetMatrixFormulaSpanned() {
+        PowerMock.resetAll();
+        EasyMock.expect(this.row.getOrCreateCell(0)).andReturn(this.cell);
+        this.cell.setMatrixFormula("=A1", 10, 8);
+
+        PowerMock.replayAll();
+        this.cellWalker.setMatrixFormula("=A1", 10, 8);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testSetAttribute() {
+        PowerMock.resetAll();
+        EasyMock.expect(this.row.getOrCreateCell(0)).andReturn(this.cell);
+        this.cell.setAttribute("attr", "value");
+
+        PowerMock.replayAll();
+        this.cellWalker.setAttribute("attr", "value");
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testSetTooltip() {
+        final Tooltip tooltip = Tooltip.builder(this.util, "text").build();
+
+        PowerMock.resetAll();
+        EasyMock.expect(this.row.getOrCreateCell(0)).andReturn(this.cell);
+        this.cell.setTooltip(tooltip);
+
+        PowerMock.replayAll();
+        this.cellWalker.setTooltip(tooltip);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testSetStyle() {
+        PowerMock.resetAll();
+        EasyMock.expect(this.row.getOrCreateCell(0)).andReturn(this.cell);
+        this.cell.setStyle(TableCellStyle.DEFAULT_CELL_STYLE);
+
+        PowerMock.replayAll();
+        this.cellWalker.setStyle(TableCellStyle.DEFAULT_CELL_STYLE);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testSetValidation() {
+        final Validation validation = Validation.builder("val").dontAllowEmptyCells().build();
+
+        PowerMock.resetAll();
+        EasyMock.expect(this.row.getOrCreateCell(0)).andReturn(this.cell);
+        this.cell.setValidation(validation);
+
+        PowerMock.replayAll();
+        this.cellWalker.setValidation(validation);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testColIndex() {
+        PowerMock.resetAll();
+        PowerMock.replayAll();
+        final int ret = this.cellWalker.colIndex();
+
+        PowerMock.verifyAll();
+        Assert.assertEquals(0, ret);
     }
 
     private TableRowImpl initRealRow() {
