@@ -33,6 +33,9 @@ package com.github.jferard.fastods.style;
  * @author J. Férard
  */
 public final class LOFonts {
+    /** Do not instantiate */
+    private LOFonts() {}
+
     /**
      * Font Caladea
      * <ul>

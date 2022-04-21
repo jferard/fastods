@@ -24,6 +24,7 @@
 package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.TestHelper;
+import com.github.jferard.fastods.attribute.FormatSource;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -157,6 +158,19 @@ public class DateStyleTest {
                 "<number:date-style style:name=\"test\" number:language=\"en\" " +
                         "number:country=\"US\" " +
                         "style:volatile=\"true\" number:automatic-order=\"false\">" +
+                        "<number:year number:style=\"long\"/><number:text>-</number:text>" +
+                        "<number:month number:style=\"long\"/><number:text>-</number:text>" +
+                        "<number:day number:style=\"long\"/>" +
+                        "</number:date-style>", ds);
+    }
+
+    @Test
+    public final void testFormatSource() throws IOException {
+        final DateStyle ds = new DateStyleBuilder("test", this.locale).formatSource(FormatSource.LANGUAGE).build();
+        TestHelper.assertXMLEquals(
+                "<number:date-style style:name=\"test\" number:language=\"en\" " +
+                        "number:country=\"US\" style:volatile=\"true\" " +
+                        "number:automatic-order=\"false\" number:format-source=\"language\">" +
                         "<number:year number:style=\"long\"/><number:text>-</number:text>" +
                         "<number:month number:style=\"long\"/><number:text>-</number:text>" +
                         "<number:day number:style=\"long\"/>" +

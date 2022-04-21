@@ -24,6 +24,7 @@
 
 package com.github.jferard.fastods.ref;
 
+import com.github.jferard.fastods.ThisShouldNotHappen;
 import com.github.jferard.fastods.util.EqualityUtil;
 
 import java.io.IOException;
@@ -33,7 +34,7 @@ import java.io.IOException;
  *
  * @author J. Férard
  */
-public class RangeRef {
+public class RangeRef implements Ref {
     public static final char RANGE_SEP = ':';
 
     private final TableRef tableRef;
@@ -82,19 +83,14 @@ public class RangeRef {
      */
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        try {
-            this.write(sb);
-        } catch (final IOException e) {
-            throw new AssertionError(e);
-        }
-        return sb.toString();
+        return RefUtil.toString(this);
     }
 
     /**
      * @param appendable the appendable where to write
      * @throws IOException never
      */
+    @Override
     public void write(final Appendable appendable) throws IOException {
         this.appendTableRef(appendable);
         this.fromCellRef.write(appendable);

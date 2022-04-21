@@ -24,6 +24,7 @@
 
 package com.github.jferard.fastods.ref;
 
+import com.github.jferard.fastods.ThisShouldNotHappen;
 import com.github.jferard.fastods.util.EqualityUtil;
 
 import java.io.IOException;
@@ -33,7 +34,7 @@ import java.io.IOException;
  *
  * @author J. Férard
  */
-public class TableRef {
+public class TableRef implements Ref {
 
     /**
      * @param tableNameUtil util for check/escaping the table name
@@ -86,15 +87,6 @@ public class TableRef {
     }
 
     /**
-     * @param appendable the appendable where to write
-     * @throws IOException never
-     */
-    public void write(final Appendable appendable) throws IOException {
-        this.appendFilename(appendable);
-        this.appendTableName(appendable);
-    }
-
-    /**
      * Returns the address of a table in Excel/OO/LO format. Some examples:
      * Remainder: 'file://D:/file.ods'#table
      *
@@ -102,13 +94,17 @@ public class TableRef {
      */
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        try {
-            this.write(sb);
-        } catch (final IOException e) {
-            throw new AssertionError(e);
-        }
-        return sb.toString();
+        return RefUtil.toString(this);
+    }
+
+    /**
+     * @param appendable the appendable where to write
+     * @throws IOException never
+     */
+    @Override
+    public void write(final Appendable appendable) throws IOException {
+        this.appendFilename(appendable);
+        this.appendTableName(appendable);
     }
 
     @Override

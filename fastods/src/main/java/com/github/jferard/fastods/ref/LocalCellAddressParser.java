@@ -24,6 +24,8 @@
 
 package com.github.jferard.fastods.ref;
 
+import com.github.jferard.fastods.ThisShouldNotHappen;
+
 import java.text.ParseException;
 
 /**
@@ -89,7 +91,7 @@ class LocalCellAddressParser {
                     }
                     break;
                 default:
-                    throw this.parseException("Unexpected error", address, i, c);
+                    throw ThisShouldNotHappen.illegalEnumValue();
             }
         }
         if (state != OPT_DIGIT) {

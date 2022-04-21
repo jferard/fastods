@@ -22,23 +22,28 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.jferard.fastods.attribute;
+package com.github.jferard.fastods.ref;
 
-import java.util.Locale;
+import com.github.jferard.fastods.ThisShouldNotHappen;
 
-public enum FormatSource implements AttributeValue {
+import java.io.IOException;
+
+public class RefUtil {
+    /** Do not instantiate */
+    private RefUtil() {}
+
     /**
-     * "fixed: the values short and long of the number:style attribute are defined by" ODF Spec.
+     * Converts this ref to String
+     * @param ref the ref
+     * @return the string representation
      */
-    FIXED,
-    /**
-     * "language: the meaning of the values long and short of the number:style attribute depend
-     * upon the number:language and number:country attributes of the date style."
-     */
-    LANGUAGE;
-
-    @Override
-    public CharSequence getValue() {
-        return this.toString().toLowerCase(Locale.ROOT);
+    public static String toString(final Ref ref) {
+        final StringBuilder sb = new StringBuilder();
+        try {
+            ref.write(sb);
+        } catch (final IOException e) {
+            throw ThisShouldNotHappen.illegalState();
+        }
+        return sb.toString();
     }
 }

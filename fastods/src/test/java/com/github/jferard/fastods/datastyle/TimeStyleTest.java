@@ -24,6 +24,7 @@
 package com.github.jferard.fastods.datastyle;
 
 import com.github.jferard.fastods.TestHelper;
+import com.github.jferard.fastods.attribute.FormatSource;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Assert;
 import org.junit.Before;
@@ -87,6 +88,19 @@ public class TimeStyleTest {
         TestHelper.assertXMLEquals("<number:time-style style:name=\"test\" number:language=\"a\" " +
                 "number:country=\"B\" " +
                 "style:volatile=\"true\">" +
+                "<number:hours number:style=\"long\"/><number:text>:</number:text>" +
+                "<number:minutes number:style=\"long\"/><number:text>:</number:text>" +
+                "<number:seconds number:style=\"long\"/>" +
+                "</number:time-style>", ts);
+    }
+
+    @Test
+    public final void testFormatSource() throws IOException {
+        final TimeStyle ts =
+                new TimeStyleBuilder("test", this.locale).formatSource(FormatSource.LANGUAGE).build();
+        TestHelper.assertXMLEquals("<number:time-style style:name=\"test\" number:language=\"en\" " +
+                "number:country=\"US\" " +
+                "style:volatile=\"true\" number:format-source=\"language\">" +
                 "<number:hours number:style=\"long\"/><number:text>:</number:text>" +
                 "<number:minutes number:style=\"long\"/><number:text>:</number:text>" +
                 "<number:seconds number:style=\"long\"/>" +

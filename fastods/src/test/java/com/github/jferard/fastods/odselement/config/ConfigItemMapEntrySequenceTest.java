@@ -120,6 +120,13 @@ public class ConfigItemMapEntrySequenceTest {
     }
 
     @Test
+    public void testPutBlock() {
+        Assert.assertThrows(UnsupportedOperationException.class, () -> {
+            this.sequence.put(this.block);
+        });
+    }
+
+    @Test
     public void testAddItem() {
         this.sequence.add("name", "type", "value");
         Assert.assertTrue(this.sequence.iterator().next() instanceof ConfigItem);

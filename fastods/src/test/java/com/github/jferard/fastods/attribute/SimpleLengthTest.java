@@ -35,16 +35,6 @@ public class SimpleLengthTest {
     private static final double OTHER_VALUE = 11.0;
 
     @Test
-    public void testNotEquals() {
-        Assert.assertEquals(SimpleLength.pt(VALUE), SimpleLength.pt(VALUE));
-        Assert.assertNotEquals(SimpleLength.pt(VALUE), SimpleLength.cm(VALUE));
-        Assert.assertNotEquals(SimpleLength.in(VALUE), SimpleLength.in(OTHER_VALUE));
-        Assert.assertNotEquals(SimpleLength.in(OTHER_VALUE), SimpleLength.in(VALUE));
-        Assert.assertNotEquals("10", SimpleLength.mm(VALUE));
-        Assert.assertNotEquals(SimpleLength.mm(VALUE), "10");
-    }
-
-    @Test
     public void testHashCode() {
         Assert.assertEquals(SimpleLength.pc(VALUE).hashCode(), SimpleLength.pc(VALUE).hashCode());
     }
@@ -65,11 +55,26 @@ public class SimpleLengthTest {
     @Test
     public void testEquals() {
         final SimpleLength l1 = SimpleLength.pt(10);
-        final SimpleLength l2 = SimpleLength.pt(10 - 0.0000000000000001);
-        final SimpleLength l3 = SimpleLength.pt(10 - 0.003);
-        Assert.assertEquals(l1, l2); // 0 <= d <= MD
-        Assert.assertEquals(l2, l1); // -MD <= d < 0
-        Assert.assertNotEquals(l1, l3); // 0 <= MD <= d
-        Assert.assertNotEquals(l3, l1); // d <= -MD < 0
+        final SimpleLength l2minus = SimpleLength.pt(10 + 0.0000000000000001);
+        Assert.assertEquals(l1, l1);
+        Assert.assertEquals(l1, l2minus); // 0 <= d <= MD
+        Assert.assertEquals(l2minus, l1); // -MD <= d < 0
+        Assert.assertEquals(SimpleLength.pt(VALUE), SimpleLength.pt(VALUE));
+    }
+
+    @Test
+    public void testNotEquals() {
+        Assert.assertNotEquals(SimpleLength.pt(VALUE), SimpleLength.cm(VALUE));
+        Assert.assertNotEquals(SimpleLength.in(VALUE), SimpleLength.in(OTHER_VALUE));
+        Assert.assertNotEquals(SimpleLength.in(OTHER_VALUE), SimpleLength.in(VALUE));
+        Assert.assertNotEquals(new Object(), SimpleLength.mm(VALUE));
+        Assert.assertNotEquals(SimpleLength.mm(VALUE), new Object());
+        final SimpleLength l1 = SimpleLength.pt(10);
+        final SimpleLength l3minus = SimpleLength.pt(10 + 0.003);
+        final SimpleLength l4 = SimpleLength.cm(10);
+        Assert.assertNotEquals(l1, l3minus); // 0 <= MD <= d
+        Assert.assertNotEquals(l3minus, l1); // d <= -MD < 0
+        Assert.assertNotEquals(l1, l4);
+        Assert.assertNotEquals(l4, l1);
     }
 }

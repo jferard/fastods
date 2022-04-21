@@ -25,10 +25,12 @@
 package com.github.jferard.fastods.odselement.config;
 
 import com.github.jferard.fastods.TestHelper;
+import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.Iterator;
 
 /**
@@ -118,5 +120,12 @@ public class ConfigItemMapEntrySingletonTest {
         final ConfigItemMapEntrySingleton sing =
                 ConfigItemMapEntrySingleton.createSingleton(this.singleton);
         Assert.assertNull(sing.set("value"));
+    }
+
+    @Test
+    public void testPutBlock() {
+        Assert.assertThrows(UnsupportedOperationException.class, () -> {
+            this.singleton.put(this.item);
+        });
     }
 }

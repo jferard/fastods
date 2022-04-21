@@ -62,6 +62,9 @@ public class DateStyle implements DataStyle {
      * The format of the date
      */
     public static class Format {
+        /** Do not instantiate */
+        private Format() {}
+
         /**
          * Set the date format like '10.07.2012'.
          */

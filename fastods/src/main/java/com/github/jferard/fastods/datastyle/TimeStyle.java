@@ -73,6 +73,9 @@ public class TimeStyle implements DataStyle {
      * A time format
      */
     public static class Format {
+        /** Do not instantiate */
+        private Format() {}
+
         /**
          * Set the time format like '01:02:03'.
          */

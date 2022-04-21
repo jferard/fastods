@@ -24,21 +24,13 @@
 
 package com.github.jferard.fastods.attribute;
 
-import java.util.Locale;
+import org.junit.Assert;
+import org.junit.Test;
 
-public enum FormatSource implements AttributeValue {
-    /**
-     * "fixed: the values short and long of the number:style attribute are defined by" ODF Spec.
-     */
-    FIXED,
-    /**
-     * "language: the meaning of the values long and short of the number:style attribute depend
-     * upon the number:language and number:country attributes of the date style."
-     */
-    LANGUAGE;
-
-    @Override
-    public CharSequence getValue() {
-        return this.toString().toLowerCase(Locale.ROOT);
+public class FormatSourceTest {
+    @Test
+    public void testGetValue() {
+        Assert.assertEquals("fixed", FormatSource.FIXED.getValue());
+        Assert.assertEquals("language", FormatSource.LANGUAGE.getValue());
     }
 }

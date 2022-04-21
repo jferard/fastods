@@ -249,6 +249,16 @@ public class TableCellStyleTest {
     }
 
     @Test
+    public final void testWrap() throws IOException {
+        final TableCellStyle tcs = TableCellStyle.builder("test")
+                .fontWrap(true).build();
+        TestHelper.assertXMLEquals("<style:style style:name=\"test\" style:family=\"table-cell\" " +
+                "style:parent-style-name=\"Default\">" +
+                "<style:table-cell-properties fo:wrap-option=\"wrap\"/>" +
+                "</style:style>", tcs);
+    }
+
+    @Test
     public final void testAddToElements() throws IOException {
         final FloatStyle fs = new FloatStyleBuilder("fs", Locale.US).build();
         final TableCellStyle style =

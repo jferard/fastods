@@ -24,16 +24,20 @@
 
 package com.github.jferard.fastods.ref;
 
+import com.github.jferard.fastods.ThisShouldNotHappen;
 import com.github.jferard.fastods.util.EqualityUtil;
 
 import java.io.IOException;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * A reference on a local cell (row - col)
  *
  * @author J. Férard
  */
-class LocalCellRef {
+class LocalCellRef implements Ref {
     public static final char ABS_SIGN = '$';
 
     public static LocalCellRefBuilder builder() {
@@ -108,19 +112,14 @@ class LocalCellRef {
      */
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        try {
-            this.write(sb);
-        } catch (final IOException e) {
-            throw new AssertionError(e);
-        }
-        return sb.toString();
+        return RefUtil.toString(this);
     }
 
     /**
      * @param appendable the appendable where to write
      * @throws IOException never
      */
+    @Override
     public void write(final Appendable appendable) throws IOException {
         final StringBuilder tempSb = this.getColStringBuilder();
         if ((this.status & CellRef.ABSOLUTE_COL) == CellRef.ABSOLUTE_COL) {

@@ -25,10 +25,13 @@
 package com.github.jferard.fastods.odselement.config;
 
 import com.github.jferard.fastods.TestHelper;
+import org.apache.commons.compress.utils.Lists;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 
 /**
@@ -36,6 +39,7 @@ import java.util.Iterator;
  */
 public class ConfigItemMapEntrySetTest {
     private ConfigBlock block;
+    private ConfigBlock block2;
     private ConfigItemMapEntrySet set;
     private ConfigItem item;
     private String itemXML;
@@ -44,6 +48,7 @@ public class ConfigItemMapEntrySetTest {
     public void setUp() throws Exception {
         this.item = new ConfigItem("n", "t", "v");
         this.block = ConfigItemMapEntrySingleton.createSingleton("b", this.item);
+        this.block2 = ConfigItemMapEntrySingleton.createSingleton("b", this.block);
         this.set = ConfigItemMapEntrySet.createSet("seq");
         this.itemXML = TestHelper.toXML(this.item);
     }
@@ -126,5 +131,23 @@ public class ConfigItemMapEntrySetTest {
         this.set.add(this.item);
         Assert.assertEquals("v", this.set.set("n", "value"));
         Assert.assertNull(this.set.set("name", "value"));
+    }
+
+    @Test
+    public void testAddBlock() {
+        Assert.assertTrue(this.set.add(this.block));
+        Assert.assertEquals(Arrays.asList(this.block), Lists.newArrayList(this.set.iterator()));
+        Assert.assertFalse(this.set.add(this.block));
+        Assert.assertEquals(Arrays.asList(this.block), Lists.newArrayList(this.set.iterator()));
+    }
+
+    @Test
+    public void testPutBlock() {
+        Assert.assertEquals(null, this.set.put(this.block));
+        Assert.assertEquals(Arrays.asList(this.block), Lists.newArrayList(this.set.iterator()));
+        Assert.assertEquals(this.block, this.set.put(this.block2));
+        Assert.assertEquals(Arrays.asList(this.block2), Lists.newArrayList(this.set.iterator()));
+        Assert.assertEquals(this.block2, this.set.put(this.block));
+        Assert.assertEquals(Arrays.asList(this.block), Lists.newArrayList(this.set.iterator()));
     }
 }

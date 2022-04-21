@@ -119,6 +119,9 @@ public class SimpleLength implements Length {
      */
     @Override
     public boolean equals(final Object o) {
+        if (o == this) {
+            return true;
+        }
         if (!(o instanceof SimpleLength)) {
             return false;
         }
