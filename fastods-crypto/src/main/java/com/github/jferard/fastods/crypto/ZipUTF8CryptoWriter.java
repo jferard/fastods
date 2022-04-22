@@ -38,6 +38,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -95,7 +96,7 @@ public class ZipUTF8CryptoWriter implements ZipUTF8Writer {
     public void putNextEntry(final OdsEntry entry) {
         this.curEntry = entry;
         this.out = new ByteArrayOutputStream();
-        this.writer = new OutputStreamWriter(this.out, CharsetUtil.UTF_8);
+        this.writer = new OutputStreamWriter(this.out, StandardCharsets.UTF_8);
     }
 
     @Override

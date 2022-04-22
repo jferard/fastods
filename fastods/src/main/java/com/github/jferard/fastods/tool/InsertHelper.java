@@ -147,7 +147,7 @@ public class InsertHelper {
                              final String objectVersion, final InputStream sourceStream,
                              final SVGRectangle rectangle, final GraphicStyle gs)
             throws IOException {
-        document.addExtraObject(objectName, objectMediaType, objectVersion);
+        document.addExtraObjectReference(objectName, objectMediaType, objectVersion);
         final Map<String, OdsArchiveExplorer.OdsFile> fileByName =
                 new OdsArchiveExplorer(this.fileUtil, sourceStream).explore();
         for (final Map.Entry<String, OdsArchiveExplorer.OdsFile> entry : fileByName.entrySet()) {

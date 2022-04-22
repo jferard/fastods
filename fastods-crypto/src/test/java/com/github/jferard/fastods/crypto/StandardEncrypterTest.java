@@ -37,6 +37,7 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -58,7 +59,7 @@ public class StandardEncrypterTest {
 
         final String plainText =
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE script:module PUBLIC \"-//OpenOffice.org//DTD OfficeDocument 1.0//EN\" \"module.dtd\">\n<script:module xmlns:script=\"http://openoffice.org/2000/script\" script:name=\"Module1\" script:language=\"StarBasic\" script:moduleType=\"normal\">REM  *****  BASIC  *****\nREM Hello, world!\n</script:module>";
-        final byte[] source = plainText.getBytes(CharsetUtil.UTF_8);
+        final byte[] source = plainText.getBytes(StandardCharsets.UTF_8);
         Assert.assertEquals(332, source.length);
         final byte[] compressed = encrypter.compress(source);
         Assert.assertArrayEquals(expectedChecksum, encrypter.getDataChecksum(compressed));

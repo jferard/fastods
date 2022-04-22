@@ -32,6 +32,7 @@ import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 public class MacroLibraryContainerTest {
@@ -68,6 +69,6 @@ public class MacroLibraryContainerTest {
                         ".0//EN\" \"libraries.dtd\">\n" +
                         "<library:libraries xmlns:library=\"http://openoffice.org/2000/library\" " +
                         "xmlns:xlink=\"http://www.w3.org/1999/xlink\"></library:libraries>",
-                new String(bs.getValue(), CharsetUtil.UTF_8));
+                new String(bs.getValue(), StandardCharsets.UTF_8));
     }
 }

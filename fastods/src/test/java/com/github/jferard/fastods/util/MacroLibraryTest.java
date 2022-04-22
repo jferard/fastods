@@ -34,6 +34,7 @@ import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 
 public class MacroLibraryTest {
@@ -86,6 +87,6 @@ public class MacroLibraryTest {
                         ".org/2000/library\" " +
                         "library:name=\"ml\" library:readonly=\"false\" " +
                         "library:passwordprotected=\"false\"></library:library>",
-                new String(bs.getValue(), CharsetUtil.UTF_8));
+                new String(bs.getValue(), StandardCharsets.UTF_8));
     }
 }

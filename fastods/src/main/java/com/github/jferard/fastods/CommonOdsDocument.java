@@ -235,9 +235,9 @@ class CommonOdsDocument implements OdsDocument {
     }
 
     @Override
-    public void addExtraObject(final String fullPath, final String mediaType,
-                               final String version) {
-        this.odsElements.addExtraObject(fullPath, mediaType, version);
+    public void addExtraObjectReference(final String fullPath, final String mediaType,
+                                        final String version) {
+        this.odsElements.addExtraObjectReference(fullPath, mediaType, version);
     }
 
     @Override

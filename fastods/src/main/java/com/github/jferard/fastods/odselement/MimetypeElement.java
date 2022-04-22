@@ -24,11 +24,11 @@
 
 package com.github.jferard.fastods.odselement;
 
-import com.github.jferard.fastods.util.CharsetUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.zip.CRC32;
 
 /**
@@ -49,7 +49,7 @@ public class MimetypeElement implements OdsElement {
 
     @Override
     public void write(final XMLUtil util, final ZipUTF8Writer writer) throws IOException {
-        final byte[] data = DOCUMENT_MIMETYPE.getBytes(CharsetUtil.UTF_8);
+        final byte[] data = DOCUMENT_MIMETYPE.getBytes(StandardCharsets.UTF_8);
         final long crc32 = this.getCrc32(data);
         writer.putNextEntry(new UnregisteredStoredEntry("mimetype", data.length, crc32));
         writer.append(DOCUMENT_MIMETYPE);

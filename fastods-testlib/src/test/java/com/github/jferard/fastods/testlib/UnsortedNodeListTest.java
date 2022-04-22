@@ -36,6 +36,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 
 public class UnsortedNodeListTest {
@@ -56,7 +57,7 @@ public class UnsortedNodeListTest {
 
     private Document parse(final String xml) throws IOException, SAXException {
         return this.builder.parse(new ByteArrayInputStream(
-                xml.getBytes(Util.UTF_8)));
+                xml.getBytes(StandardCharsets.UTF_8)));
     }
 
 

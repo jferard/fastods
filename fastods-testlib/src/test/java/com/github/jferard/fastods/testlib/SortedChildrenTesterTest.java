@@ -37,6 +37,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 public class SortedChildrenTesterTest {
     private ChildrenTester tester;
@@ -105,7 +106,7 @@ public class SortedChildrenTesterTest {
 
     private Node getNode(final String s) throws SAXException, IOException {
         final Document document =
-                this.builder.parse(new ByteArrayInputStream(s.getBytes(Util.UTF_8)));
+                this.builder.parse(new ByteArrayInputStream(s.getBytes(StandardCharsets.UTF_8)));
         return document.getFirstChild();
     }
 }

@@ -30,7 +30,6 @@ import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TestHelper;
 import com.github.jferard.fastods.odselement.ManifestElement;
 import com.github.jferard.fastods.style.GraphicStyle;
-import com.github.jferard.fastods.util.CharsetUtil;
 import com.github.jferard.fastods.util.SVGRectangle;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.easymock.Capture;
@@ -43,6 +42,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -116,7 +116,7 @@ public class InsertHelperTest {
 
     @Test
     public void testInsertObject() throws IOException {
-        final byte[] content = (XMLUtil.XML_PROLOG + "\n<root/>").getBytes(CharsetUtil.UTF_8);
+        final byte[] content = (XMLUtil.XML_PROLOG + "\n<root/>").getBytes(StandardCharsets.UTF_8);
         final byte[] bs = this.createAlmostEmptyZipFile(content);
 
         final SVGRectangle rectangle = SVGRectangle.cm(0, 1, 2, 3);
@@ -124,7 +124,7 @@ public class InsertHelperTest {
 
         PowerMock.resetAll();
         this.document.addExtraFile("object/content.xml", null, content);
-        this.document.addExtraObject("object", "media/type", "1.0");
+        this.document.addExtraObjectReference("object", "media/type", "1.0");
         this.table.addShape(EasyMock.capture(df));
 
         PowerMock.replayAll();

@@ -33,6 +33,7 @@ import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 public class MacroModuleTest {
     @Test
@@ -63,6 +64,6 @@ public class MacroModuleTest {
                 " PUBLIC \"-//OpenOffice.org//DTD OfficeDocument 1.0//EN\" \"module" +
                 ".dtd\"><script:module xmlns:script=\"http://openoffice.org/2000/script\" " +
                 "script:name=\"n\" script:language=\"l\" script:moduleType=\"normal\">module " +
-                "content</script:module>", new String(bs.getValue(), CharsetUtil.UTF_8));
+                "content</script:module>", new String(bs.getValue(), StandardCharsets.UTF_8));
     }
 }

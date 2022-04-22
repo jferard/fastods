@@ -27,6 +27,7 @@ package com.github.jferard.fastods.util;
 import com.github.jferard.fastods.OdsDocument;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * A module
@@ -85,7 +86,7 @@ public class MacroModule {
         sb.append(">");
         sb.append(this.code);
         sb.append("</script:module>");
-        return sb.toString().getBytes(CharsetUtil.UTF_8);
+        return sb.toString().getBytes(StandardCharsets.UTF_8);
     }
 
     /**

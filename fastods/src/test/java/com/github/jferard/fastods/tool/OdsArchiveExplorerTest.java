@@ -24,16 +24,18 @@
 
 package com.github.jferard.fastods.tool;
 
+import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.odselement.ManifestElement;
-import com.github.jferard.fastods.util.CharsetUtil;
 import com.github.jferard.fastods.util.FileUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.junit.Assert;
 import org.junit.Test;
+import org.powermock.api.easymock.PowerMock;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -47,7 +49,7 @@ public class OdsArchiveExplorerTest {
 
     @Test
     public void test() throws IOException {
-        final byte[] bytes = this.createArchiveAsBytes();
+        final byte[] bytes = this.createArchiveAsBytes(MANIFEST);
         final OdsArchiveExplorer ae =
                 new OdsArchiveExplorer(FileUtil.create(), new ByteArrayInputStream(bytes));
         final Map<String, OdsArchiveExplorer.OdsFile> fileNyName = ae.explore();
@@ -57,11 +59,11 @@ public class OdsArchiveExplorerTest {
         Assert.assertEquals(this.getOdsFile("temp2", "media/type2",
                 new byte[]{0x02}), fileNyName.get("temp2"));
         Assert.assertEquals(this.getOdsFile(ManifestElement.META_INF_MANIFEST_XML, null,
-                MANIFEST.getBytes(CharsetUtil.UTF_8)),
+                        MANIFEST.getBytes(StandardCharsets.UTF_8)),
                 fileNyName.get(ManifestElement.META_INF_MANIFEST_XML));
     }
 
-    private byte[] createArchiveAsBytes() throws IOException {
+    private byte[] createArchiveAsBytes(final String manifest) throws IOException {
         final ByteArrayOutputStream bos = new ByteArrayOutputStream(1024);
         final ZipOutputStream zos = new ZipOutputStream(bos);
         zos.setMethod(ZipOutputStream.DEFLATED);
@@ -69,12 +71,100 @@ public class OdsArchiveExplorerTest {
         zos.putNextEntry(new ZipEntry("temp1"));
         zos.write(1);
         zos.putNextEntry(new ZipEntry(ManifestElement.META_INF_MANIFEST_XML));
-        zos.write(MANIFEST.getBytes(CharsetUtil.UTF_8));
+        zos.write(manifest.getBytes(StandardCharsets.UTF_8));
         zos.putNextEntry(new ZipEntry("temp2"));
         zos.write(2);
         zos.finish();
         zos.close();
         return bos.toByteArray();
+    }
+
+    @Test
+    public void testBadManifest() throws IOException {
+        final byte[] bytes = this.createArchiveAsBytes("foo");
+        final OdsArchiveExplorer ae =
+                new OdsArchiveExplorer(FileUtil.create(), new ByteArrayInputStream(bytes));
+        final Map<String, OdsArchiveExplorer.OdsFile> fileNyName = ae.explore();
+        Assert.assertEquals(3, fileNyName.size());
+        Assert.assertEquals(this.getOdsFile("temp1", null,
+                new byte[]{0x01}), fileNyName.get("temp1"));
+        Assert.assertEquals(this.getOdsFile("temp2", null,
+                new byte[]{0x02}), fileNyName.get("temp2"));
+        Assert.assertEquals(this.getOdsFile(ManifestElement.META_INF_MANIFEST_XML, null,
+                        "foo".getBytes(StandardCharsets.UTF_8)),
+                fileNyName.get(ManifestElement.META_INF_MANIFEST_XML));
+    }
+
+    @Test
+    public void testAddOdsFileToDocument() {
+        final OdsDocument document = PowerMock.createMock(OdsDocument.class);
+        final OdsArchiveExplorer.OdsFile f = new OdsArchiveExplorer.OdsFile("foo");
+        final byte[] bytes = "bar".getBytes(StandardCharsets.UTF_8);
+        f.setBytes(bytes);
+        f.setMediaType("mediatype");
+
+        PowerMock.resetAll();
+        document.addExtraFile("pfx/foo", "mediatype", bytes);
+
+        PowerMock.replayAll();
+        f.addToDocument(document, "pfx/");
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public void testAddEmptyOdsFileToDocument() {
+        final OdsDocument document = PowerMock.createMock(OdsDocument.class);
+        final OdsArchiveExplorer.OdsFile f = new OdsArchiveExplorer.OdsFile("foo");
+        f.setMediaType("mediatype");
+
+        PowerMock.resetAll();
+        document.addExtraObjectReference("pfx/foo", "mediatype", null);
+
+        PowerMock.replayAll();
+        f.addToDocument(document, "pfx/");
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public void testEqualsOdsFile() {
+        final byte[] bytes = "bar".getBytes(StandardCharsets.UTF_8);
+        final OdsArchiveExplorer.OdsFile f1 = new OdsArchiveExplorer.OdsFile("foo");
+        f1.setBytes(bytes);
+        f1.setMediaType("mediatype");
+        final OdsArchiveExplorer.OdsFile f2 = new OdsArchiveExplorer.OdsFile("foo");
+        f2.setBytes(bytes);
+        f2.setMediaType("mediatype");
+        final OdsArchiveExplorer.OdsFile f3 = new OdsArchiveExplorer.OdsFile("baz");
+        f3.setBytes(bytes);
+        f3.setMediaType("mediatype");
+        final OdsArchiveExplorer.OdsFile f4 = new OdsArchiveExplorer.OdsFile("foo");
+        f4.setBytes(bytes);
+        f4.setMediaType("mediatype2");
+        final OdsArchiveExplorer.OdsFile f5 = new OdsArchiveExplorer.OdsFile("foo");
+        f5.setBytes(null);
+        f5.setMediaType("mediatype");
+
+        Assert.assertEquals(f1, f1);
+        Assert.assertNotEquals(f1, new Object());
+        Assert.assertEquals(f1, f2);
+        Assert.assertEquals(f2, f1);
+        Assert.assertNotEquals(f1, f3);
+        Assert.assertNotEquals(f3, f1);
+        Assert.assertNotEquals(f1, f4);
+        Assert.assertNotEquals(f4, f1);
+        Assert.assertNotEquals(f1, f5);
+        Assert.assertNotEquals(f5, f1);
+    }
+
+    @Test
+    public void testHashOdsFile() {
+        final byte[] bytes = "bar".getBytes(StandardCharsets.UTF_8);
+        final OdsArchiveExplorer.OdsFile f1 = new OdsArchiveExplorer.OdsFile("foo");
+        f1.setBytes(bytes);
+        f1.setMediaType("mediatype");
+        Assert.assertEquals(2144566489, f1.hashCode());
     }
 
     private OdsArchiveExplorer.OdsFile getOdsFile(final String name, final String mediaType,

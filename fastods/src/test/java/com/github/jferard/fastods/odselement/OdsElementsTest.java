@@ -509,7 +509,7 @@ public class OdsElementsTest {
                 EasyMock.isA(ManifestEntryElement.class));
 
         PowerMock.replayAll();
-        this.odsElements.addExtraObject("path.xml", "text/xml", "1.0");
+        this.odsElements.addExtraObjectReference("path.xml", "text/xml", "1.0");
         this.odsElements.writeExtras(this.util, writer);
 
         PowerMock.verifyAll();

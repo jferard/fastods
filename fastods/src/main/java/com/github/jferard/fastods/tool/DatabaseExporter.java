@@ -46,6 +46,9 @@ import java.util.logging.Logger;
  * A tool to export databases.
  */
 public class DatabaseExporter {
+    /** Do not instantiate */
+    private DatabaseExporter() {}
+
     /**
      * Usage:
      * <p>
@@ -69,8 +72,7 @@ public class DatabaseExporter {
         }
         final String connectionString = args[0];
         final String documentName = args[1];
-        final Connection connection = DriverManager.getConnection(connectionString);
-        try {
+        try (final Connection connection = DriverManager.getConnection(connectionString)) {
             final OdsFactory odsFactory =
                     OdsFactory.create(Logger.getLogger("database"), Locale.US);
             final AnonymousOdsFileWriter writer = odsFactory.createWriter();
@@ -80,10 +82,7 @@ public class DatabaseExporter {
             } finally {
                 writer.saveAs(documentName);
             }
-        } finally {
-            connection.close();
         }
-
     }
 
     /**

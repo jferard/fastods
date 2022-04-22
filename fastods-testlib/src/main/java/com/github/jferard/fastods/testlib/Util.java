@@ -26,6 +26,7 @@ package com.github.jferard.fastods.testlib;
 
 import java.io.File;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -36,8 +37,6 @@ import java.util.Iterator;
  */
 public final class Util {
     public static final String XML_PROLOG = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
-
-    public static final Charset UTF_8 = Charset.forName("UTF-8");
 
     /**
      * @param dirName the name of the directory to create

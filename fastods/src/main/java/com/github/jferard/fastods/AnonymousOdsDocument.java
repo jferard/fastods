@@ -120,9 +120,9 @@ public final class AnonymousOdsDocument implements OdsDocument {
     }
 
     @Override
-    public void addExtraObject(final String fullPath, final String mediaType,
-                               final String version) {
-        this.commonOdsDocument.addExtraObject(fullPath, mediaType, version);
+    public void addExtraObjectReference(final String fullPath, final String mediaType,
+                                        final String version) {
+        this.commonOdsDocument.addExtraObjectReference(fullPath, mediaType, version);
     }
 
     @Override

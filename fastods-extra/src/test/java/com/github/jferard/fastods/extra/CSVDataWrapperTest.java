@@ -39,6 +39,7 @@ import org.powermock.api.easymock.PowerMock;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -268,7 +269,7 @@ public class CSVDataWrapperTest {
 
     private CSVDataWrapper getWrapper(final String value, final String type)
             throws MetaCSVReadException, MetaCSVDataException, MetaCSVParseException, IOException {
-        final byte[] bytes = ("VALUE\r\n" + value).getBytes(CharsetUtil.UTF_8);
+        final byte[] bytes = ("VALUE\r\n" + value).getBytes(StandardCharsets.UTF_8);
         final CSVDataWrapper dataWrapper =
                 new CSVDataWrapperBuilder(new ByteArrayInputStream(bytes))
                         .metaCSVDirectives("data,col/0/type," + type).build();

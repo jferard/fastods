@@ -29,14 +29,16 @@ import com.github.jferard.fastods.util.CharsetUtil;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.nio.charset.StandardCharsets;
+
 public class EntryAndDataTest {
     @Test
     public void test() {
         final UnregisteredOdsEntry entry = new UnregisteredOdsEntry("path");
         final EntryAndData ed =
-                new EntryAndData(entry, "data".getBytes(CharsetUtil.UTF_8));
+                new EntryAndData(entry, "data".getBytes(StandardCharsets.UTF_8));
         Assert.assertEquals(entry, ed.getEntry());
-        Assert.assertArrayEquals("data".getBytes(CharsetUtil.UTF_8), ed.getData());
+        Assert.assertArrayEquals("data".getBytes(StandardCharsets.UTF_8), ed.getData());
     }
 
 }

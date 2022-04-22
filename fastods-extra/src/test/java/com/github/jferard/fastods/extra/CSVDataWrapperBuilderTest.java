@@ -38,6 +38,7 @@ import org.powermock.api.easymock.PowerMock;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
 
 public class CSVDataWrapperBuilderTest {
@@ -57,7 +58,7 @@ public class CSVDataWrapperBuilderTest {
         this.finalizeWalker();
 
         PowerMock.replayAll();
-        final byte[] bytes = ("VALUE\r\n" + "T").getBytes(CharsetUtil.UTF_8);
+        final byte[] bytes = ("VALUE\r\n" + "T").getBytes(StandardCharsets.UTF_8);
         final CSVDataWrapper dataWrapper =
                 new CSVDataWrapperBuilder(new ByteArrayInputStream(bytes))
                         .metaCSVDirectives("data,col/0/type,boolean/T/F").build();
@@ -75,12 +76,12 @@ public class CSVDataWrapperBuilderTest {
         this.finalizeWalker();
 
         PowerMock.replayAll();
-        final byte[] bytes = ("VALUE\r\n" + "T").getBytes(CharsetUtil.UTF_8);
+        final byte[] bytes = ("VALUE\r\n" + "T").getBytes(StandardCharsets.UTF_8);
         final CSVDataWrapper dataWrapper =
                 new CSVDataWrapperBuilder(new ByteArrayInputStream(bytes))
                         .metaCSVInputStream(new ByteArrayInputStream(
                                 "domain,key,value\r\ndata,col/0/type,boolean/T/F\r\n"
-                                        .getBytes(CharsetUtil.UTF_8))).build();
+                                        .getBytes(StandardCharsets.UTF_8))).build();
         dataWrapper.addToTable(this.walker);
 
         PowerMock.verifyAll();
@@ -113,7 +114,7 @@ public class CSVDataWrapperBuilderTest {
         this.walker.nextRow();
 
         PowerMock.replayAll();
-        final byte[] bytes = ("VALUE\r\nT\r\nF\r\nT\r\nT\r\nT\r\nF").getBytes(CharsetUtil.UTF_8);
+        final byte[] bytes = ("VALUE\r\nT\r\nF\r\nT\r\nT\r\nT\r\nF").getBytes(StandardCharsets.UTF_8);
         final CSVDataWrapper dataWrapper =
                 new CSVDataWrapperBuilder(new ByteArrayInputStream(bytes))
                         .autoFilterRangeName("range_name").logger(
@@ -121,7 +122,7 @@ public class CSVDataWrapperBuilderTest {
                         .max(2)
                         .metaCSVInputStream(new ByteArrayInputStream(
                                 "domain,key,value\r\ndata,col/0/type,boolean/T/F\r\n"
-                                        .getBytes(CharsetUtil.UTF_8))).build();
+                                        .getBytes(StandardCharsets.UTF_8))).build();
         dataWrapper.addToTable(this.walker);
 
         PowerMock.verifyAll();
@@ -142,12 +143,12 @@ public class CSVDataWrapperBuilderTest {
         this.finalizeWalker();
 
         PowerMock.replayAll();
-        final byte[] bytes = ("VALUE\r\n" + "T").getBytes(CharsetUtil.UTF_8);
+        final byte[] bytes = ("VALUE\r\n" + "T").getBytes(StandardCharsets.UTF_8);
         final CSVDataWrapper dataWrapper =
                 new CSVDataWrapperBuilder(new ByteArrayInputStream(bytes)).noHeaderStyle()
                         .metaCSVInputStream(new ByteArrayInputStream(
                                 "domain,key,value\r\ndata,col/0/type,boolean/T/F\r\n"
-                                        .getBytes(CharsetUtil.UTF_8))).build();
+                                        .getBytes(StandardCharsets.UTF_8))).build();
         dataWrapper.addToTable(this.walker);
 
         PowerMock.verifyAll();

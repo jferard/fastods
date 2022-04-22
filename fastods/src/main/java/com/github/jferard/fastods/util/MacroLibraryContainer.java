@@ -27,6 +27,7 @@ package com.github.jferard.fastods.util;
 import com.github.jferard.fastods.OdsDocument;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 
@@ -87,6 +88,6 @@ public class MacroLibraryContainer {
             library.appendIndexLine(util, sb);
         }
         sb.append("</library:libraries>");
-        return sb.toString().getBytes(CharsetUtil.UTF_8);
+        return sb.toString().getBytes(StandardCharsets.UTF_8);
     }
 }

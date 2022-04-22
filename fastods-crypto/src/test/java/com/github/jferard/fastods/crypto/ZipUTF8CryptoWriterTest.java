@@ -28,7 +28,6 @@ import com.github.jferard.fastods.odselement.EncryptParameters;
 import com.github.jferard.fastods.odselement.StandardOdsEntry;
 import com.github.jferard.fastods.odselement.UnregisteredOdsEntry;
 import com.github.jferard.fastods.odselement.UnregisteredStoredEntry;
-import com.github.jferard.fastods.util.CharsetUtil;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 import com.github.jferard.fastods.util.ZipUTF8WriterBuilderImpl;
@@ -42,10 +41,10 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 
 public class ZipUTF8CryptoWriterTest {
     @Test
@@ -84,7 +83,7 @@ public class ZipUTF8CryptoWriterTest {
             NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException,
             InvalidAlgorithmParameterException {
         final StandardEncrypter encrypter = PowerMock.createMock(StandardEncrypter.class);
-        final byte[] data = "foo".getBytes(CharsetUtil.UTF_8);
+        final byte[] data = "foo".getBytes(StandardCharsets.UTF_8);
         final char[] password = {65, 66, 67};
         final byte[] hashedPassword = Util.getPasswordChecksum(password, "SHA-256");
         final byte[] salt = new byte[16];
@@ -96,9 +95,9 @@ public class ZipUTF8CryptoWriterTest {
         EasyMock.expect(encrypter.compress(data)).andReturn(data);
         EasyMock.expect(encrypter.encrypt(data, hashedPassword, salt, iv
                 ))
-                .andReturn("bar".getBytes(CharsetUtil.UTF_8));
+                .andReturn("bar".getBytes(StandardCharsets.UTF_8));
         EasyMock.expect(encrypter.getDataChecksum(data))
-                .andReturn("baz".getBytes(CharsetUtil.UTF_8));
+                .andReturn("baz".getBytes(StandardCharsets.UTF_8));
         EasyMock.expect(encrypter.buildParameters(3, 3, 1996459178l,
                 "YmF6", "AAAAAAAAAAAAAAAAAAAAAA==", "AAAAAAAAAAAAAAAAAAAAAA==")).andReturn(null);
 
@@ -160,9 +159,9 @@ public class ZipUTF8CryptoWriterTest {
             InvalidAlgorithmParameterException {
         final StandardEncrypter encrypter = PowerMock.createMock(StandardEncrypter.class);
         final EncryptParameters parameters = PowerMock.createMock(EncryptParameters.class);
-        final byte[] data = "foobar".getBytes(CharsetUtil.UTF_8);
-        final byte[] cdata = "foo".getBytes(CharsetUtil.UTF_8);
-        final byte[] cedata = "bar".getBytes(CharsetUtil.UTF_8);
+        final byte[] data = "foobar".getBytes(StandardCharsets.UTF_8);
+        final byte[] cdata = "foo".getBytes(StandardCharsets.UTF_8);
+        final byte[] cedata = "bar".getBytes(StandardCharsets.UTF_8);
         final char[] password = {65, 66, 67};
         final byte[] hashedPassword = Util.getPasswordChecksum(password, "SHA-256");
         final byte[] salt = new byte[16];
@@ -175,7 +174,7 @@ public class ZipUTF8CryptoWriterTest {
         EasyMock.expect(encrypter.encrypt(cdata, hashedPassword, salt, iv
         )).andReturn(cedata);
         EasyMock.expect(encrypter.getDataChecksum(cdata))
-                .andReturn("baz".getBytes(CharsetUtil.UTF_8));
+                .andReturn("baz".getBytes(StandardCharsets.UTF_8));
         EasyMock.expect(encrypter.buildParameters(6, 3, 1996459178l,
                         "YmF6", "AAAAAAAAAAAAAAAAAAAAAA==", "AAAAAAAAAAAAAAAAAAAAAA=="))
                 .andReturn(parameters);
@@ -240,9 +239,9 @@ public class ZipUTF8CryptoWriterTest {
             InvalidAlgorithmParameterException {
         final StandardEncrypter encrypter = PowerMock.createMock(StandardEncrypter.class);
         final EncryptParameters parameters = PowerMock.createMock(EncryptParameters.class);
-        final byte[] data = "foobar".getBytes(CharsetUtil.UTF_8);
-        final byte[] cdata = "foo".getBytes(CharsetUtil.UTF_8);
-        final byte[] cedata = "bar".getBytes(CharsetUtil.UTF_8);
+        final byte[] data = "foobar".getBytes(StandardCharsets.UTF_8);
+        final byte[] cdata = "foo".getBytes(StandardCharsets.UTF_8);
+        final byte[] cedata = "bar".getBytes(StandardCharsets.UTF_8);
         final char[] password = {65, 66, 67};
         final byte[] hashedPassword = Util.getPasswordChecksum(password, "SHA-256");
         final byte[] salt = new byte[16];
@@ -255,7 +254,7 @@ public class ZipUTF8CryptoWriterTest {
         EasyMock.expect(encrypter.encrypt(cdata, hashedPassword, salt, iv
         )).andReturn(cedata);
         EasyMock.expect(encrypter.getDataChecksum(cdata))
-                .andReturn("baz".getBytes(CharsetUtil.UTF_8));
+                .andReturn("baz".getBytes(StandardCharsets.UTF_8));
         EasyMock.expect(encrypter.buildParameters(6, 3, 1996459178l,
                         "YmF6", "AAAAAAAAAAAAAAAAAAAAAA==", "AAAAAAAAAAAAAAAAAAAAAA=="))
                 .andReturn(parameters);

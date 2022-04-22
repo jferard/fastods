@@ -37,6 +37,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 public class UnsortedChildrenTesterTest {
     private Node s;
@@ -52,7 +53,7 @@ public class UnsortedChildrenTesterTest {
         this.builder = factory.newDocumentBuilder();
         final Document document = this.builder
                 .parse(new ByteArrayInputStream(
-                        ("<r a='1' b='2'><s/><t/></r>").getBytes(Util.UTF_8)));
+                        ("<r a='1' b='2'><s/><t/></r>").getBytes(StandardCharsets.UTF_8)));
         this.r = document.getFirstChild();
     }
 
@@ -114,7 +115,7 @@ public class UnsortedChildrenTesterTest {
 
     private Node getNode(final String s) throws SAXException, IOException {
         final Document document =
-                this.builder.parse(new ByteArrayInputStream(s.getBytes(Util.UTF_8)));
+                this.builder.parse(new ByteArrayInputStream(s.getBytes(StandardCharsets.UTF_8)));
         return document.getFirstChild();
     }
 }

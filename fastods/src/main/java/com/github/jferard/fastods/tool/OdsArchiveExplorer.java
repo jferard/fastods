@@ -42,6 +42,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -74,25 +75,6 @@ class OdsArchiveExplorer {
         return this.fileByName;
     }
 
-    private void putBytes(final String name, final byte[] bytes) {
-        final OdsFile odsFile = this.getOrCreateOdsFile(name);
-        odsFile.setBytes(bytes);
-    }
-
-    private void putMediaType(final String name, final String mediaType) {
-        final OdsFile odsFile = this.getOrCreateOdsFile(name);
-        odsFile.setMediaType(mediaType);
-    }
-
-    private OdsFile getOrCreateOdsFile(final String name) {
-        OdsFile odsFile = this.fileByName.get(name);
-        if (odsFile == null) {
-            odsFile = new OdsFile(name);
-            this.fileByName.put(name, odsFile);
-        }
-        return odsFile;
-    }
-
     private void extractMediaTypeByName(final byte[] bytes) throws IOException {
         try {
             final Document manifest = DocumentBuilderFactory.newInstance().newDocumentBuilder()
@@ -115,6 +97,25 @@ class OdsArchiveExplorer {
         }
     }
 
+    private void putBytes(final String name, final byte[] bytes) {
+        final OdsFile odsFile = this.getOrCreateOdsFile(name);
+        odsFile.setBytes(bytes);
+    }
+
+    private void putMediaType(final String name, final String mediaType) {
+        final OdsFile odsFile = this.getOrCreateOdsFile(name);
+        odsFile.setMediaType(mediaType);
+    }
+
+    private OdsFile getOrCreateOdsFile(final String name) {
+        OdsFile odsFile = this.fileByName.get(name);
+        if (odsFile == null) {
+            odsFile = new OdsFile(name);
+            this.fileByName.put(name, odsFile);
+        }
+        return odsFile;
+    }
+
     static class OdsFile {
         private final String name;
         private byte[] bytes;
@@ -132,9 +133,14 @@ class OdsArchiveExplorer {
             this.mediaType = mediaType;
         }
 
+        /**
+         * Add this file to an existing document
+         * @param document the destination document
+         * @param prefix the prefix in ths manifest
+         */
         public void addToDocument(final OdsDocument document, final String prefix) {
             if (this.bytes == null) {
-                document.addExtraObject(prefix + this.name, this.mediaType, null);
+                document.addExtraObjectReference(prefix + this.name, this.mediaType, null);
             } else {
                 document.addExtraFile(prefix + this.name, this.mediaType, this.bytes);
             }
@@ -142,7 +148,7 @@ class OdsArchiveExplorer {
 
         @Override
         public int hashCode() {
-            return EqualityUtil.hashObjects(this.name, this.mediaType, this.bytes);
+            return EqualityUtil.hashObjects(this.name, this.mediaType);
         }
 
         @Override

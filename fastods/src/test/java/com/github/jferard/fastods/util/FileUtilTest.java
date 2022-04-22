@@ -29,6 +29,7 @@ import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 public class FileUtilTest {
     @Test
@@ -48,7 +49,7 @@ public class FileUtilTest {
 
     private void testCopyAux(final String text, final int bufferSize, final int startSize)
             throws IOException {
-        final byte[] expectedBytes = text.getBytes(CharsetUtil.UTF_8);
+        final byte[] expectedBytes = text.getBytes(StandardCharsets.UTF_8);
         final FileUtil fu = new FileUtil(bufferSize, startSize);
         final byte[] actualBytes = fu.readStream(new ByteArrayInputStream(expectedBytes));
         Assert.assertArrayEquals(expectedBytes, actualBytes);

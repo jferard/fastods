@@ -219,7 +219,7 @@ public interface OdsDocument extends StylesModeSetter {
      * @param mediaType the type of the object
      * @param version   the version
      */
-    void addExtraObject(String fullPath, String mediaType, String version);
+    void addExtraObjectReference(String fullPath, String mediaType, String version);
 
     /**
      * Add some events to the document

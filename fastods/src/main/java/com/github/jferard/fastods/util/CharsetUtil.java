@@ -25,23 +25,17 @@
 package com.github.jferard.fastods.util;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * A simple util for charsets.
  */
 public class CharsetUtil {
+    /** Do not instantiate */
+    private CharsetUtil() {}
+
     /**
      * name of the utf-8 encoding
      */
     public static final String UTF_8_NAME = "UTF-8";
-
-    /**
-     * the utf-8 encoding
-     */
-    public static final Charset UTF_8 = Charset.forName(UTF_8_NAME);
-
-    /**
-     * the ascii encoding
-     */
-    public static final Charset ASCII = Charset.forName("ASCII");
 }

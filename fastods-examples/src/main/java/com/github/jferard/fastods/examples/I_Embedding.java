@@ -43,6 +43,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import java.util.logging.Logger;
 
@@ -87,7 +88,7 @@ class I_Embedding {
         // Let's add a file for the fun:
         document.addExtraDir("FastODS/");
         document.addExtraFile("FastODS/fast.txt", "text/plain",
-                "Hello from FastODS!".getBytes(CharsetUtil.UTF_8));
+                "Hello from FastODS!".getBytes(StandardCharsets.UTF_8));
         //
         // You can check that the file was added with your favorite file archive viewer.
         //

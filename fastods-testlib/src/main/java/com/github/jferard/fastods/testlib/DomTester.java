@@ -34,6 +34,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 
 /**
  * A tester for nodes
@@ -210,6 +211,6 @@ public class DomTester {
         } else {
             wrapped = Util.XML_PROLOG + "<domtesterroot>" + s + "</domtesterroot>";
         }
-        return new ByteArrayInputStream((wrapped).getBytes(Util.UTF_8));
+        return new ByteArrayInputStream((wrapped).getBytes(StandardCharsets.UTF_8));
     }
 }

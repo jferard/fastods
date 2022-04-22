@@ -29,6 +29,7 @@ import org.bouncycastle.util.encoders.Base64;
 
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -49,7 +50,7 @@ public class Util {
             throws NoSuchAlgorithmException {
         final MessageDigest digest = MessageDigest.getInstance(algorithm);
         final CharBuffer charBuffer = CharBuffer.wrap(password);
-        final ByteBuffer byteBuffer = CharsetUtil.UTF_8.encode(charBuffer);
+        final ByteBuffer byteBuffer = StandardCharsets.UTF_8.encode(charBuffer);
         final byte[] bytes = Arrays.copyOfRange(byteBuffer.array(),
                 byteBuffer.position(), byteBuffer.limit());
         digest.update(bytes);

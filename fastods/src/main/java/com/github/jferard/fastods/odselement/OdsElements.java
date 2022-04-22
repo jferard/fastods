@@ -584,8 +584,8 @@ public class OdsElements implements StylesContainer {
      * @param mediaType         the type of the object
      * @param version           the version
      */
-    public void addExtraObject(final String fullDirectoryPath, final String mediaType,
-                               final String version) {
+    public void addExtraObjectReference(final String fullDirectoryPath, final String mediaType,
+                                        final String version) {
         final String fullPath = this.pathWithSlash(fullDirectoryPath);
         final ManifestEntryElement element = new ManifestEntryElement(
                 new StandardOdsEntry(fullPath, mediaType, version));

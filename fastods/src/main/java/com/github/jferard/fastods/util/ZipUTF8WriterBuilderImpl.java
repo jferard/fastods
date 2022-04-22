@@ -31,6 +31,7 @@ import java.io.BufferedWriter;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.util.zip.Deflater;
 import java.util.zip.ZipOutputStream;
 
@@ -75,7 +76,7 @@ public class ZipUTF8WriterBuilderImpl implements ZipUTF8WriterBuilder {
         final ZipOutputStream zipOut = new ZipOutputStream(bufferedOut);
         zipOut.setMethod(ZipOutputStream.DEFLATED);
         zipOut.setLevel(this.level);
-        final Writer writer = new OutputStreamWriter(zipOut, CharsetUtil.UTF_8);
+        final Writer writer = new OutputStreamWriter(zipOut, StandardCharsets.UTF_8);
         final Writer bufferedWriter;
         switch (this.writerBufferSize) {
             case NO_BUFFER:

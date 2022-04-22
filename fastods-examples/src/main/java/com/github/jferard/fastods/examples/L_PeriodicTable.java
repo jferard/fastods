@@ -59,6 +59,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -300,7 +301,7 @@ class L_PeriodicTable {
     private static String resourceToString(final String resourceName) throws IOException {
         final InputStream in = L_PeriodicTable.class.getClassLoader().getResourceAsStream(resourceName);
         assert in != null : "Can't find resource "+resourceName;
-        final Reader reader = new InputStreamReader(in, CharsetUtil.UTF_8);
+        final Reader reader = new InputStreamReader(in, StandardCharsets.UTF_8);
         final char[] arr = new char[8 * 1024];
         final StringBuilder sb = new StringBuilder();
         int count = reader.read(arr, 0, arr.length);
