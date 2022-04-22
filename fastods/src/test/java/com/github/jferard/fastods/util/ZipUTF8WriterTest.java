@@ -34,6 +34,7 @@ import org.powermock.api.easymock.PowerMock;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.zip.ZipOutputStream;
 
 public class ZipUTF8WriterTest {
@@ -56,10 +57,21 @@ public class ZipUTF8WriterTest {
         this.zipUTF8Writer.setComment("comment");
         this.zipUTF8Writer.putAndRegisterNextEntry(this.getManifestEntry());
         this.zipUTF8Writer.append("text", 0, 2);
-        Assert.assertEquals(this.writer.toString(), "te");
+        Assert.assertEquals("te", this.writer.toString());
         Assert.assertEquals(31, this.out.toByteArray().length);
         this.zipUTF8Writer.closeEntry();
         this.zipUTF8Writer.finish();
+    }
+
+    @Test
+    public final void testWrite() throws IOException {
+        this.zipUTF8Writer.putNextEntry(this.getManifestEntry());
+        Assert.assertEquals(31, this.out.toByteArray().length);
+        this.zipUTF8Writer.write("text".getBytes(StandardCharsets.UTF_8));
+        this.zipUTF8Writer.flush();
+        this.zipUTF8Writer.closeEntry();
+        this.zipUTF8Writer.finish();
+        Assert.assertEquals(258, this.out.toByteArray().length);
     }
 
     private OdsEntry getManifestEntry() {

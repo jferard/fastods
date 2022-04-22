@@ -29,6 +29,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -127,6 +128,38 @@ public class MultiContainerTest {
     }
 
     @Test
+    public final void testAddTwiceCreate() {
+        PowerMock.resetAll();
+        this.logger.severe("MultiContainer put(a, 1) in CONTENT_AUTOMATIC_STYLES");
+
+        PowerMock.replayAll();
+        this.container.debug();
+        this.container.setMode(Container.Mode.CREATE);
+        final boolean ret1 = this.container.add("a", Dest.CONTENT_AUTOMATIC_STYLES, 1);
+        final boolean ret2 = this.container.add("a", Dest.CONTENT_AUTOMATIC_STYLES, 1);
+
+        PowerMock.verifyAll();
+        Assert.assertTrue(ret1);
+        Assert.assertFalse(ret2);
+    }
+
+    @Test
+    public final void testAddTwiceUpdateClosed() {
+        PowerMock.resetAll();
+        this.logger.severe("MultiContainer put(a, 1) in CONTENT_AUTOMATIC_STYLES");
+
+        PowerMock.replayAll();
+        this.container.debug();
+        final boolean ret1 = this.container.add("a", Dest.CONTENT_AUTOMATIC_STYLES, 1);
+        this.container.freeze();
+        Assert.assertThrows(IllegalStateException.class,
+                () -> this.container.add("a", Dest.STYLES_AUTOMATIC_STYLES, 1));
+
+        PowerMock.verifyAll();
+        Assert.assertTrue(ret1);
+    }
+
+    @Test
     public final void testGet() {
         this.container.add("a", Dest.CONTENT_AUTOMATIC_STYLES, 1);
         Assert.assertEquals(Integer.valueOf(1),
@@ -137,6 +170,19 @@ public class MultiContainerTest {
         final Map<String, Integer> m = new HashMap<String, Integer>();
         m.put("a", 1);
         Assert.assertEquals(m, this.container.getValueByKey(Dest.CONTENT_AUTOMATIC_STYLES));
+    }
+
+    @Test
+    public final void testToString() {
+        this.container.add("a", Dest.CONTENT_AUTOMATIC_STYLES, 1);
+        Assert.assertTrue(Arrays.asList(
+                "{CONTENT_AUTOMATIC_STYLES={a=1}, STYLES_COMMON_STYLES={}, STYLES_AUTOMATIC_STYLES={}}",
+                "{CONTENT_AUTOMATIC_STYLES={a=1}, STYLES_AUTOMATIC_STYLES={}, STYLES_COMMON_STYLES={}}",
+                "{STYLES_COMMON_STYLES={}, CONTENT_AUTOMATIC_STYLES={a=1}, STYLES_AUTOMATIC_STYLES={}}",
+                "{STYLES_AUTOMATIC_STYLES={}, CONTENT_AUTOMATIC_STYLES={a=1}, STYLES_COMMON_STYLES={}}",
+                "{STYLES_COMMON_STYLES={}, STYLES_AUTOMATIC_STYLES={}, CONTENT_AUTOMATIC_STYLES={a=1}}",
+                "{STYLES_AUTOMATIC_STYLES={}, STYLES_COMMON_STYLES={}, CONTENT_AUTOMATIC_STYLES={a=1}}"
+                ).contains(this.container.toString()));
     }
 
     public enum Dest {

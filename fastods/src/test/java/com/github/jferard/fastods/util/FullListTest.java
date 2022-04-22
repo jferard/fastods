@@ -23,6 +23,7 @@
  */
 package com.github.jferard.fastods.util;
 
+import org.apache.commons.compress.utils.Lists;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -33,7 +34,6 @@ import java.util.List;
 import java.util.ListIterator;
 
 public class FullListTest {
-
     @Test
     public final void testAddBlank() {
         final String be = "blank";
@@ -126,7 +126,7 @@ public class FullListTest {
     }
 
     @Test
-    public final void testIterator() {
+    public final void testListIterator() {
         final String be = "blank";
         final List<String> fl = FullList.<String>builder().blankElement(be).capacity(10).build();
         fl.set(100, "non blank2");
@@ -312,5 +312,22 @@ public class FullListTest {
         Assert.assertEquals(0, fl.usedSize());
         Assert.assertEquals(Integer.MAX_VALUE, fl.size());
         Assert.assertFalse(fl.isEmpty());
+    }
+
+    @Test
+    public final void testCapacity() {
+        final FullList<Integer> fl = FullList.newListWithCapacity(5);
+        Assert.assertEquals(5, fl.capacity());
+        for (int i=0; i<10; i++) {
+            fl.add(i);
+        }
+        Assert.assertEquals(10, fl.capacity());
+    }
+
+    @Test
+    public final void testIterator() {
+        final FullList<Integer> fl = FullList.newListWithCapacity(5, 1, 2, 3, 4, 5, 6);
+        Assert.assertEquals(6, fl.capacity());
+        Assert.assertEquals(Arrays.asList(1, 2, 3, 4, 5, 6), Lists.newArrayList(fl.iterator()));
     }
 }

@@ -120,12 +120,7 @@ public final class ColorHelper {
         final String hv = hexValue.toLowerCase(Locale.US);
         Color color = this.colorByHexValue.get(hv);
         if (color == null) {
-            color = new Color() {
-                @Override
-                public String getValue() {
-                    return hv;
-                }
-            };
+            color = () -> hv;
             this.colorByHexValue.put(hv, color);
         }
         return color;

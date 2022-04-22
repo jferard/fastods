@@ -30,6 +30,7 @@ import java.io.IOException;
 
 /**
  * 9.6.8 table:data-pilot-level
+ * TODO: make it customisable
  *
  * @author J. Férard
  */
@@ -45,20 +46,16 @@ public class PilotTableLevel implements XMLConvertible {
             throws IOException {
         appendable.append("<table:data-pilot-level"); // calcext:repeat-item-labels=\"false\"");
         util.appendAttribute(appendable, "table:show-empty", this.showEmpty);
-        if (this.showEmpty) {
-            appendable.append("/>");
-        } else {
-            appendable.append(">");
-            appendable.append("<table:data-pilot-display-info table:enabled=\"false\" " +
-                    "table:display-member-mode=\"from-top\" table:member-count=\"0\" " +
-                    "table:data-field=\"\"/>");
-            appendable.append("<table:data-pilot-sort-info " +
-                    "table:order=\"ascending\" table:sort-mode=\"name\"/>");
-            appendable
-                    .append("<table:data-pilot" + "-layout-info table:add-empty-lines=\"false\" " +
-                            "table:layout-mode=\"tabular-layout\"/>");
-            appendable.append("</table:data-pilot-level>");
-        }
+        appendable.append(">");
+        appendable.append("<table:data-pilot-display-info table:enabled=\"false\" " +
+                "table:display-member-mode=\"from-top\" table:member-count=\"0\" " +
+                "table:data-field=\"\"/>");
+        appendable.append("<table:data-pilot-sort-info " +
+                "table:order=\"ascending\" table:sort-mode=\"name\"/>");
+        appendable
+                .append("<table:data-pilot-layout-info table:add-empty-lines=\"false\" " +
+                        "table:layout-mode=\"tabular-layout\"/>");
+        appendable.append("</table:data-pilot-level>");
         //         util.appendAttribute(appendable, "table:is-data-layout-field", true);
     }
 }

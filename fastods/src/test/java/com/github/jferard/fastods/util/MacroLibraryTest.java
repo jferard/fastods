@@ -58,6 +58,31 @@ public class MacroLibraryTest {
     }
 
     @Test
+    public void testSimpleAdd() throws IOException {
+        final OdsDocument document = PowerMock.createMock(OdsDocument.class);
+        final MacroLibrary lib =
+                MacroLibrary.builder().modules(Collections.singletonList(this.module)).build();
+        final XMLUtil util = XMLUtil.create();
+
+        PowerMock.resetAll();
+        document.addExtraDir("Basic/Standard/");
+        this.module.appendIndexLine(EasyMock.eq(util), EasyMock.isA(StringBuilder.class));
+        document.addExtraFile("Basic/Standard/script-lb.xml", "text/xml",
+                ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+                        "<!DOCTYPE library:library PUBLIC \"-//OpenOffice.org//DTD OfficeDocument 1.0//EN\" \"library.dtd\">" +
+                        "<library:library xmlns:library=\"http://openoffice.org/2000/library\" " +
+                        "library:name=\"Standard\" library:readonly=\"false\" " +
+                        "library:passwordprotected=\"false\">" +
+                        "</library:library>").getBytes(StandardCharsets.UTF_8));
+        this.module.add(util, document, "Basic/Standard/");
+
+        PowerMock.replayAll();
+        lib.add(util, document);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
     public void testAdd() throws IOException {
         final OdsDocument document = PowerMock.createMock(OdsDocument.class);
         final MacroLibrary lib = new MacroLibrary("ml", false,

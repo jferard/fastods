@@ -25,11 +25,22 @@ package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.util.ColorHelper;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
+import java.lang.reflect.Field;
+
 public class ColorTest {
+    @Before
+    public void setUp() throws NoSuchFieldException, IllegalAccessException {
+        final Class<ColorHelper> clazz = ColorHelper.class;
+        final Field helper = clazz.getDeclaredField("helper");
+        helper.setAccessible(true);
+        helper.set(null, null);
+    }
+
     @Test
-    public final void test() {
+    public final void testRGB() {
         Assert.assertEquals("#ffffff", ColorHelper.fromRGB(255, 255, 255).getValue());
         Assert.assertEquals("#ffffff", ColorHelper.fromRGB(2550, 2550, 2550).getValue());
         Assert.assertEquals("#000000", ColorHelper.fromRGB(0, 0, 0).getValue());
@@ -37,4 +48,10 @@ public class ColorTest {
         Assert.assertEquals("#174b81", ColorHelper.fromRGB(23, 75, 129).getValue());
     }
 
+    @Test
+    public final void testString() {
+        Assert.assertEquals("#ffffff", ColorHelper.fromString("#ffffff").getValue());
+        Assert.assertEquals("#000000", ColorHelper.fromString("#000000").getValue());
+        Assert.assertEquals("#174b81", ColorHelper.fromString("#174b81").getValue());
+    }
 }

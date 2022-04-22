@@ -85,7 +85,7 @@ public class MacroLibrary {
             module.appendIndexLine(util, sb);
         }
         sb.append("</library:library>");
-        return sb.toString().getBytes(StandardCharsets.UTF_8);
+       return sb.toString().getBytes(StandardCharsets.UTF_8);
     }
 
     /**

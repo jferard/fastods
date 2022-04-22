@@ -29,6 +29,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 public class XMLUtilTest {
     private XMLUtil xu;
@@ -62,6 +63,12 @@ public class XMLUtilTest {
     public void testEscStringAttr() throws IOException {
         this.xu.appendEAttribute(this.sb, "attr", "&");
         Assert.assertEquals(" attr=\"&amp;\"", this.sb.toString());
+    }
+
+    @Test
+    public void testStringAttrs() throws IOException {
+        this.xu.appendAttribute(this.sb, "attr", Arrays.asList("value1", "value2", "value2"), " ");
+        Assert.assertEquals(" attr=\"value1 value2 value2\"", this.sb.toString());
     }
 
     @Test

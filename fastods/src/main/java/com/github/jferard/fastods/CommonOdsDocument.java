@@ -36,6 +36,7 @@ import com.github.jferard.fastods.util.Container;
 import com.github.jferard.fastods.util.PilotTable;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.ListIterator;
 

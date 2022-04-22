@@ -36,6 +36,9 @@ import java.util.Iterator;
  * This class implements the infamous missing feature of Java 6 Strings.
  */
 public class StringUtil {
+    /** Do not instantiate */
+    private StringUtil() {}
+
     /**
      * Join a collection on a separator
      * @param <T> the type of the objects
