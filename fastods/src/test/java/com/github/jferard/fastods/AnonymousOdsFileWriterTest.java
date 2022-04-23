@@ -44,6 +44,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.channels.Channels;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -358,7 +359,7 @@ public class AnonymousOdsFileWriterTest {
 
         PowerMock.resetAll();
         TestHelper.initMockDocument(this.odsElements);
-        EasyMock.expect(this.builder.build(EasyMock.isA(FileOutputStream.class))).andReturn(z);
+        EasyMock.expect(this.builder.build(EasyMock.isA(OutputStream.class))).andReturn(z);
 
         this.odsElements
                 .createEmptyElements(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));

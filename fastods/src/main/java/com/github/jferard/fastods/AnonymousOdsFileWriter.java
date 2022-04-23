@@ -31,9 +31,11 @@ import com.github.jferard.fastods.util.ZipUTF8WriterImpl;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -118,7 +120,7 @@ public class AnonymousOdsFileWriter {
      * @throws IOException If an I/O error occurs during the save
      */
     public void saveAs(final String filename) throws IOException {
-        this.saveAs(new File(filename));
+        this.saveAs(Paths.get(filename));
     }
 
     /**
@@ -126,10 +128,25 @@ public class AnonymousOdsFileWriter {
      *
      * @param file the destination file
      * @throws IOException If an I/O error occurs
+     * @deprecated use `saveAs(path)`
      */
+    @Deprecated
     public void saveAs(final File file) throws IOException {
+        if (file == null) {
+            throw new IOException("File is null");
+        }
+        this.saveAs(file.toPath());
+    }
+
+    /**
+     * Save the new file.
+     *
+     * @param path the destination path
+     * @throws IOException If an I/O error occurs
+     */
+    public void saveAs(final Path path) throws IOException {
         try {
-            final FileOutputStream out = new FileOutputStream(file);
+            final OutputStream out = Files.newOutputStream(path);
             try {
                 this.save(out);
             } finally {
@@ -137,7 +154,7 @@ public class AnonymousOdsFileWriter {
                 out.close();
             }
         } catch (final FileNotFoundException e) {
-            this.logger.log(Level.SEVERE, "Can't open " + file, e);
+            this.logger.log(Level.SEVERE, "Can't open " + path, e);
             throw new IOException(e);
         } catch (final NullPointerException e) {
             this.logger.log(Level.SEVERE, "No file", e);
@@ -155,7 +172,7 @@ public class AnonymousOdsFileWriter {
      */
     public void saveAs(final String filename, final ZipUTF8WriterBuilder builder)
             throws IOException {
-        this.saveAs(new File(filename), builder);
+        this.saveAs(Paths.get(filename), builder);
     }
 
     /**
@@ -165,10 +182,19 @@ public class AnonymousOdsFileWriter {
      * @param builder  a builder for the ZipOutputStream and the Writer (buffers,
      *                 level, ...)
      * @throws IOException if the file was not saved
+     * @deprecated use `saveAs(path, builder)`
      */
+    @Deprecated
     public void saveAs(final File file, final ZipUTF8WriterBuilder builder) throws IOException {
+        if (file == null) {
+            throw new IOException("File is null");
+        }
+        this.saveAs(file.toPath(), builder);
+    }
+
+    private void saveAs(final Path path, final ZipUTF8WriterBuilder builder) throws IOException {
         try {
-            final FileOutputStream out = new FileOutputStream(file);
+            final OutputStream out = Files.newOutputStream(path);
             final ZipUTF8Writer writer = builder.build(out);
             try {
                 this.save(writer);
@@ -177,7 +203,7 @@ public class AnonymousOdsFileWriter {
                 writer.close();
             }
         } catch (final FileNotFoundException e) {
-            this.logger.log(Level.SEVERE, "Can't open " + file, e);
+            this.logger.log(Level.SEVERE, "Can't open " + path, e);
             throw new IOException(e);
         }
     }
