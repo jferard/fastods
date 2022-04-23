@@ -35,8 +35,9 @@ import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.testlib.ZipUTF8WriterMockHandler;
 import com.github.jferard.fastods.util.AutoFilter;
-import com.github.jferard.fastods.util.PilotTable;
 import com.github.jferard.fastods.util.IntegerRepresentationCache;
+import com.github.jferard.fastods.util.PilotTable;
+import com.github.jferard.fastods.util.Validation;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 import org.easymock.EasyMock;
@@ -46,6 +47,7 @@ import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
@@ -68,8 +70,9 @@ public class ContentElementTest {
         this.container = PowerMock.createMock(StylesContainerImpl.class);
         this.format = DataStylesBuilder.create(Locale.US).build();
         this.content =
-                new ContentElement(PositionUtil.create(), XMLUtil.create(), IntegerRepresentationCache
-                        .create(),
+                new ContentElement(PositionUtil.create(), XMLUtil.create(),
+                        IntegerRepresentationCache
+                                .create(),
                         this.format, true, this.container,
                         new HashMap<String, String>());
         this.settingsElement = PowerMock.createMock(SettingsElement.class);
@@ -137,36 +140,10 @@ public class ContentElementTest {
     }
 
     private Table createTable(final String name, final int rowCapacity, final int columnCapacity) {
-        return Table.create(this.content, PositionUtil.create(), IntegerRepresentationCache.create(),
+        return Table.create(this.content, PositionUtil.create(),
+                IntegerRepresentationCache.create(),
                 XMLUtil.create(), name, rowCapacity, columnCapacity, null, null, false,
                 new ValidationsContainer());
-    }
-
-    @Test
-    public void testAppendAutoFilters() {
-        PowerMock.resetAll();
-
-        PowerMock.replayAll();
-
-        PowerMock.verifyAll();
-    }
-
-    @Test
-    public void testAppendPilotTables() {
-        PowerMock.resetAll();
-
-        PowerMock.replayAll();
-        PowerMock.verifyAll();
-    }
-
-    @Test
-    public void testWriteEvents() {
-        PowerMock.resetAll();
-
-        PowerMock.replayAll();
-
-        PowerMock.verifyAll();
-
     }
 
     @Test
@@ -245,6 +222,7 @@ public class ContentElementTest {
         this.content.writePreamble(this.xmlUtil, writer);
         this.content.writePostamble(this.xmlUtil, writer);
 
+        PowerMock.verifyAll();
         DomTester.assertEquals(
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + CONTENT_OPEN_TAG +
                         "<office:scripts><office:event-listeners><script:event-listener script:language=\"ooo:script\" script:event-name=\"dom:load\" xlink:href=\"vnd.sun.star.script:func?language=Basic&amp;location=document\" xlink:type=\"simple\"/></office:event-listeners></office:scripts><office:automatic-styles></office:automatic-styles><office:body><office:spreadsheet></office:spreadsheet>" +
@@ -257,14 +235,103 @@ public class ContentElementTest {
     }
 
     @Test
+    public void testAddTable() throws IOException {
+        final ZipUTF8WriterMockHandler handler = ZipUTF8WriterMockHandler.create();
+        final ZipUTF8Writer writer = handler.getInstance(ZipUTF8Writer.class);
+        final Table table = PowerMock.createMock(Table.class);
+
+        PowerMock.resetAll();
+        this.container
+                .writeFontFaceDecls(EasyMock.eq(this.xmlUtil), EasyMock.isA(Appendable.class));
+        this.container
+                .writeHiddenDataStyles(EasyMock.eq(this.xmlUtil), EasyMock.isA(Appendable.class));
+        this.container.writeContentAutomaticStyles(EasyMock.eq(this.xmlUtil),
+                EasyMock.isA(Appendable.class));
+        EasyMock.expect(table.getName()).andReturn("t").times(2);
+
+        PowerMock.replayAll();
+        this.content.addTable(table);
+        this.content.writePreamble(this.xmlUtil, writer);
+        this.content.writePostamble(this.xmlUtil, writer);
+
+        PowerMock.verifyAll();
+        DomTester.assertEquals(
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + CONTENT_OPEN_TAG +
+                        "<office:automatic-styles></office:automatic-styles><office:body><office:spreadsheet></office:spreadsheet>" +
+                        POSTAMBLE_BODY,
+                this.getString(handler));
+        Assert.assertEquals(Collections.singletonList(table), this.content.getTables());
+    }
+
+    @Test
+    public void testDeprecatedAddTable() throws IOException {
+        final ZipUTF8WriterMockHandler handler = ZipUTF8WriterMockHandler.create();
+        final ZipUTF8Writer writer = handler.getInstance(ZipUTF8Writer.class);
+
+        PowerMock.resetAll();
+        this.container
+                .writeFontFaceDecls(EasyMock.eq(this.xmlUtil), EasyMock.isA(Appendable.class));
+        this.container
+                .writeHiddenDataStyles(EasyMock.eq(this.xmlUtil), EasyMock.isA(Appendable.class));
+        this.container.writeContentAutomaticStyles(EasyMock.eq(this.xmlUtil),
+                EasyMock.isA(Appendable.class));
+
+        PowerMock.replayAll();
+        final Table table = this.content.addTable("t1", 10, 20);
+        this.content.writePreamble(this.xmlUtil, writer);
+        this.content.writePostamble(this.xmlUtil, writer);
+
+        PowerMock.verifyAll();
+        DomTester.assertEquals(
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + CONTENT_OPEN_TAG +
+                        "<office:automatic-styles></office:automatic-styles><office:body><office:spreadsheet></office:spreadsheet>" +
+                        POSTAMBLE_BODY,
+                this.getString(handler));
+        Assert.assertEquals(Collections.singletonList(table), this.content.getTables());
+    }
+
+    @Test
+    public void testValidation() throws IOException {
+        final ZipUTF8WriterMockHandler handler = ZipUTF8WriterMockHandler.create();
+        final ZipUTF8Writer writer = handler.getInstance(ZipUTF8Writer.class);
+        final Table table = PowerMock.createMock(Table.class);
+
+        PowerMock.resetAll();
+        this.container
+                .writeFontFaceDecls(EasyMock.eq(this.xmlUtil), EasyMock.isA(Appendable.class));
+        this.container
+                .writeHiddenDataStyles(EasyMock.eq(this.xmlUtil), EasyMock.isA(Appendable.class));
+        this.container.writeContentAutomaticStyles(EasyMock.eq(this.xmlUtil),
+                EasyMock.isA(Appendable.class));
+
+        PowerMock.replayAll();
+        final Table t1 = this.content.createTable("t1", 10, 10);
+        t1.getRow(0).getOrCreateCell(0).setValidation(Validation.builder("v1").dontAllowEmptyCells().build());
+        this.content.writePreamble(this.xmlUtil, writer);
+        this.content.writePostamble(this.xmlUtil, writer);
+
+        PowerMock.verifyAll();
+        DomTester.assertEquals(
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + CONTENT_OPEN_TAG +
+                        "<office:automatic-styles></office:automatic-styles><office:body>" +
+                        "<office:spreadsheet><table:content-validations>" +
+                        "<table:content-validation table:name=\"v1\" table:allow-empty-cell=\"false\"/>" +
+                        "</table:content-validations></office:spreadsheet>" +
+                        POSTAMBLE_BODY,
+                this.getString(handler));
+        Assert.assertEquals(Collections.emptyList(), this.content.getTables());
+    }
+
+    @Test
     public void testAdditionalNamespace() throws IOException {
         final ZipUTF8WriterMockHandler handler = ZipUTF8WriterMockHandler.create();
         final ZipUTF8Writer writer = handler.getInstance(ZipUTF8Writer.class);
         final HashMap<String, String> additionalNamespaceByPrefix = new HashMap<String, String>();
         additionalNamespaceByPrefix.put("xmlns:myns", "my/namespace");
         final ContentElement contentElement =
-                new ContentElement(PositionUtil.create(), XMLUtil.create(), IntegerRepresentationCache
-                        .create(),
+                new ContentElement(PositionUtil.create(), XMLUtil.create(),
+                        IntegerRepresentationCache
+                                .create(),
                         this.format, true, this.container,
                         additionalNamespaceByPrefix);
 
@@ -280,6 +347,7 @@ public class ContentElementTest {
         contentElement.writePreamble(this.xmlUtil, writer);
         contentElement.writePostamble(this.xmlUtil, writer);
 
+        PowerMock.verifyAll();
         DomTester.assertEquals(
                 XMLUtil.XML_PROLOG +
                         "<office:document-content xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\" xmlns:style=\"urn:oasis:names:tc:opendocument:xmlns:style:1.0\" xmlns:text=\"urn:oasis:names:tc:opendocument:xmlns:text:1.0\" xmlns:table=\"urn:oasis:names:tc:opendocument:xmlns:table:1.0\" xmlns:draw=\"urn:oasis:names:tc:opendocument:xmlns:drawing:1.0\" xmlns:fo=\"urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:meta=\"urn:oasis:names:tc:opendocument:xmlns:meta:1.0\" xmlns:number=\"urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0\" xmlns:presentation=\"urn:oasis:names:tc:opendocument:xmlns:presentation:1.0\" xmlns:svg=\"urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0\" xmlns:chart=\"urn:oasis:names:tc:opendocument:xmlns:chart:1.0\" xmlns:dr3d=\"urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0\" xmlns:math=\"http://www.w3.org/1998/Math/MathML\" xmlns:form=\"urn:oasis:names:tc:opendocument:xmlns:form:1.0\" xmlns:script=\"urn:oasis:names:tc:opendocument:xmlns:script:1.0\" xmlns:ooo=\"http://openoffice.org/2004/office\" xmlns:ooow=\"http://openoffice.org/2004/writer\" xmlns:oooc=\"http://openoffice.org/2004/calc\" xmlns:dom=\"http://www.w3.org/2001/xml-events\" xmlns:xforms=\"http://www.w3.org/2002/xforms\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:of=\"urn:oasis:names:tc:opendocument:xmlns:of:1.2\" xmlns:myns=\"my/namespace\" office:version=\"1.2\">" +
@@ -288,6 +356,14 @@ public class ContentElementTest {
                 this.getString(handler));
     }
 
+    @Test
+    public void testStylesContainer() {
+        PowerMock.resetAll();
+        PowerMock.replayAll();
+        Assert.assertEquals(this.container, this.content.getStyleTagsContainer());
+
+        PowerMock.verifyAll();
+    }
 
     @Test
     public void testWrite() throws IOException {

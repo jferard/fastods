@@ -58,6 +58,8 @@ public class TableCellStyleBuilder
 
     /**
      * The style will be visible by default.
+     * Default parent is TableCellStyle.DEFAULT_CELL_STYLE. Use `parentCellStyle(null)`
+     * to remove this parent.
      *
      * @param name A unique name for this style
      */

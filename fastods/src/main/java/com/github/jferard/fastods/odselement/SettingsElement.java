@@ -70,8 +70,8 @@ import static com.github.jferard.fastods.odselement.MetaElement.OFFICE_VERSION;
  * @author Julien Férard
  * @author Martin Schulz
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class SettingsElement implements OdsElement {
+    /** The settings namespaces */
     public static final Map<String, String> SETTINGS_NAMESPACE_BY_PREFIX = new HashMap<String, String>();
 
     static {

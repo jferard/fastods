@@ -163,8 +163,12 @@ public class StylesContainerImpl implements StylesContainer {
 
     @Override
     public boolean addNewDataStyleFromCellStyle(final TableCellStyle style) {
+        final DataStyle dataStyle = style.getDataStyle();
+        if (dataStyle == null) {
+            return false;
+        }
         final boolean ret = this.addContentStyle(style);
-        return this.addDataStyle(style.getDataStyle()) && ret;
+        return this.addDataStyle(dataStyle) && ret;
     }
 
     @Override

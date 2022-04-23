@@ -23,11 +23,16 @@
  */
 package com.github.jferard.fastods.odselement;
 
+import com.github.jferard.fastods.Footer;
+import com.github.jferard.fastods.Header;
+import com.github.jferard.fastods.PageSection;
 import com.github.jferard.fastods.attribute.SimpleLength;
+import com.github.jferard.fastods.datastyle.BooleanStyle;
 import com.github.jferard.fastods.datastyle.BooleanStyleBuilder;
 import com.github.jferard.fastods.datastyle.DataStyle;
-import com.github.jferard.fastods.style.ObjectStyle;
+import com.github.jferard.fastods.style.MasterPageStyle;
 import com.github.jferard.fastods.style.PageStyle;
+import com.github.jferard.fastods.style.PageStyleBuilder;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.util.Container.Mode;
@@ -112,6 +117,91 @@ public class StylesContainerTest {
     }
 
     @Test
+    public final void testAddContentFontFaceContainerStyle() throws IOException {
+        final StringBuilder sb1 = new StringBuilder();
+        final StringBuilder sb2 = new StringBuilder();
+        final XMLUtil util = XMLUtil.create();
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
+        this.stylesContainer.addContentFontFaceContainerStyle(
+                TableCellStyle.builder("tcs").fontName("font").build());
+        this.stylesContainer.writeFontFaceDecls(util, sb1);
+        this.stylesContainer.writeStylesCommonStyles(util, sb2);
+
+        PowerMock.verifyAll();
+        Assert.assertEquals("<office:font-face-decls>" +
+                "<style:font-face style:name=\"Liberation Sans\" svg:font-family=\"Liberation Sans\"/>" +
+                "<style:font-face style:name=\"font\" svg:font-family=\"font\"/>" +
+                "</office:font-face-decls>", sb1.toString());
+        Assert.assertEquals("<style:style style:name=\"tcs\" " +
+                "style:family=\"table-cell\" style:parent-style-name=\"Default\">" +
+                "<style:text-properties style:font-name=\"font\"/>" +
+                "</style:style>", sb2.toString());
+    }
+
+    @Test
+    public final void testAddStylesFontFaceContainerStyle() throws IOException {
+        final StringBuilder sb1 = new StringBuilder();
+        final StringBuilder sb2 = new StringBuilder();
+        final XMLUtil util = XMLUtil.create();
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
+        this.stylesContainer.addStylesFontFaceContainerStyle(
+                TableCellStyle.builder("tcs").fontName("font").build());
+        this.stylesContainer.writeFontFaceDecls(util, sb1);
+        this.stylesContainer.writeStylesCommonStyles(util, sb2);
+
+        PowerMock.verifyAll();
+        Assert.assertEquals("<office:font-face-decls>" +
+                "<style:font-face style:name=\"Liberation Sans\" svg:font-family=\"Liberation Sans\"/>" +
+                "<style:font-face style:name=\"font\" svg:font-family=\"font\"/>" +
+                "</office:font-face-decls>", sb1.toString());
+        Assert.assertEquals("<style:style style:name=\"tcs\" " +
+                "style:family=\"table-cell\" style:parent-style-name=\"Default\">" +
+                "<style:text-properties style:font-name=\"font\"/>" +
+                "</style:style>", sb2.toString());
+    }
+
+    @Test
+    public final void testAddNullDataStyleFromCellStyle() throws IOException {
+        final StringBuilder sb1 = new StringBuilder();
+        final XMLUtil util = XMLUtil.create();
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
+        this.stylesContainer.addNewDataStyleFromCellStyle(TableCellStyle.DEFAULT_CELL_STYLE);
+        this.stylesContainer.writeStylesCommonStyles(util, sb1);
+
+        PowerMock.verifyAll();
+        Assert.assertEquals("", sb1.toString());
+    }
+
+    @Test
+    public final void testAddNewDataStyleFromCellStyle() throws IOException {
+        final StringBuilder sb1 = new StringBuilder();
+        final StringBuilder sb2 = new StringBuilder();
+        final XMLUtil util = XMLUtil.create();
+        final BooleanStyle booleanStyle =
+                new BooleanStyleBuilder("bs", Locale.US).country("fr").build();
+        final TableCellStyle cellStyle = TableCellStyle.builder("tcs").dataStyle(
+                booleanStyle).build();
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
+        this.stylesContainer.addNewDataStyleFromCellStyle(cellStyle);
+        this.stylesContainer.writeStylesCommonStyles(util, sb1);
+        this.stylesContainer.writeContentAutomaticStyles(util, sb2);
+
+        PowerMock.verifyAll();
+        Assert.assertEquals(
+                "<style:style style:name=\"tcs\" style:family=\"table-cell\" style:parent-style-name=\"Default\" style:data-style-name=\"bs\"/>",
+                sb1.toString());
+        Assert.assertEquals("", sb2.toString());
+    }
+
+    @Test
     public final void testDebug() {
         PowerMock.resetAll();
         this.logger.log(EasyMock.eq(Level.SEVERE),
@@ -120,6 +210,17 @@ public class StylesContainerTest {
 
         PowerMock.replayAll();
         this.stylesContainer.debug();
+        this.stylesContainer.addContentStyle(TableCellStyle.DEFAULT_CELL_STYLE);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testDebug2() {
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
+        this.stylesContainer.setObjectStyleMode(Mode.UPDATE);
         this.stylesContainer.addContentStyle(TableCellStyle.DEFAULT_CELL_STYLE);
 
         PowerMock.verifyAll();
@@ -350,6 +451,50 @@ public class StylesContainerTest {
                 "style:parent-style-name=\"Default\"/>", sb.toString());
 
         PowerMock.verifyAll();
+    }
+
+    @Test
+    public void testAddChildCellStyleNoParent() throws IOException {
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
+        final TableCellStyle tcs = TableCellStyle.DEFAULT_CELL_STYLE;
+        final DataStyle ds = new BooleanStyleBuilder("bs", this.locale).build();
+
+        TableCellStyle childCellStyle = this.stylesContainer.addChildCellStyle(tcs, ds);
+        Assert.assertNotNull(childCellStyle);
+        Assert.assertEquals(ds, childCellStyle.getDataStyle());
+        Assert.assertEquals("Default-_-bs", childCellStyle.getName());
+
+        childCellStyle = this.stylesContainer.addChildCellStyle(tcs, ds);
+        Assert.assertNotNull(childCellStyle);
+        Assert.assertEquals("Default-_-bs", childCellStyle.getName());
+        Assert.assertEquals("Default-_-bs", childCellStyle.getName());
+        Assert.assertEquals(ds, childCellStyle.getDataStyle());
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public void testHasFooterHeader() {
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
+        this.stylesContainer.addMasterPageStyle(new MasterPageStyle("ms1", "ms1", null, null));
+        final HasFooterHeader ret1 = this.stylesContainer.hasFooterHeader();
+        this.stylesContainer.addMasterPageStyle(new MasterPageStyle("ms2", "ms2", new Header(
+                PageSection.simpleBuilder().build()), null));
+        final HasFooterHeader ret2 = this.stylesContainer.hasFooterHeader();
+        this.stylesContainer.addMasterPageStyle(new MasterPageStyle("ms3", "ms3", null, new Footer(PageSection.simpleBuilder().build())));
+        final HasFooterHeader ret3 = this.stylesContainer.hasFooterHeader();
+        PowerMock.verifyAll();
+
+        Assert.assertFalse(ret1.hasHeader());
+        Assert.assertFalse(ret1.hasFooter());
+        Assert.assertTrue(ret2.hasHeader());
+        Assert.assertFalse(ret2.hasFooter());
+        Assert.assertTrue(ret3.hasHeader());
+        Assert.assertTrue(ret3.hasFooter());
     }
 
     private void assertWriteDataStylesXMLEquals(final String xml) throws IOException {

@@ -54,7 +54,7 @@ public class MasterPageStyle implements AddableToOdsElements, ElementWithEmbedde
      * @param header     the header for this style
      * @param footer     the footer for this style
      */
-    MasterPageStyle(final String name, final String layoutName, final Header header,
+    public MasterPageStyle(final String name, final String layoutName, final Header header,
                     final Footer footer) {
         this.name = name;
         this.layoutName = layoutName;

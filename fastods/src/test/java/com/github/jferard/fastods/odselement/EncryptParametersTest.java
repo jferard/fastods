@@ -44,4 +44,27 @@ public class EncryptParametersTest {
                 parameters);
         Assert.assertEquals(10, parameters.getPlainDataSize());
     }
+
+    @Test
+    public void testBuilder() throws IOException {
+        final EncryptParameters parameters = EncryptParameters.builder()
+                .compressedCheckSumType("ccst")
+                .startKeyGenerationName("skgn")
+                .startKeySize(10)
+                .keyDerivationName("kdn")
+                .derivedKeySize(20)
+                .derivationIterationCount(72)
+                .algorithmName("an")
+                .build(10, 0, 0L, "CS", "SALT", "IV");
+        TestHelper.assertXMLEquals(
+                "<manifest:encryption-data manifest:checksum-type=\"ccst\" " +
+                        "manifest:checksum=\"CS\"><manifest:algorithm " +
+                        "manifest:algorithm-name=\"an\" manifest:initialisation-vector=\"IV\"/>" +
+                        "<manifest:start-key-generation manifest:start-key-generation-name=\"skgn\" " +
+                        "manifest:key-size=\"10\"/><manifest:key-derivation " +
+                        "manifest:key-derivation-name=\"kdn\" manifest:key-size=\"20\" " +
+                        "manifest:iteration-count=\"72\" manifest:salt=\"SALT\"/>" +
+                        "</manifest:encryption-data>", parameters);
+        Assert.assertEquals(10, parameters.getPlainDataSize());
+    }
 }
