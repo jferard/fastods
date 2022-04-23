@@ -24,8 +24,11 @@
 
 package com.github.jferard.fastods.crypto;
 
+import com.github.jferard.fastods.XMLConvertible;
 import com.github.jferard.fastods.odselement.EncryptParameters;
+import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.util.CharsetUtil;
+import com.github.jferard.fastods.util.XMLUtil;
 import org.bouncycastle.util.encoders.Base64;
 import org.easymock.EasyMock;
 import org.junit.Assert;
@@ -111,5 +114,58 @@ public class StandardEncrypterTest {
         Assert.assertArrayEquals(new byte[16], saltBytes);
 
         PowerMock.verifyAll();
+    }
+
+    @Test
+    public void testBuildParameters()
+            throws NoSuchPaddingException, NoSuchAlgorithmException, IOException {
+        final SecureRandom sr = PowerMock.createMock(SecureRandom.class);
+        final StandardEncrypter encrypter = new StandardEncrypter(
+                sr, Cipher.getInstance("AES/CBC/ISO10126Padding"),
+                100000, 32, 32, EncryptParameters.builder()
+        );
+
+        PowerMock.resetAll();
+
+        PowerMock.replayAll();
+        final EncryptParameters parameters =
+                encrypter.buildParameters(100, 10, 40L, "ccs", "salt", "vec");
+
+        PowerMock.verifyAll();
+        Assert.assertEquals(100, parameters.getPlainDataSize());
+        Assert.assertEquals(10, parameters.getCompressedThenEncryptedDataSize());
+        Assert.assertEquals(40L, parameters.getCrc32());
+
+        StandardEncrypterTest.assertXMLEquals("<manifest:encryption-data " +
+                "manifest:checksum-type=\"urn:oasis:names:tc:opendocument:xmlns:manifest:1.0#sha256-1k\" " +
+                "manifest:checksum=\"ccs\">" +
+                "<manifest:algorithm " +
+                "manifest:algorithm-name=\"http://www.w3.org/2001/04/xmlenc#aes256-cbc\" " +
+                "manifest:initialisation-vector=\"vec\"/>" +
+                "<manifest:start-key-generation " +
+                "manifest:start-key-generation-name=\"http://www.w3.org/2000/09/xmldsig#sha256\" " +
+                "manifest:key-size=\"32\"/>" +
+                "<manifest:key-derivation manifest:key-derivation-name=\"PBKDF2\" " +
+                "manifest:key-size=\"32\" manifest:iteration-count=\"100000\" " +
+                "manifest:salt=\"salt\"/>" +
+                "</manifest:encryption-data>", parameters);
+    }
+
+    public static String toXML(final XMLConvertible o) throws IOException {
+        final StringBuilder sb = new StringBuilder();
+        o.appendXMLContent(XMLUtil.create(), sb);
+        return sb.toString();
+    }
+
+    /**
+     * Beware: sensitive to spaces (spaces are children)
+     *
+     * @param xml the xml string
+     * @param o an object convertible to XML
+     * @throws IOException if an I/O error occurs
+     */
+    public static void assertXMLEquals(final String xml, final XMLConvertible o)
+            throws IOException {
+        DomTester.assertEquals(xml, StandardEncrypterTest.toXML(o));
     }
 }

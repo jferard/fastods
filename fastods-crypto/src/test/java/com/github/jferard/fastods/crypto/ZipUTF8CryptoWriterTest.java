@@ -25,6 +25,7 @@
 package com.github.jferard.fastods.crypto;
 
 import com.github.jferard.fastods.odselement.EncryptParameters;
+import com.github.jferard.fastods.odselement.EncryptParametersBuilder;
 import com.github.jferard.fastods.odselement.StandardOdsEntry;
 import com.github.jferard.fastods.odselement.UnregisteredOdsEntry;
 import com.github.jferard.fastods.odselement.UnregisteredStoredEntry;
@@ -314,4 +315,74 @@ public class ZipUTF8CryptoWriterTest {
                 // EOCD
                 'P', 'K', 5, 6, 0, 0, 0, 0, 2, 0, 2, 0, 117, 0, 0, 0, 6, 1, 0, 0, 0, 0}, bytes);
     }
-}
+
+    @Test
+    public void testBuilder()
+            throws NoSuchAlgorithmException {
+        final ZipUTF8WriterBuilderImpl writerBuilder =
+                PowerMock.createMock(ZipUTF8WriterBuilderImpl.class);
+        final EncryptParametersBuilder parametersBuilder =
+                PowerMock.createMock(EncryptParametersBuilder.class);
+        final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+        PowerMock.resetAll();
+        EasyMock.expect(writerBuilder.build(bos)).andReturn(null);
+
+        PowerMock.replayAll();
+        final ZipUTF8CryptoWriterBuilder builder =
+                new ZipUTF8CryptoWriterBuilder(writerBuilder, parametersBuilder,
+                        "passwd".toCharArray());
+        builder.build(bos);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public void testExc()
+            throws IOException, InvalidAlgorithmParameterException, NoSuchPaddingException,
+            IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException,
+            InvalidKeyException {
+        final StandardEncrypter encrypter = PowerMock.createMock(StandardEncrypter.class);
+        final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        final ZipUTF8Writer writer = PowerMock.createMock(ZipUTF8Writer.class);
+        final byte[] salt = "foo".getBytes(StandardCharsets.UTF_8);
+        final byte[] iv = "bar".getBytes(StandardCharsets.UTF_8);
+        final byte[] data = "baz".getBytes(StandardCharsets.UTF_8);
+        final byte[] password = "passwd".getBytes(StandardCharsets.UTF_8);
+
+        PowerMock.resetAll();
+        EasyMock.expect(encrypter.generateSalt()).andReturn(salt);
+        EasyMock.expect(encrypter.generateIV()).andReturn(iv);
+        EasyMock.expect(encrypter.compress(new byte[0])).andReturn(data);
+        EasyMock.expect(encrypter.encrypt(data, password, salt, iv))
+                .andThrow(new NoSuchAlgorithmException());
+
+        PowerMock.replayAll();
+        final ZipUTF8CryptoWriter cryptoWriter =
+                new ZipUTF8CryptoWriter(writer, encrypter, password);
+        cryptoWriter.putNextEntry(new UnregisteredOdsEntry("path"));
+        Assert.assertThrows(IOException.class, () -> cryptoWriter.closeEntry());
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public void testSetComment() {
+        final StandardEncrypter encrypter = PowerMock.createMock(StandardEncrypter.class);
+        final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        final ZipUTF8Writer writer = PowerMock.createMock(ZipUTF8Writer.class);
+        final byte[] password = "passwd".getBytes(StandardCharsets.UTF_8);
+        final StandardOdsEntry entry = new StandardOdsEntry("path", "mt", "v");
+
+        PowerMock.resetAll();
+        writer.setComment("Comment");
+        writer.registerEntry(entry);
+
+        PowerMock.replayAll();
+        final ZipUTF8CryptoWriter cryptoWriter =
+                new ZipUTF8CryptoWriter(writer, encrypter, password);
+        cryptoWriter.setComment("Comment");
+        cryptoWriter.registerEntry(entry);
+
+        PowerMock.verifyAll();
+    }}

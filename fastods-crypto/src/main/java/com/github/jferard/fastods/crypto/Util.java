@@ -24,7 +24,6 @@
 
 package com.github.jferard.fastods.crypto;
 
-import com.github.jferard.fastods.util.CharsetUtil;
 import org.bouncycastle.util.encoders.Base64;
 
 import java.nio.ByteBuffer;
@@ -35,6 +34,9 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 public class Util {
+    /** Do not instantiate */
+    private Util() {}
+
     /**
      * Convert a char array to a byte array containing the SHA-256 digest. **Beware: for security
      * reasons, this fills the password array with 0's**.

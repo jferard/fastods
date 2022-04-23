@@ -25,32 +25,23 @@
 package com.github.jferard.fastods.crypto;
 
 import com.github.jferard.fastods.util.Protection;
-import org.bouncycastle.util.encoders.Base64;
+import com.github.jferard.fastods.util.XMLUtil;
+import org.junit.Assert;
+import org.junit.Test;
 
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
-/**
- * The ProtectionFactory class is temporary in this submodule because of the need of a base64
- * encoder (absent of JRE 6).
- *
- * 19.698: "Producers should use http://www.w3.org/2000/09/xmldsig#sha256."
- */
-public class ProtectionFactory {
-    /** Do not instantiate */
-    private ProtectionFactory() {}
+public class ProtectionFactoryTest {
+    @Test
+    public void test() throws NoSuchAlgorithmException, IOException {
+        final Protection p = ProtectionFactory.createSha256("passwd".toCharArray());
+        final StringBuilder sb = new StringBuilder();
+        p.appendAttributes(XMLUtil.create(), sb);
 
-    /**
-     * Create a new protection. **Beware: for security reasons, this fills the password array
-     * with 0's**
-     *
-     * @param password the password.
-     * @return the protection.
-     * @throws NoSuchAlgorithmException shoud not happen since SHA-256 is pretty common
-     */
-    public static Protection createSha256(final char[] password) throws NoSuchAlgorithmException {
-        final String algorithm = "http://www.w3.org/2000/09/xmldsig#sha256";
-        final String base64digest = Base64.toBase64String(Util.getPasswordChecksum(password, "SHA-256"));
-
-        return new Protection(base64digest, algorithm);
+        Assert.assertEquals(
+                " table:protected=\"true\" table:protection-key=\"DWvmmyZHF/LdM2UuISsXMQS0pke3wRrnLpiF8RzTEvs=\" table:protection-key-digest-algorithm=\"http://www.w3.org/2000/09/xmldsig#sha256\"",
+                sb.toString());
     }
+
 }

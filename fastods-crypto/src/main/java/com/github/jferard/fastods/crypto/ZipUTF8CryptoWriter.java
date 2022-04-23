@@ -26,7 +26,6 @@ package com.github.jferard.fastods.crypto;
 
 import com.github.jferard.fastods.annotation.Beta;
 import com.github.jferard.fastods.odselement.OdsEntry;
-import com.github.jferard.fastods.util.CharsetUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 import com.github.jferard.fastods.util.ZipUTF8WriterBuilder;
 import org.bouncycastle.util.encoders.Base64;
@@ -51,6 +50,7 @@ import java.util.zip.CRC32;
 public class ZipUTF8CryptoWriter implements ZipUTF8Writer {
     /**
      * **Beware: for security reasons, this fills the password array with 0's**
+     *
      * @param password the password to encrypt data
      * @return a builder
      * @throws NoSuchAlgorithmException won't happen since SHA-256 is pretty common
@@ -62,11 +62,11 @@ public class ZipUTF8CryptoWriter implements ZipUTF8Writer {
 
     private final ZipUTF8Writer zipUTF8Writer;
     private final StandardEncrypter encrypter;
+    private final byte[] hashedPassword;
     private ByteArrayOutputStream out;
     private Writer writer;
     private OdsEntry curEntry;
     private boolean toRegister;
-    private final byte[] hashedPassword;
 
     public ZipUTF8CryptoWriter(final ZipUTF8Writer zipUTF8Writer,
                                final StandardEncrypter encrypter, final byte[] hashedPassword) {
@@ -81,7 +81,7 @@ public class ZipUTF8CryptoWriter implements ZipUTF8Writer {
     }
 
     @Override
-    public void putAndRegisterNextEntry(final OdsEntry entry) throws IOException {
+    public void putAndRegisterNextEntry(final OdsEntry entry) {
         this.toRegister = true;
         this.putNextEntry(entry);
     }
@@ -124,17 +124,9 @@ public class ZipUTF8CryptoWriter implements ZipUTF8Writer {
         final EntryAndData entryAndData;
         try {
             entryAndData = this.getEncryptedEntryAndDataUnchecked(plainTextBytes);
-        } catch (final NoSuchAlgorithmException e) {
-            throw new IOException("Can't encrypt file", e);
-        } catch (final InvalidKeyException e) {
-            throw new IOException("Can't encrypt file", e);
-        } catch (final InvalidAlgorithmParameterException e) {
-            throw new IOException("Can't encrypt file", e);
-        } catch (final NoSuchPaddingException e) {
-            throw new IOException("Can't encrypt file", e);
-        } catch (final BadPaddingException e) {
-            throw new IOException("Can't encrypt file", e);
-        } catch (final IllegalBlockSizeException e) {
+        } catch (final NoSuchAlgorithmException | InvalidKeyException
+                | InvalidAlgorithmParameterException | NoSuchPaddingException
+                | BadPaddingException | IllegalBlockSizeException e) {
             throw new IOException("Can't encrypt file", e);
         }
         return entryAndData;
@@ -154,7 +146,8 @@ public class ZipUTF8CryptoWriter implements ZipUTF8Writer {
         final long crc32 = this.getCrc32(compressedThenEncryptedData);
         final OdsEntry entry = this.curEntry.encryptParameters(
                 this.encrypter.buildParameters(
-                        plainTextBytes.length, compressedThenEncryptedData.length, crc32, compressedCheckSum,
+                        plainTextBytes.length, compressedThenEncryptedData.length, crc32,
+                        compressedCheckSum,
                         Base64.toBase64String(salt), Base64.toBase64String(iv)));
         return new EntryAndData(entry, compressedThenEncryptedData);
     }

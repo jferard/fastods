@@ -41,6 +41,9 @@ import java.util.Arrays;
  * A builder for `ZipUTF8CryptoWriter`.
  */
 public class ZipUTF8CryptoWriterBuilder implements ZipUTF8WriterBuilder {
+    public static final String AES_CBC_ISO_10126_PADDING = "AES/CBC/ISO10126Padding";
+    public static final String SHA_1_PRNG = "SHA1PRNG";
+
     /**
      * **Beware: for security reasons, this fills the password array with 0's**
      *
@@ -76,15 +79,13 @@ public class ZipUTF8CryptoWriterBuilder implements ZipUTF8WriterBuilder {
     }
 
     @Override
-    public ZipUTF8Writer build(final OutputStream outputStream) {
+    public ZipUTF8CryptoWriter build(final OutputStream outputStream) {
         try {
             return new ZipUTF8CryptoWriter(this.writerBuilder.build(outputStream),
-                    new StandardEncrypter(SecureRandom.getInstance("SHA1PRNG"),
-                            Cipher.getInstance("AES/CBC/ISO10126Padding"), 100000, 32, 32, this.parametersBuilder
+                    new StandardEncrypter(SecureRandom.getInstance(SHA_1_PRNG),
+                            Cipher.getInstance(AES_CBC_ISO_10126_PADDING), 100000, 32, 32, this.parametersBuilder
                     ), this.hashedPassword);
-        } catch (final NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        } catch (final NoSuchPaddingException e) {
+        } catch (final NoSuchAlgorithmException | NoSuchPaddingException e) {
             throw new RuntimeException(e);
         }
     }
