@@ -153,12 +153,9 @@ public class AnonymousOdsFileWriter {
                 out.flush();
                 out.close();
             }
-        } catch (final FileNotFoundException e) {
+        } catch (final IOException e) {
             this.logger.log(Level.SEVERE, "Can't open " + path, e);
-            throw new IOException(e);
-        } catch (final NullPointerException e) {
-            this.logger.log(Level.SEVERE, "No file", e);
-            throw new IOException(e);
+            throw e;
         }
     }
 
@@ -192,7 +189,7 @@ public class AnonymousOdsFileWriter {
         this.saveAs(file.toPath(), builder);
     }
 
-    private void saveAs(final Path path, final ZipUTF8WriterBuilder builder) throws IOException {
+    public void saveAs(final Path path, final ZipUTF8WriterBuilder builder) throws IOException {
         try {
             final OutputStream out = Files.newOutputStream(path);
             final ZipUTF8Writer writer = builder.build(out);
@@ -202,9 +199,9 @@ public class AnonymousOdsFileWriter {
                 writer.finish();
                 writer.close();
             }
-        } catch (final FileNotFoundException e) {
+        } catch (final IOException e) {
             this.logger.log(Level.SEVERE, "Can't open " + path, e);
-            throw new IOException(e);
+            throw e;
         }
     }
 }

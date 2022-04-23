@@ -26,6 +26,12 @@ package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.odselement.StandardOdsEntry;
+import com.github.jferard.fastods.style.MasterPageStyle;
+import com.github.jferard.fastods.style.PageLayoutStyle;
+import com.github.jferard.fastods.style.TableCellStyle;
+import com.github.jferard.fastods.style.TableColumnStyle;
+import com.github.jferard.fastods.style.TableRowStyle;
+import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
 import com.github.jferard.fastods.util.ZipUTF8WriterBuilderImpl;
@@ -35,7 +41,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.powermock.api.easymock.PowerMock;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -47,6 +56,11 @@ import java.io.OutputStream;
 import java.nio.channels.Channels;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.FileSystem;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.nio.file.spi.FileSystemProvider;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -352,6 +366,19 @@ public class AnonymousOdsFileWriterTest {
     }
 
     @Test
+    public final void testSaveAsNullFileBuilder() {
+        PowerMock.resetAll();
+        TestHelper.initMockDocument(this.odsElements);
+
+        PowerMock.replayAll();
+        final AnonymousOdsDocument document = this.getAnonymousDocument();
+        Assert.assertThrows(IOException.class,
+                () -> new AnonymousOdsFileWriter(this.logger, document).saveAs((File) null, this.builder));
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
     public final void testSaveWithWriter() throws IOException {
         final OutputStream outputStream = PowerMock.createMock(OutputStream.class);
         final ZipUTF8Writer z = PowerMock.createMock(ZipUTF8Writer.class);
@@ -383,6 +410,142 @@ public class AnonymousOdsFileWriterTest {
         new AnonymousOdsFileWriter(this.logger, document).saveAs(temp, this.builder);
 
         PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testSaveAsPath() throws IOException {
+        final OutputStream outputStream = PowerMock.createMock(OutputStream.class);
+        final Path path = PowerMock.createMock(Path.class);
+        final FileSystem fs = PowerMock.createMock(FileSystem.class);
+        final FileSystemProvider p = PowerMock.createMock(FileSystemProvider.class);
+
+        PowerMock.resetAll();
+        TestHelper.initMockDocument(this.odsElements);
+        EasyMock.expect(path.getFileSystem()).andReturn(fs);
+        EasyMock.expect(fs.provider()).andReturn(p);
+        EasyMock.expect(p.newOutputStream(path)).andReturn(outputStream);
+        outputStream.flush();
+        outputStream.close();
+        this.odsElements
+                .createEmptyElements(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
+        this.odsElements
+                .writeMimeType(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
+        this.odsElements.writeMeta(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
+        this.odsElements.writeStyles(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
+        this.odsElements.writeContent(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
+        this.odsElements
+                .writeSettings(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
+        this.odsElements.writeExtras(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
+        outputStream.write(EasyMock.isA(byte[].class), EasyMock.anyInt(), EasyMock.anyInt());
+        EasyMock.expectLastCall().anyTimes();
+        outputStream.flush();
+        EasyMock.expectLastCall().anyTimes();
+
+        PowerMock.replayAll();
+        final AnonymousOdsDocument document = this.getAnonymousDocument();
+        new AnonymousOdsFileWriter(this.logger, document).saveAs(path);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testSaveAsFile() throws IOException {
+        final OutputStream outputStream = PowerMock.createMock(OutputStream.class);
+        final File file = PowerMock.createMock(File.class);
+        final Path path = PowerMock.createMock(Path.class);
+        final FileSystem fs = PowerMock.createMock(FileSystem.class);
+        final FileSystemProvider p = PowerMock.createMock(FileSystemProvider.class);
+
+        PowerMock.resetAll();
+        TestHelper.initMockDocument(this.odsElements);
+        EasyMock.expect(file.toPath()).andReturn(path);
+        EasyMock.expect(path.getFileSystem()).andReturn(fs);
+        EasyMock.expect(fs.provider()).andReturn(p);
+        EasyMock.expect(p.newOutputStream(path)).andReturn(outputStream);
+        outputStream.flush();
+        outputStream.close();
+        this.odsElements
+                .createEmptyElements(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
+        this.odsElements
+                .writeMimeType(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
+        this.odsElements.writeMeta(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
+        this.odsElements.writeStyles(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
+        this.odsElements.writeContent(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
+        this.odsElements
+                .writeSettings(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
+        this.odsElements.writeExtras(EasyMock.eq(this.xmlUtil), EasyMock.isA(ZipUTF8Writer.class));
+        outputStream.write(EasyMock.isA(byte[].class), EasyMock.anyInt(), EasyMock.anyInt());
+        EasyMock.expectLastCall().anyTimes();
+        outputStream.flush();
+        EasyMock.expectLastCall().anyTimes();
+
+        PowerMock.replayAll();
+        final AnonymousOdsDocument document = this.getAnonymousDocument();
+        new AnonymousOdsFileWriter(this.logger, document).saveAs(file);
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testSaveAsPathException() throws IOException {
+        final Path path = PowerMock.createMock(Path.class);
+        final FileSystem fs = PowerMock.createMock(FileSystem.class);
+        final FileSystemProvider p = PowerMock.createMock(FileSystemProvider.class);
+
+        PowerMock.resetAll();
+        TestHelper.initMockDocument(this.odsElements);
+        EasyMock.expect(path.getFileSystem()).andReturn(fs);
+        EasyMock.expect(fs.provider()).andReturn(p);
+        EasyMock.expect(p.newOutputStream(path)).andThrow(new NoSuchFileException("e"));
+
+        PowerMock.replayAll();
+        final AnonymousOdsDocument document = this.getAnonymousDocument();
+        final AnonymousOdsFileWriter writer = new AnonymousOdsFileWriter(this.logger, document);
+        Assert.assertThrows(NoSuchFileException.class, () -> {
+            writer.saveAs(path);
+        });
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testSaveAsPathBuilderException() throws IOException {
+        final Path path = PowerMock.createMock(Path.class);
+        final FileSystem fs = PowerMock.createMock(FileSystem.class);
+        final FileSystemProvider p = PowerMock.createMock(FileSystemProvider.class);
+
+        PowerMock.resetAll();
+        TestHelper.initMockDocument(this.odsElements);
+        EasyMock.expect(path.getFileSystem()).andReturn(fs);
+        EasyMock.expect(fs.provider()).andReturn(p);
+        EasyMock.expect(p.newOutputStream(path)).andThrow(new NoSuchFileException("e"));
+
+        PowerMock.replayAll();
+        final AnonymousOdsDocument document = this.getAnonymousDocument();
+        final AnonymousOdsFileWriter writer = new AnonymousOdsFileWriter(this.logger, document);
+        Assert.assertThrows(NoSuchFileException.class, () -> {
+            writer.saveAs(path, this.builder);
+        });
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testDocument() throws IOException {
+        PowerMock.resetAll();
+        EasyMock.expect(this.odsElements.addContentStyle(EasyMock.isA(TableStyle.class))).andReturn(true);
+        EasyMock.expect(this.odsElements.addContentStyle(EasyMock.isA(TableRowStyle.class))).andReturn(true);
+        EasyMock.expect(this.odsElements.addContentStyle(EasyMock.isA(TableColumnStyle.class))).andReturn(true);
+        EasyMock.expect(this.odsElements.addContentStyle(EasyMock.isA(TableCellStyle.class))).andReturn(true);
+        EasyMock.expect(this.odsElements.addMasterPageStyle(EasyMock.isA(MasterPageStyle.class))).andReturn(true).times(2);
+        EasyMock.expect(this.odsElements.addPageLayoutStyle(EasyMock.isA(PageLayoutStyle.class))).andReturn(true).times(2);
+
+        PowerMock.replayAll();
+        final AnonymousOdsDocument document = this.getAnonymousDocument();
+        final AnonymousOdsFileWriter writer = new AnonymousOdsFileWriter(this.logger, document);
+
+        PowerMock.verifyAll();
+        Assert.assertEquals(document, writer.document());
     }
 
     @Test
