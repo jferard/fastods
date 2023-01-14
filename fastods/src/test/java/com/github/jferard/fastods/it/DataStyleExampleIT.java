@@ -48,11 +48,16 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.odftoolkit.simple.SpreadsheetDocument;
+import org.odftoolkit.simple.table.Cell;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+import java.util.TimeZone;
 import java.util.logging.Logger;
 
 /**
@@ -93,6 +98,18 @@ public class DataStyleExampleIT {
         final org.odftoolkit.simple.table.Table sheet = document.getSheetByName("test");
         Assert.assertNotNull(sheet);
         Assert.assertEquals(8, sheet.getRowCount());
+
+        final Cell cellB1 = sheet.getRowByIndex(0).getCellByIndex(1);
+        Assert.assertEquals(123456.789d, cellB1.getDoubleValue(), 0.001d);
+        Assert.assertEquals("Default-_-float-data", cellB1.getStyleName());
+
+        final Cell cellB3 = sheet.getRowByIndex(2).getCellByIndex(1);
+        final Calendar cal = Calendar.getInstance(); // ODFToolkit uses current locale
+        cal.set(Calendar.MILLISECOND, 0);
+        cal.set(2018, Calendar.FEBRUARY, 1, 0, 0, 0);
+        Assert.assertEquals(cal, cellB3.getDateTimeValue());
+        Assert.assertEquals("Default-_-date-data", cellB3.getStyleName());
+
         // TODO: Add more validation tests"
     }
 
@@ -113,12 +130,13 @@ public class DataStyleExampleIT {
 
         this.createTable(document);
 
-        final File dest = new File(GENERATED_FILES, DATASTYLE_EXAMPLE_ODS);
+        final Path dest = Paths.get(GENERATED_FILES, DATASTYLE_EXAMPLE_ODS);
         writer.saveAs(dest);
     }
 
     private void createTable(final OdsDocument document) throws IOException {
-        final GregorianCalendar cal = new GregorianCalendar(this.locale);
+        final GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
+        cal.set(Calendar.MILLISECOND, 0);
 
         // Define some styles
         final TableCellStyle cellStyle =
@@ -157,7 +175,7 @@ public class DataStyleExampleIT {
         walker.setRowStyle(rowStyle);
         walker.setStringValue("An int with the new default format: ");
         walker.next();
-        walker.setFloatValue(123456.789);
+        walker.setFloatValue(123456.789); // should display 123456
 
         // SECOND ROW
         walker.nextRow();
@@ -177,7 +195,7 @@ public class DataStyleExampleIT {
         walker.setRowStyle(rowStyle);
         walker.setStringValue("An date with the new default format: ");
         walker.next();
-        cal.set(2018, 1, 1, 0, 0, 0);
+        cal.set(2018, Calendar.FEBRUARY, 1, 0, 0, 0);
         walker.setDateValue(cal);
 
         // FOURTH ROW
