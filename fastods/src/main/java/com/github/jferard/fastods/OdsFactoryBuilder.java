@@ -66,7 +66,7 @@ public class OdsFactoryBuilder {
     }
 
     /**
-     * Set the data styles
+     * Set the implicit data styles
      *
      * @param ds the data styles
      * @return this for fluent style

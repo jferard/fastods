@@ -105,6 +105,14 @@ public class DataStylesBuilder {
     }
 
     /**
+     * Get the float style builder. Note that this has a side effect:
+     * * if this method is not called, the {@code FloatDataStyle} attribute of the generated
+     * {@code DataStyles} will be null ;
+     * * otherwise, the {@code FloatDataStyle} attribute of the generated {@code DataStyles}
+     * will be not null.
+     *
+     * See {@code DataStyles} for more information on null {@code DataStyle} attributes.
+     *
      * @return a builder for float style
      */
     public FloatStyleBuilder floatStyleBuilder() {

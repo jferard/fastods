@@ -29,7 +29,14 @@ import com.github.jferard.fastods.attribute.CellType;
 import java.util.EnumMap;
 
 /**
- * The {@code DataStyles} class represents a set of {@code DataStyle}s.
+ * The {@code DataStyles} class represents a set of {@code DataStyle}s, one for each data type.
+ * Each data style may be null. The main use of the {@code DataStyles} object is the definition of
+ * the {@code OdsFactoryBuilder} implicit data styles.
+ *
+ * If such a specific implicit {@code DataStyle} is null, then there is no implicit
+ * {@code DataStyle} for the given type in the current {@code OdsFactoryBuilder}.
+ * This is the case for the default implicit {@code FloatDataStyle}
+ * (see https://github.com/jferard/fastods/issues/217 and https://github.com/jferard/fastods/issues/242).
  *
  * @author Julien Férard
  */
