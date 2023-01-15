@@ -53,11 +53,6 @@ public class DataStyles {
     public DataStyles(final BooleanStyle booleanDataStyle, final CurrencyStyle currencyDataStyle,
                       final DateStyle dateDataStyle, final FloatStyle floatDataStyle,
                       final PercentageStyle percentageDataStyle, final TimeStyle timeDataStyle) {
-        if (booleanDataStyle == null || currencyDataStyle == null || dateDataStyle == null ||
-                floatDataStyle == null || percentageDataStyle == null || timeDataStyle == null) {
-            throw new IllegalArgumentException();
-        }
-
         this.booleanDataStyle = booleanDataStyle;
         this.currencyDataStyle = currencyDataStyle;
         this.dateDataStyle = dateDataStyle;

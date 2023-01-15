@@ -72,6 +72,7 @@ public class TableCellTest {
     private TableColdCell tcc;
     private ToCellValueConverter converter;
     private ValidationsContainer vc;
+    private FloatStyle fs;
 
     @Before
     public void setUp() {
@@ -83,7 +84,9 @@ public class TableCellTest {
         this.xmlUtil = XMLUtil.create();
 
         this.tcc = TableColdCell.create(this.xmlUtil);
+        this.fs = new FloatStyleBuilder("name", Locale.US).build();
         this.ds = DataStylesBuilder.create(Locale.US).build();
+        // assert this.ds.getFloatDataStyle() != null;
         this.vc = PowerMock.createMock(ValidationsContainer.class);
         this.row = new TableRowImpl(cache, this.xmlUtil, this.stc, this.ds, false, this.table,
                 ROW_INDEX, 100, this.vc);
@@ -247,9 +250,9 @@ public class TableCellTest {
 
     @Test
     public final void testFloatNumberDataStyle() throws IOException {
-        this.playAndReplayFloat();
+        this.playAndReplayFloatFS();
         this.cell.setFloatValue(10.999);
-        this.cell.setDataStyle(this.ds.getFloatDataStyle());
+        this.cell.setDataStyle(this.fs);
 
         PowerMock.verifyAll();
         this.assertCellXMLEquals(
@@ -270,9 +273,9 @@ public class TableCellTest {
 
     @Test
     public final void testFloatDoubleDataStyle() throws IOException {
-        this.playAndReplayFloat();
+        this.playAndReplayFloatFS();
         this.cell.setFloatValue(9.999d);
-        this.cell.setDataStyle(this.ds.getFloatDataStyle());
+        this.cell.setDataStyle(this.fs);
 
         PowerMock.verifyAll();
         this.assertCellXMLEquals(
@@ -291,9 +294,18 @@ public class TableCellTest {
                         "office:value=\"9.999\"/>");
     }
 
-    private void playAndReplayFloat() {
+    private void playAndReplayFloatNullStyle() {
         final TableCellStyle cs = PowerMock.createMock(TableCellStyle.class);
-        final DataStyle floatDataStyle = this.ds.getFloatDataStyle();
+
+        PowerMock.resetAll();
+        this.playAddDataStyle(cs, null);
+
+        PowerMock.replayAll();
+    }
+
+    private void playAndReplayFloatFS() {
+        final TableCellStyle cs = PowerMock.createMock(TableCellStyle.class);
+        final DataStyle floatDataStyle = this.fs;
 
         PowerMock.resetAll();
         this.playAddDataStyle(cs, floatDataStyle);
@@ -303,9 +315,9 @@ public class TableCellTest {
 
     @Test
     public final void testFloatFloatDataStyle() throws IOException {
-        this.playAndReplayFloat();
+        this.playAndReplayFloatFS();
         this.cell.setFloatValue(9.999f);
-        this.cell.setDataStyle(this.ds.getFloatDataStyle());
+        this.cell.setDataStyle(this.fs);
 
         PowerMock.verifyAll();
         this.assertCellXMLEquals(
@@ -316,9 +328,10 @@ public class TableCellTest {
     @Test
     public final void testFloatFloat() throws IOException {
         PowerMock.resetAll();
-        this.cell.setFloatValue(9.999f);
 
         PowerMock.replayAll();
+        this.cell.setFloatValue(9.999f);
+
         PowerMock.verifyAll();
         this.assertCellXMLEquals(
                 "<table:table-cell office:value-type=\"float\" " +
@@ -327,9 +340,9 @@ public class TableCellTest {
 
     @Test
     public final void testFloatIntDataStyle() throws IOException {
-        this.playAndReplayFloat();
+        this.playAndReplayFloatFS();
         this.cell.setFloatValue(999);
-        this.cell.setDataStyle(this.ds.getFloatDataStyle());
+        this.cell.setDataStyle(this.fs);
 
         PowerMock.verifyAll();
         this.assertCellXMLEquals(
@@ -368,9 +381,9 @@ public class TableCellTest {
 
     @Test
     public final void testObjectDataStyle() throws IOException {
-        this.playAndReplayFloat();
+        this.playAndReplayFloatFS();
         this.cell.setCellValue(this.converter.from(1));
-        this.cell.setDataStyle(this.ds.getFloatDataStyle());
+        this.cell.setDataStyle(this.fs);
 
         PowerMock.verifyAll();
         this.assertCellXMLEquals(
@@ -538,7 +551,7 @@ public class TableCellTest {
     @Test
     public final void testTwoDataStyles() throws IOException {
         final TableCellStyle cs = PowerMock.createMock(TableCellStyle.class);
-        final DataStyle floatDataStyle = this.ds.getFloatDataStyle();
+        final DataStyle floatDataStyle = this.fs;
         final DataStyle percentageDataStyle = this.ds.getPercentageDataStyle();
 
         PowerMock.resetAll();
@@ -553,7 +566,7 @@ public class TableCellTest {
                 "<table:table-cell table:style-name=\"name\" office:value-type=\"percentage\" " +
                         "office:value=\"9.999\"/>");
         this.cell.setFloatValue(9.999f);
-        this.cell.setDataStyle(this.ds.getFloatDataStyle());
+        this.cell.setDataStyle(this.fs);
         this.assertCellXMLEquals(
                 "<table:table-cell table:style-name=\"name\" office:value-type=\"float\" " +
                         "office:value=\"9.999\"/>");
@@ -564,7 +577,7 @@ public class TableCellTest {
     @Test
     public final void testTwoStyles() throws IOException {
         final TableCellStyle cs = PowerMock.createMock(TableCellStyle.class);
-        final DataStyle floatDataStyle = this.ds.getFloatDataStyle();
+        final DataStyle floatDataStyle = this.fs;
         final TableCellStyle style = TableCellStyle.builder("x").fontStyleItalic().build();
 
         PowerMock.resetAll();
@@ -579,7 +592,7 @@ public class TableCellTest {
 
         PowerMock.replayAll();
         this.cell.setFloatValue(9.999f);
-        this.cell.setDataStyle(this.ds.getFloatDataStyle());
+        this.cell.setDataStyle(this.fs);
         this.assertCellXMLEquals(
                 "<table:table-cell table:style-name=\"name\" office:value-type=\"float\" " +
                         "office:value=\"9.999\"/>");
@@ -797,7 +810,7 @@ public class TableCellTest {
 
     @Test
     public final void testDataStyleNonNull() {
-        final FloatStyle dataStyle = this.ds.getFloatDataStyle();
+        final FloatStyle dataStyle = this.fs;
 
         PowerMock.resetAll();
         EasyMock.expect(this.stc.addDataStyle(dataStyle)).andReturn(true);
@@ -814,7 +827,7 @@ public class TableCellTest {
 
     @Test
     public final void testDataStyleNonNullPreviousStyle() {
-        final DataStyle dataStyle = this.ds.getFloatDataStyle();
+        final DataStyle dataStyle = this.fs;
         final TableCellStyle cellStyle = TableCellStyle.builder("a").dataStyle(dataStyle).build();
         final CurrencyStyle newDs = this.ds.getCurrencyDataStyle();
 
@@ -912,7 +925,7 @@ public class TableCellTest {
 
     @Test
     public final void testSetNegTimeValue() throws IOException {
-        final FloatStyle floatDataStyle = this.ds.getFloatDataStyle();
+        final FloatStyle floatDataStyle = this.fs;
         final TimeStyle timeDataStyle = this.ds.getTimeDataStyle();
 
         PowerMock.resetAll();

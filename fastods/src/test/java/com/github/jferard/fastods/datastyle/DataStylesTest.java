@@ -44,7 +44,7 @@ public class DataStylesTest {
     @Test
     public void testGetAll() {
         for (final CellType type : CellType.values()) {
-            if (type == CellType.STRING || type == CellType.VOID) {
+            if (type == CellType.STRING || type == CellType.VOID || type == CellType.FLOAT) {
                 Assert.assertNull(this.ds.getDataStyle(type));
             } else {
                 Assert.assertNotNull(this.ds.getDataStyle(type));
@@ -146,14 +146,6 @@ public class DataStylesTest {
                         "<number:seconds number:style=\"long\"/>" +
                         "</number:time-style>",
                 ds.getTimeDataStyle());
-    }
-
-    @Test
-    public void testNull() {
-        Assert.assertThrows(IllegalArgumentException.class, () ->
-                new DataStyles(null, this.ds.getCurrencyDataStyle(), this.ds.getDateDataStyle(),
-                        this.ds.getFloatDataStyle(), this.ds.getPercentageDataStyle(),
-                        this.ds.getTimeDataStyle()));
     }
 
     @Test

@@ -262,7 +262,9 @@ public class TableCellImpl implements WritableTableCell {
      * For implicit data style, e.g. will set an implicit data style if the data style is not set
      */
     private void setImplicitDataStyle(final DataStyle dataStyle) {
-        assert dataStyle != null;
+        if (dataStyle == null) {
+            return;
+        }
 
         final TableCellStyle curStyle = this.getCurCellStyle();
         final DataStyle curDataStyle = curStyle.getDataStyle();
@@ -305,7 +307,7 @@ public class TableCellImpl implements WritableTableCell {
     private void setFloatValue(final String valueAsString) {
         this.value = valueAsString;
         this.type = CellType.FLOAT;
-//        this.setImplicitDataStyle(this.dataStyles.getFloatDataStyle());
+        this.setImplicitDataStyle(this.dataStyles.getFloatDataStyle());
     }
 
     @Override

@@ -42,22 +42,25 @@ public class DataStylesBuilder {
         final CurrencyStyleBuilder currencyDataStyleBuilder =
                 new CurrencyStyleBuilder("currency-data", locale);
         final DateStyleBuilder dateDataStyleBuilder = new DateStyleBuilder("date-data", locale);
-        final FloatStyleBuilder floatDataStyleBuilder = new FloatStyleBuilder("float-data", locale);
+        final FloatStyleBuilder floatDataStyleBuilder = null;
         final PercentageStyleBuilder percentageDataStyleBuilder =
                 new PercentageStyleBuilder("percentage-data", locale);
         final TimeStyleBuilder timeDataStyleBuilder = new TimeStyleBuilder("time-data", locale);
-        return new DataStylesBuilder(booleanDataStyleBuilder, currencyDataStyleBuilder, dateDataStyleBuilder,
+        return new DataStylesBuilder(locale, booleanDataStyleBuilder, currencyDataStyleBuilder,
+                dateDataStyleBuilder,
                 floatDataStyleBuilder, percentageDataStyleBuilder, timeDataStyleBuilder);
     }
 
+    private final Locale locale;
     private final BooleanStyleBuilder booleanStyleBuilder;
     private final CurrencyStyleBuilder currencyStyleBuilder;
     private final DateStyleBuilder dateDataStyleBuilder;
-    private final FloatStyleBuilder floatStyleBuilder;
+    private FloatStyleBuilder floatStyleBuilder;
     private final PercentageStyleBuilder percentageStyleBuilder;
     private final TimeStyleBuilder timeStyleBuilder;
 
     /**
+     * @param locale                 the locale
      * @param booleanStyleBuilder    the style for booleans
      * @param currencyStyleBuilder   the style for currencies
      * @param dateDataStyleBuilder   the style for dates
@@ -65,12 +68,13 @@ public class DataStylesBuilder {
      * @param percentageStyleBuilder the style for percentages
      * @param timeStyleBuilder       the style for times
      */
-    public DataStylesBuilder(final BooleanStyleBuilder booleanStyleBuilder,
+    public DataStylesBuilder(final Locale locale, final BooleanStyleBuilder booleanStyleBuilder,
                              final CurrencyStyleBuilder currencyStyleBuilder,
                              final DateStyleBuilder dateDataStyleBuilder,
                              final FloatStyleBuilder floatStyleBuilder,
                              final PercentageStyleBuilder percentageStyleBuilder,
                              final TimeStyleBuilder timeStyleBuilder) {
+        this.locale = locale;
         this.booleanStyleBuilder = booleanStyleBuilder;
         this.currencyStyleBuilder = currencyStyleBuilder;
         this.dateDataStyleBuilder = dateDataStyleBuilder;
@@ -104,6 +108,9 @@ public class DataStylesBuilder {
      * @return a builder for float style
      */
     public FloatStyleBuilder floatStyleBuilder() {
+        if (this.floatStyleBuilder == null) {
+            this.floatStyleBuilder = new FloatStyleBuilder("float-data", this.locale);
+        }
         return this.floatStyleBuilder;
     }
 
@@ -125,8 +132,14 @@ public class DataStylesBuilder {
      * @return the data styles
      */
     public DataStyles build() {
+        final FloatStyle floatStyle;
+        if (this.floatStyleBuilder == null) {
+            floatStyle = null;
+        } else {
+            floatStyle = this.floatStyleBuilder.build();
+        }
         return new DataStyles(this.booleanStyleBuilder.build(), this.currencyStyleBuilder.build(),
-                this.dateDataStyleBuilder.build(), this.floatStyleBuilder.build(),
+                this.dateDataStyleBuilder.build(), floatStyle,
                 this.percentageStyleBuilder.build(), this.timeStyleBuilder.build());
 
     }
