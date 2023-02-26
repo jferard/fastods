@@ -474,10 +474,12 @@ public class OdsElements implements StylesContainer {
         final ConfigItemMapEntry tableConfig = table.getConfigEntry();
         tableConfig.put(ConfigItem.create(ConfigElement.HORIZONTAL_SPLIT_MODE, SC_SPLIT_FIX));
         tableConfig.put(ConfigItem.create(ConfigElement.VERTICAL_SPLIT_MODE, SC_SPLIT_FIX));
-        tableConfig.put(ConfigItem
-                .create(ConfigElement.HORIZONTAL_SPLIT_POSITION, String.valueOf(colCount)));
-        tableConfig.put(ConfigItem
-                .create(ConfigElement.VERTICAL_SPLIT_POSITION, String.valueOf(rowCount)));
+        final String colCountStr = String.valueOf(colCount);
+        tableConfig.put(ConfigItem.create(ConfigElement.HORIZONTAL_SPLIT_POSITION, colCountStr));
+        tableConfig.put(ConfigItem.create(ConfigElement.POSITION_RIGHT, colCountStr));
+        final String rowCountStr = String.valueOf(rowCount);
+        tableConfig.put(ConfigItem.create(ConfigElement.VERTICAL_SPLIT_POSITION, rowCountStr));
+        tableConfig.put(ConfigItem.create(ConfigElement.POSITION_BOTTOM, rowCountStr));
     }
 
     /**
