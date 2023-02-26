@@ -50,6 +50,8 @@ import org.h2.jdbcx.JdbcDataSource;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -142,8 +144,7 @@ class J_Misc {
 
         final JdbcDataSource dataSource = new JdbcDataSource();
         dataSource.setUrl("jdbc:h2:mem:test");
-        final Connection conn = dataSource.getConnection();
-        try {
+        try (final Connection conn = dataSource.getConnection()) {
             final Statement s = conn.createStatement();
             s.execute("CREATE TABLE document (file_type TEXT, extension TEXT)");
             s.execute("INSERT INTO document VALUES ('Text', '.odt'), ('Spreadsheet', '.ods'), " +
@@ -175,56 +176,53 @@ class J_Misc {
             // does not provide a class for SQL's INTERVAL object. Hence, FastODS provides a class
             // to define a cast try to an INTERVAL.
             final SQLToCellValueConverter.IntervalConverter converter =
-                    new SQLToCellValueConverter.IntervalConverter() {
-                        @Override
-                        public TimeValue castToInterval(final Object o) {
-                            if (o instanceof Interval) {
-                                final Interval interval = (Interval) o;
-                                final boolean neg = interval.isNegative();
-                                switch (interval.getQualifier()) {
-                                    case YEAR:
-                                        return new TimeValue(neg, interval.getLeading(), 0, 0, 0, 0,
-                                                0);
-                                    case MONTH:
-                                        return new TimeValue(neg, 0, interval.getLeading(), 0, 0, 0,
-                                                0);
-                                    case YEAR_TO_MONTH:
-                                        return new TimeValue(neg, interval.getLeading(),
-                                                interval.getRemaining(), 0, 0, 0, 0);
-                                    case DAY:
-                                        return new TimeValue(neg, 0, 0, interval.getLeading(), 0, 0,
-                                                0);
-                                    case HOUR:
-                                        return new TimeValue(neg, 0, 0, 0, interval.getLeading(), 0,
-                                                0);
-                                    case MINUTE:
-                                        return new TimeValue(neg, 0, 0, 0, 0, interval.getLeading(),
-                                                0);
-                                    case SECOND:
-                                        return new TimeValue(neg, 0, 0, 0, 0, 0,
-                                                interval.getLeading());
-                                    case DAY_TO_HOUR:
-                                        return new TimeValue(neg, 0, 0, interval.getLeading(),
-                                                interval.getRemaining(), 0, 0);
-                                    case DAY_TO_MINUTE:
-                                        return new TimeValue(neg, 0, 0, interval.getLeading(), 0,
-                                                interval.getRemaining(), 0);
-                                    case DAY_TO_SECOND:
-                                        return new TimeValue(neg, 0, 0, interval.getLeading(), 0, 0,
-                                                interval.getRemaining() / NANOSECONDS_PER_SECONDS);
-                                    case HOUR_TO_MINUTE:
-                                        return new TimeValue(neg, 0, 0, 0, interval.getLeading(),
-                                                interval.getRemaining(), 0);
-                                    case HOUR_TO_SECOND:
-                                        return new TimeValue(neg, 0, 0, 0, interval.getLeading(), 0,
-                                                interval.getRemaining() / NANOSECONDS_PER_SECONDS);
-                                    case MINUTE_TO_SECOND:
-                                        return new TimeValue(neg, 0, 0, 0, 0, interval.getLeading(),
-                                                interval.getRemaining() / NANOSECONDS_PER_SECONDS);
-                                }
+                    o -> {
+                        if (o instanceof Interval) {
+                            final Interval interval = (Interval) o;
+                            final boolean neg = interval.isNegative();
+                            switch (interval.getQualifier()) {
+                                case YEAR:
+                                    return new TimeValue(neg, interval.getLeading(), 0, 0, 0, 0,
+                                            0);
+                                case MONTH:
+                                    return new TimeValue(neg, 0, interval.getLeading(), 0, 0, 0,
+                                            0);
+                                case YEAR_TO_MONTH:
+                                    return new TimeValue(neg, interval.getLeading(),
+                                            interval.getRemaining(), 0, 0, 0, 0);
+                                case DAY:
+                                    return new TimeValue(neg, 0, 0, interval.getLeading(), 0, 0,
+                                            0);
+                                case HOUR:
+                                    return new TimeValue(neg, 0, 0, 0, interval.getLeading(), 0,
+                                            0);
+                                case MINUTE:
+                                    return new TimeValue(neg, 0, 0, 0, 0, interval.getLeading(),
+                                            0);
+                                case SECOND:
+                                    return new TimeValue(neg, 0, 0, 0, 0, 0,
+                                            interval.getLeading());
+                                case DAY_TO_HOUR:
+                                    return new TimeValue(neg, 0, 0, interval.getLeading(),
+                                            interval.getRemaining(), 0, 0);
+                                case DAY_TO_MINUTE:
+                                    return new TimeValue(neg, 0, 0, interval.getLeading(), 0,
+                                            interval.getRemaining(), 0);
+                                case DAY_TO_SECOND:
+                                    return new TimeValue(neg, 0, 0, interval.getLeading(), 0, 0,
+                                            interval.getRemaining() / NANOSECONDS_PER_SECONDS);
+                                case HOUR_TO_MINUTE:
+                                    return new TimeValue(neg, 0, 0, 0, interval.getLeading(),
+                                            interval.getRemaining(), 0);
+                                case HOUR_TO_SECOND:
+                                    return new TimeValue(neg, 0, 0, 0, interval.getLeading(), 0,
+                                            interval.getRemaining() / NANOSECONDS_PER_SECONDS);
+                                case MINUTE_TO_SECOND:
+                                    return new TimeValue(neg, 0, 0, 0, 0, interval.getLeading(),
+                                            interval.getRemaining() / NANOSECONDS_PER_SECONDS);
                             }
-                            return null;
                         }
+                        return null;
                     };
 
             // We pass the converter to the builder.
@@ -248,14 +246,12 @@ class J_Misc {
             // Now, skip another row, then write the result:
             walker.toRow(12);
             walker.addData(wrapper);
-        } finally {
-            conn.close();
         }
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        final File destFile = new File("generated_files", "j_misc_rs.ods");
-        writer.saveAs(destFile);
-        ExamplesTestHelper.validate(destFile);
+        final Path destPath = Paths.get("generated_files", "j_misc_rs.ods");
+        writer.saveAs(destPath);
+        ExamplesTestHelper.validate(destPath);
     }
 
     /**
@@ -272,8 +268,7 @@ class J_Misc {
 
         final JdbcDataSource dataSource = new JdbcDataSource();
         dataSource.setUrl("jdbc:h2:mem:test");
-        final Connection conn = dataSource.getConnection();
-        try {
+        try (final Connection conn = dataSource.getConnection()) {
             final Statement s = conn.createStatement();
             s.execute("CREATE TABLE document (file_type TEXT, extension TEXT)");
             s.execute("INSERT INTO document VALUES ('Text', '.odt'), ('Spreadsheet', '.ods'), " +
@@ -285,8 +280,6 @@ class J_Misc {
                     "'content.xml'), ('<office:document-styles>', 'styles.xml'), " +
                     "('<office:document-meta>', 'meta.xml'), ('<office:document-settings>', " +
                     "'settings.xml')");
-        } finally {
-            conn.close();
         }
 
         // Then just use the raw exporter:
@@ -297,17 +290,16 @@ class J_Misc {
         // information.
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        final File destFile = new File("generated_files", "j_misc_db.ods");
-        writer.saveAs(destFile);
-        ExamplesTestHelper.validate(destFile);
+        final Path destPath = Paths.get("generated_files", "j_misc_db.ods");
+        writer.saveAs(destPath);
+        ExamplesTestHelper.validate(destPath);
     }
 
 
     /**
      * @throws IOException  if the file can't be written
-     * @throws SQLException in something goes wrong with the local database
      */
-    static void freezeCellExample() throws IOException, SQLException {
+    static void freezeCellExample() throws IOException {
         final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("misc"), Locale.US);
         final AnonymousOdsFileWriter writer = odsFactory.createWriter();
         final OdsDocument document = writer.document();
@@ -345,9 +337,9 @@ class J_Misc {
         //
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        final File destFile = new File("generated_files", "j_misc_features.ods");
-        writer.saveAs(destFile);
-        ExamplesTestHelper.validate(destFile);
+        final Path destPath = Paths.get("generated_files", "j_misc_features.ods");
+        writer.saveAs(destPath);
+        ExamplesTestHelper.validate(destPath);
     }
 
     /**
@@ -361,7 +353,7 @@ class J_Misc {
         //
         // First, you may need to add a namespace to the `content.xml` file:
 
-        final Map<String, String> namespaceByPrefix = new HashMap<String, String>();
+        final Map<String, String> namespaceByPrefix = new HashMap<>();
         namespaceByPrefix.put("xmlns:myns", "http://myns.xyz/my/namespace");
         final OdsFactory odsFactory = OdsFactory.builder(Logger.getLogger("misc"), Locale.US)
                 .addNamespaceByPrefix(namespaceByPrefix).build();
@@ -388,16 +380,16 @@ class J_Misc {
         //
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        final File destFile = new File("generated_files", "j_misc_custom_attr.ods");
-        writer.saveAs(destFile);
-        ExamplesTestHelper.validate(destFile);
+        final Path destPath = Paths.get("generated_files", "j_misc_custom_attr.ods");
+        writer.saveAs(destPath);
+        ExamplesTestHelper.validate(destPath);
     }
 
     /**
      * @throws IOException if the file can't be written
      */
     static void customCell() throws IOException {
-        final Map<String, String> namespaceByPrefix = new HashMap<String, String>();
+        final Map<String, String> namespaceByPrefix = new HashMap<>();
         namespaceByPrefix.put("xmlns:myns", "http://myns.xyz/my/namespace");
         final OdsFactory odsFactory = OdsFactory.builder(Logger.getLogger("misc"), Locale.US)
                 .addNamespaceByPrefix(namespaceByPrefix).build();
@@ -424,9 +416,9 @@ class J_Misc {
         //
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        final File destFile = new File("generated_files", "j_misc_custom_cell.ods");
-        writer.saveAs(destFile);
-        ExamplesTestHelper.validate(destFile);
+        final Path destPath = Paths.get("generated_files", "j_misc_custom_cell.ods");
+        writer.saveAs(destPath);
+        ExamplesTestHelper.validate(destPath);
     }
 
 
@@ -440,7 +432,7 @@ class J_Misc {
         // part of the declared namespaces (`xmlns:office`, `xmlns:ooo`, ...). If you want to
         // use an external namespace, you have to declare it in the `OdsFactory`:
         //
-        final Map<String, String> namespaceByPrefix = new HashMap<String, String>();
+        final Map<String, String> namespaceByPrefix = new HashMap<>();
         namespaceByPrefix.put("xmlns:myns", "http://myns.xyz/my/namespace");
         final OdsFactory odsFactory = OdsFactory.builder(Logger.getLogger("misc"), Locale.US)
                 .addNamespaceByPrefix(namespaceByPrefix).build();
@@ -494,9 +486,9 @@ class J_Misc {
         // ](https://github.com/jferard/fastods/issues/new) or propose a pull request.
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        final File destFile = new File("generated_files", "j_misc_custom_cell2.ods");
-        writer.saveAs(destFile);
-        ExamplesTestHelper.validate(destFile);
+        final Path destPath = Paths.get("generated_files", "j_misc_custom_cell2.ods");
+        writer.saveAs(destPath);
+        ExamplesTestHelper.validate(destPath);
     }
 
 }

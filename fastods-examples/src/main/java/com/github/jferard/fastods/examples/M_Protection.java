@@ -36,8 +36,9 @@ import com.github.jferard.fastods.crypto.ZipUTF8CryptoWriterBuilder;
 import com.github.jferard.fastods.util.Validation;
 import com.github.jferard.fastods.util.ZipUTF8WriterBuilder;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Locale;
@@ -104,9 +105,9 @@ public class M_Protection {
 
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        final File destFile = new File("generated_files", "m_protect_validation.ods");
-        writer.saveAs(destFile);
-        ExamplesTestHelper.validate(destFile);
+        final Path destPath = Paths.get("generated_files", "m_protect_validation.ods");
+        writer.saveAs(destPath);
+        ExamplesTestHelper.validate(destPath);
     }
 
     public static void protectionExample() throws IOException, NoSuchAlgorithmException {
@@ -138,9 +139,9 @@ public class M_Protection {
 
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        final File destFile = new File("generated_files", "m_protect_sheet.ods");
-        writer.saveAs(destFile);
-        ExamplesTestHelper.validate(destFile);
+        final Path destPath = Paths.get("generated_files", "m_protect_sheet.ods");
+        writer.saveAs(destPath);
+        ExamplesTestHelper.validate(destPath);
     }
 
     public static void cryptoExample() throws IOException, NoSuchAlgorithmException {
@@ -178,13 +179,13 @@ public class M_Protection {
         // Note that this method automatically voids the password to clear sensitive data.
         //
         // Once the builder is created, let's pass it to the `saveAs` method.
-        writer.saveAs(new File("generated_files", "m_hello_world_crypto_example.ods"),
+        writer.saveAs(Paths.get("generated_files", "m_hello_world_crypto_example.ods"),
                 builder);
        //
         // (The password in this example is "123", but you'd better choose another password.)
         //
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
-        final File destFile = new File("generated_files", "m_hello_world_crypto_example.ods");
-        ExamplesTestHelper.validate(destFile);
+        final Path destPath = Paths.get("generated_files", "m_hello_world_crypto_example.ods");
+        ExamplesTestHelper.validate(destPath);
     }
 }

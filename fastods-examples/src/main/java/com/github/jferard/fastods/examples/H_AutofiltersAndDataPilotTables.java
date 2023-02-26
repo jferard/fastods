@@ -39,8 +39,9 @@ import com.github.jferard.fastods.util.PilotTable;
 import com.github.jferard.fastods.util.PilotTableField;
 import com.github.jferard.fastods.util.PilotTableLevel;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.logging.Logger;
@@ -144,9 +145,9 @@ class H_AutofiltersAndDataPilotTables {
         // macro is not mandatory.)
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        final File destFile = new File("generated_files", "h_autofilter.ods");
-        writer.saveAs(destFile);
-        ExamplesTestHelper.validate(destFile);
+        final Path destPath = Paths.get("generated_files", "h_autofilter.ods");
+        writer.saveAs(destPath);
+        ExamplesTestHelper.validate(destPath);
     }
 
 
@@ -281,8 +282,8 @@ class H_AutofiltersAndDataPilotTables {
         new MacroHelper().addRefreshMacro(document);
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        final File destFile = new File("generated_files", "h_data_pilot.ods");
-        writer.saveAs(destFile);
-        ExamplesTestHelper.validate(destFile);
+        final Path destPath = Paths.get("generated_files", "h_data_pilot.ods");
+        writer.saveAs(destPath);
+        ExamplesTestHelper.validate(destPath);
     }
 }

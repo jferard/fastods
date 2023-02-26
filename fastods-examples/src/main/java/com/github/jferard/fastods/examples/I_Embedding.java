@@ -34,16 +34,16 @@ import com.github.jferard.fastods.Tooltip;
 import com.github.jferard.fastods.style.DrawFillBitmap;
 import com.github.jferard.fastods.style.GraphicStyle;
 import com.github.jferard.fastods.tool.InsertHelper;
-import com.github.jferard.fastods.util.CharsetUtil;
 import com.github.jferard.fastods.util.SVGRectangle;
 import com.github.jferard.fastods.util.XMLUtil;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.logging.Logger;
 
@@ -68,7 +68,7 @@ class I_Embedding {
         //
         // I kept those two steps in the API for a simple reason: you might want to perform only
         // one of those actions. Sometimes you don't want to really
-        // embed the content in the archive, but only to make reference to an URL. And sometimes
+        // embed the content in the archive, but only to make reference to a URL. And sometimes
         // you don't want to hook the content, just to embed it. To keep the process easy, there is
         // always a tool for grouping those steps.
         //
@@ -94,9 +94,9 @@ class I_Embedding {
         //
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        final File destFile = new File("generated_files", "i_embedding_a_file.ods");
-        writer.saveAs(destFile);
-        ExamplesTestHelper.validate(destFile);
+        final Path destPath = Paths.get("generated_files", "i_embedding_a_file.ods");
+        writer.saveAs(destPath);
+        ExamplesTestHelper.validate(destPath);
     }
 
     /**
@@ -132,9 +132,9 @@ class I_Embedding {
         //
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        final File destFile = new File("generated_files", "i_embedding_image.ods");
-        writer.saveAs(destFile);
-        ExamplesTestHelper.validate(destFile);
+        final Path destPath = Paths.get("generated_files", "i_embedding_image.ods");
+        writer.saveAs(destPath);
+        ExamplesTestHelper.validate(destPath);
     }
 
     /**
@@ -151,12 +151,11 @@ class I_Embedding {
         final Table table = document.addTable("test");
 
         // We get the input stream:
-        final File embeddedFile = new File("generated_files", "a_hello_world_example.ods");
-        if (!embeddedFile.exists()) {
+        final Path embeddedPath = Paths.get("generated_files", "a_hello_world_example.ods");
+        if (!Files.exists(embeddedPath)) {
             return;
         }
-        final InputStream inputStream =
-                new FileInputStream(embeddedFile);
+        final InputStream inputStream = Files.newInputStream(embeddedPath);
 
         // And use a tool
         final GraphicStyle gs = GraphicStyle.builder("gs").build();
@@ -166,9 +165,9 @@ class I_Embedding {
 
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        final File destFile = new File("generated_files", "i_embedding_object.ods");
-        writer.saveAs(destFile);
-        ExamplesTestHelper.validate(destFile);
+        final Path destPath = Paths.get("generated_files", "i_embedding_object.ods");
+        writer.saveAs(destPath);
+        ExamplesTestHelper.validate(destPath);
     }
 
     /**
@@ -179,7 +178,7 @@ class I_Embedding {
         // ## Add an image to the background of a comment.
         // That was a feature request. Here's the way to do it.
         //
-        // The process is a little bit more complex, since the background of the tooltip is set
+        // The process is a little more complex, since the background of the tooltip is set
         // with a "fill style".
         //
         // As usual:
@@ -219,9 +218,9 @@ class I_Embedding {
 
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        final File destFile = new File("generated_files", "i_embed_tt_image.ods");
-        writer.saveAs(destFile);
-        ExamplesTestHelper.validate(destFile);
+        final Path destPath = Paths.get("generated_files", "i_embed_tt_image.ods");
+        writer.saveAs(destPath);
+        ExamplesTestHelper.validate(destPath);
     }
 
     /**
@@ -254,9 +253,9 @@ class I_Embedding {
         //
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        final File destFile = new File("generated_files", "i_embedding_table.ods");
-        writer.saveAs(destFile);
-        ExamplesTestHelper.validate(destFile);
+        final Path destPath = Paths.get("generated_files", "i_embedding_table.ods");
+        writer.saveAs(destPath);
+        ExamplesTestHelper.validate(destPath);
     }
 }
 

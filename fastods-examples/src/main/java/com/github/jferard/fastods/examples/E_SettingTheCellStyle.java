@@ -41,8 +41,9 @@ import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.style.TableColumnStyle;
 import com.github.jferard.fastods.style.TableRowStyle;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.logging.Logger;
 
@@ -176,8 +177,8 @@ class E_SettingTheCellStyle {
 
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        final File destFile = new File("generated_files", "e_cell_styles.ods");
-        writer.saveAs(destFile);
-        ExamplesTestHelper.validate(destFile);
+        final Path destPath = Paths.get("generated_files", "e_cell_styles.ods");
+        writer.saveAs(destPath);
+        ExamplesTestHelper.validate(destPath);
     }
 }

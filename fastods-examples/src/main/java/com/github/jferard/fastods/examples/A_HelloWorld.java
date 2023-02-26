@@ -31,8 +31,9 @@ import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.TableRowImpl;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.logging.Logger;
 
@@ -92,13 +93,13 @@ class A_HelloWorld {
         cell.setStringValue("Hello, world!");
 
         // And save the file.
-        writer.saveAs(new File("generated_files", "a_hello_world_example.ods"));
+        writer.saveAs(Paths.get("generated_files", "a_hello_world_example.ods"));
 
         // With a `mvn clean verify` at the root of the project, you can check the result in the
         // `fastods-examples/generated-files` directory.
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // Validation
-        final File destFile = new File("generated_files", "a_hello_world_example.ods");
-        ExamplesTestHelper.validate(destFile);
+        final Path destPath = Paths.get("generated_files", "a_hello_world_example.ods");
+        ExamplesTestHelper.validate(destPath);
     }
 }

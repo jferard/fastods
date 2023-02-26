@@ -32,11 +32,12 @@ import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.Text;
 import com.github.jferard.fastods.style.TextStyle;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.logging.Logger;
 
@@ -196,16 +197,15 @@ class F_MoreOnCells {
 
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        final File destFile = new File("generated_files", "f_more.ods");
-        writer.saveAs(destFile);
-        ExamplesTestHelper.validate(destFile);
+        final Path destPath = Paths.get("generated_files", "f_more.ods");
+        writer.saveAs(destPath);
+        ExamplesTestHelper.validate(destPath);
     }
 
     /**
      * @throws IOException        if the file can't be written
-     * @throws URISyntaxException if the uri is not valid
      */
-    static void example2() throws IOException, URISyntaxException {
+    static void example2() throws IOException {
         final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("cells"), Locale.US);
         final AnonymousOdsFileWriter writer = odsFactory.createWriter();
         final OdsDocument document = writer.document();
@@ -283,8 +283,8 @@ class F_MoreOnCells {
         //
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        final File destFile = new File("generated_files", "f_formulas.ods");
-        writer.saveAs(destFile);
-        ExamplesTestHelper.validate(destFile);
+        final Path destPath = Paths.get("generated_files", "f_formulas.ods");
+        writer.saveAs(destPath);
+        ExamplesTestHelper.validate(destPath);
     }
 }

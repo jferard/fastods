@@ -37,8 +37,9 @@ import com.github.jferard.fastods.datastyle.DateTimeStyleFormat;
 import com.github.jferard.fastods.datastyle.FloatStyleBuilder;
 import com.github.jferard.fastods.datastyle.TimeStyleBuilder;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
@@ -90,7 +91,7 @@ class D_SettingTheCellDataStyle {
         walker.nextRow();
 
         // A date with the standard format:
-        final Calendar cal = new GregorianCalendar(2018, 1, 1, 0, 0, 0);
+        final Calendar cal = new GregorianCalendar(2018, Calendar.FEBRUARY, 1, 0, 0, 0);
         walker.setDateValue(cal);
 
         // And a custom format:
@@ -118,9 +119,9 @@ class D_SettingTheCellDataStyle {
 
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        final File destFile = new File("generated_files", "d_data_style1.ods");
-        writer.saveAs(destFile);
-        ExamplesTestHelper.validate(destFile);
+        final Path destPath = Paths.get("generated_files", "d_data_style1.ods");
+        writer.saveAs(destPath);
+        ExamplesTestHelper.validate(destPath);
     }
 
     /**
@@ -161,14 +162,14 @@ class D_SettingTheCellDataStyle {
         final TableCellWalker walker = table.getWalker();
 
         walker.setFloatValue(123456.789);
-        final Calendar cal = new GregorianCalendar(2018, 1, 1, 0, 0, 0);
+        final Calendar cal = new GregorianCalendar(2018, Calendar.FEBRUARY, 1, 0, 0, 0);
         walker.next();
         walker.setDateValue(cal);
 
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        final File destFile = new File("generated_files", "d_data_style2.ods");
-        writer.saveAs(destFile);
-        ExamplesTestHelper.validate(destFile);
+        final Path destPath = Paths.get("generated_files", "d_data_style2.ods");
+        writer.saveAs(destPath);
+        ExamplesTestHelper.validate(destPath);
     }
 }

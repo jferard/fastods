@@ -43,8 +43,9 @@ import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.style.TextStyle;
 import com.github.jferard.fastods.util.XMLUtil;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.logging.Logger;
 
@@ -157,12 +158,12 @@ class K_MultiplicationTable {
         table.setStyle(tableStyle);
 
         // And save the file.
-        writer.saveAs(new File("generated_files", "k_multiplication_table.ods"));
+        writer.saveAs(Paths.get("generated_files", "k_multiplication_table.ods"));
 
         // As you see, it's possible to create a nice document in roughly 40 lines of code (I don't
         // count the imports)
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
-        final File destFile = new File("generated_files", "k_multiplication_table.ods");
-        ExamplesTestHelper.validate(destFile);
+        final Path destPath = Paths.get("generated_files", "k_multiplication_table.ods");
+        ExamplesTestHelper.validate(destPath);
     }
 }

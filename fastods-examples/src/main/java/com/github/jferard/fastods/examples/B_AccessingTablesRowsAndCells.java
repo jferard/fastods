@@ -35,8 +35,9 @@ import com.github.jferard.fastods.TableRowImpl;
 import com.github.jferard.fastods.ToCellValueConverter;
 import com.github.jferard.fastods.tool.TableHelper;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.Locale;
 import java.util.logging.Logger;
@@ -151,11 +152,11 @@ class B_AccessingTablesRowsAndCells {
 
         // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        writer.saveAs(new File("generated_files", "b_accessing_example.ods"));
+        writer.saveAs(Paths.get("generated_files", "b_accessing_example.ods"));
         //
         // *Note:* We will see how to merge cells in the Advanced part of this tutorial.
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
-        final File destFile = new File("generated_files", "b_accessing_example.ods");
-        ExamplesTestHelper.validate(destFile);
+        final Path destPath = Paths.get("generated_files", "b_accessing_example.ods");
+        ExamplesTestHelper.validate(destPath);
     }
 }

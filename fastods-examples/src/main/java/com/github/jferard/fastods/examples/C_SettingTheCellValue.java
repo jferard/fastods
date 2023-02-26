@@ -35,9 +35,11 @@ import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.TimeValue;
 import com.github.jferard.fastods.ToCellValueConverter;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
@@ -61,7 +63,7 @@ class C_SettingTheCellValue {
         // # Setting the cell value
         // Three elements define the content of a cell:
         //
-        // * the value and its the type (string, float, boolean, ...)
+        // * the value and its type (string, float, boolean, ...)
         // * the style (font, background color, border, ...)
         // * the format, or data style (number of digits for a float, date format for a date, ...)
         //
@@ -91,7 +93,7 @@ class C_SettingTheCellValue {
         // The third row contains a date:
         walker.setStringValue("Date");
         walker.next();
-        walker.setDateValue(new GregorianCalendar(2014, 9, 17, 9, 0, 0));
+        walker.setDateValue(new GregorianCalendar(2014, Calendar.OCTOBER, 17, 9, 0, 0));
         walker.nextRow();
 
         // The fourth row contains a float:
@@ -135,7 +137,7 @@ class C_SettingTheCellValue {
                         "String", "Void");
         final List<Object> B =
                 Arrays.asList("Type guess example", true, new CurrencyValue(10.5, "USD"),
-                        new GregorianCalendar(2014, 9, 17, 9, 0, 0), 3.14159,
+                        new GregorianCalendar(2014, Calendar.OCTOBER, 17, 9, 0, 0), 3.14159,
                         new PercentageValue(0.545), new TimeValue(false, 0, 0, 0, 0, 0, 3.6),
                         "A String", null);
 
@@ -161,8 +163,8 @@ class C_SettingTheCellValue {
         // We'll see that FastODS has another kind of String value in the Text value section.
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         //
-        final File destFile = new File("generated_files", "c_cell_value.ods");
-        writer.saveAs(destFile);
-        ExamplesTestHelper.validate(destFile);
+        final Path destPath = Paths.get("generated_files", "c_cell_value.ods");
+        writer.saveAs(destPath);
+        ExamplesTestHelper.validate(destPath);
     }
 }

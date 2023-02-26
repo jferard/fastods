@@ -26,7 +26,6 @@ package com.github.jferard.fastods.examples;
 
 import com.github.jferard.fastods.NamedOdsDocument;
 import com.github.jferard.fastods.NamedOdsFileWriter;
-import com.github.jferard.fastods.OdsDocument;
 import com.github.jferard.fastods.OdsFactory;
 import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCellWalker;
@@ -35,8 +34,9 @@ import com.github.jferard.fastods.tool.FastOdsBus;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
@@ -98,29 +98,26 @@ public class N_UsingTheBus {
         //
 
         // Now, we create a simple bus:
-        final FastOdsBus<Element> bus = new FastOdsBus<Element>();
+        final FastOdsBus<Element> bus = new FastOdsBus<>();
         //
         // ### The consumer
         // The consumer is not very hard to understand: take the next element and write it,
         // until the bus is closed.
-        final Thread consumer = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    while (!bus.isClosed()) {
-                        final Element element = bus.get(); // this method is blocking: we'll wait...
-                        if (element == null) { // this is the flag.
-                            break;
-                        }
-                        element.write();
+        final Thread consumer = new Thread(() -> {
+            try {
+                while (!bus.isClosed()) {
+                    final Element element = bus.get(); // this method is blocking: we'll wait...
+                    if (element == null) { // this is the flag.
+                        break;
                     }
-                    writer.save();
-                    writer.close();
-                } catch (final Exception e) {
-                    /* you'll do something better here, like log the error */
+                    element.write();
                 }
+                writer.save();
+                writer.close();
+            } catch (final Exception e) {
+                /* you'll do something better here, like log the error */
             }
-        };
+        });
         //
         // We can start the consumer now.
         consumer.start();
@@ -140,25 +137,22 @@ public class N_UsingTheBus {
         // Let's create the instance:
         final State state = new State();
 
-        // An we need random numbers.
+        // And we need random numbers.
         final Random random = new Random();
 
         // Now, let's start:
         for (int i = 0; i < 20; i++) {
             final String tableName = "Group " + i;
-            bus.put(new Element() { // title element
-                @Override
-                public void write() throws IOException {
-                    state.table = document.addTable(tableName);
-                    state.walker = state.table.getWalker();
-                }
+            bus.put(() -> { // title element
+                state.table = document.addTable(tableName);
+                state.walker = state.table.getWalker();
             });
             for (int j = 0; j < 10; j++) {
                 // Our fake query
                 final String title = "> Query " + j;
-                final List<List<Integer>> intsRows = new ArrayList<List<Integer>>();
+                final List<List<Integer>> intsRows = new ArrayList<>();
                 for (int r=0; r<25; r++) {
-                    final List<Integer> ints = new ArrayList<Integer>(10);
+                    final List<Integer> ints = new ArrayList<>(10);
                     for (int c = 0; c < 10; c++) {
                         ints.add(random.nextInt());
                     }
@@ -166,22 +160,19 @@ public class N_UsingTheBus {
                 }
 
                 // Put the result:
-                bus.put(new Element() { // result element
-                    @Override
-                    public void write() throws IOException {
-                        state.walker.setStringValue(title);
-                        state.walker.setStyle(bold);
-                        state.walker.nextRow();
-                        state.walker.nextRow();
-                        for (final List<Integer> row : intsRows) {
-                            for (final Integer v : row) {
-                                state.walker.setFloatValue(v);
-                                state.walker.next();
-                            }
-                            state.walker.nextRow();
+                bus.put(() -> { // result element
+                    state.walker.setStringValue(title);
+                    state.walker.setStyle(bold);
+                    state.walker.nextRow();
+                    state.walker.nextRow();
+                    for (final List<Integer> row : intsRows) {
+                        for (final Integer v : row) {
+                            state.walker.setFloatValue(v);
+                            state.walker.next();
                         }
                         state.walker.nextRow();
                     }
+                    state.walker.nextRow();
                 });
             }
         }
@@ -198,8 +189,8 @@ public class N_UsingTheBus {
         }
         // And that's all.
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
-        final File destFile = new File("generated_files", "n_using_the_bus.ods");
-        ExamplesTestHelper.validate(destFile);
+        final Path destPath = Paths.get("generated_files", "n_using_the_bus.ods");
+        ExamplesTestHelper.validate(destPath);
     }
 
     private interface Element {

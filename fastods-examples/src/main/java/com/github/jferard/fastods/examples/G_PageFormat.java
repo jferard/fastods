@@ -42,8 +42,9 @@ import com.github.jferard.fastods.style.PrintComponent;
 import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.style.TextStyle;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.logging.Logger;
 
@@ -88,9 +89,9 @@ class G_PageFormat {
 
             // << END TUTORIAL (directive to extract part of a tutorial from this file)
             // And save the file.
-            final File destFile = new File("generated_files", "g_page_format_A3.ods");
-            writer.saveAs(destFile);
-            ExamplesTestHelper.validate(destFile);
+            final Path destPath = Paths.get("generated_files", "g_page_format_A3.ods");
+            writer.saveAs(destPath);
+            ExamplesTestHelper.validate(destPath);
         }
 
         // Next example:
@@ -112,9 +113,9 @@ class G_PageFormat {
             final TableStyle tableStyle =
                     TableStyle.builder("table-style").pageStyle(pageStyle).build();
             table.setStyle(tableStyle);
-            final File destFile = new File("generated_files", "g_page_format_custom.ods");
-            writer.saveAs(destFile);
-            ExamplesTestHelper.validate(destFile);
+            final Path destPath = Paths.get("generated_files", "g_page_format_custom.ods");
+            writer.saveAs(destPath);
+            ExamplesTestHelper.validate(destPath);
         }
 
         // Next example:
@@ -138,9 +139,9 @@ class G_PageFormat {
             final TableStyle tableStyle =
                     TableStyle.builder("table-style").pageStyle(pageStyle).build();
             table.setStyle(tableStyle);
-            final File destFile = new File("generated_files", "g_page_format_margins.ods");
-            writer.saveAs(destFile);
-            ExamplesTestHelper.validate(destFile);
+            final Path destPath = Paths.get("generated_files", "g_page_format_margins.ods");
+            writer.saveAs(destPath);
+            ExamplesTestHelper.validate(destPath);
 
         }
     }
@@ -153,7 +154,7 @@ class G_PageFormat {
         final OdsDocument document = writer.document();
         // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
         //
-        // Now, something a little bit harder: we will add a footer and a header.
+        // Now, something a little harder: we will add a footer and a header.
         //
         // ## Header
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
@@ -193,9 +194,9 @@ class G_PageFormat {
         table.setStyle(tableStyle);
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        final File destFile = new File("generated_files", "g_page_format_header_footer.ods");
-        writer.saveAs(destFile);
-        ExamplesTestHelper.validate(destFile);
+        final Path destPath = Paths.get("generated_files", "g_page_format_header_footer.ods");
+        writer.saveAs(destPath);
+        ExamplesTestHelper.validate(destPath);
     }
 
     static void example3() throws IOException {
@@ -247,10 +248,10 @@ class G_PageFormat {
         table.setStyle(tableStyle);
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        final File destFile =
-                new File("generated_files", "g_page_format_styled_header_footer.ods");
-        writer.saveAs(destFile);
-        ExamplesTestHelper.validate(destFile);
+        final Path destPath =
+                Paths.get("generated_files", "g_page_format_styled_header_footer.ods");
+        writer.saveAs(destPath);
+        ExamplesTestHelper.validate(destPath);
     }
 
     static void example4() throws IOException {
@@ -302,9 +303,9 @@ class G_PageFormat {
 
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.
-        final File destFile =
-                new File("generated_files", "g_print.ods");
-        writer.saveAs(destFile);
-        ExamplesTestHelper.validate(destFile);
+        final Path destPath =
+                Paths.get("generated_files", "g_print.ods");
+        writer.saveAs(destPath);
+        ExamplesTestHelper.validate(destPath);
     }
 }
