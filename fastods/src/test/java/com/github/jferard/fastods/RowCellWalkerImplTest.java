@@ -38,6 +38,7 @@ import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.function.ThrowingRunnable;
 import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
@@ -411,6 +412,42 @@ public class RowCellWalkerImplTest {
         Assert.assertTrue(cell.hasPrevious());
         cell.to(51);
         Assert.assertFalse(cell.hasPrevious());
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testNextErr() {
+        PowerMock.resetAll();
+        final TableRowImpl row = this.initRealRow();
+        final RowCellWalkerImpl cell = new RowCellWalkerImpl(row);
+
+        PowerMock.replayAll();
+        Assert.assertFalse(cell.hasNext());
+        Assert.assertThrows(IndexOutOfBoundsException.class, new ThrowingRunnable() {
+            @Override
+            public void run() throws Throwable {
+                cell.next();
+            }
+        });
+
+        PowerMock.verifyAll();
+    }
+
+    @Test
+    public final void testHasNext() {
+        PowerMock.resetAll();
+        final TableRowImpl row = this.initRealRow();
+        final RowCellWalkerImpl cell = new RowCellWalkerImpl(row);
+
+        PowerMock.replayAll();
+        Assert.assertFalse(cell.hasNext());
+        cell.setStringValue("s");
+        Assert.assertTrue(cell.hasNext());
+        cell.next();
+        Assert.assertFalse(cell.hasNext());
+        cell.setVoidValue();
+        Assert.assertTrue(cell.hasNext());
 
         PowerMock.verifyAll();
     }
