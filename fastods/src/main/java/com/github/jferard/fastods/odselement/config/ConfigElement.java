@@ -597,22 +597,24 @@ public enum ConfigElement {
     ACTIVE_SPLIT_RANGE("ActiveSplitRange", ConfigElementType.SHORT),
 
     /**
-     * Undocumented
+     * Undocumented, left horizontal position of the view pane (or left view pane if there is a
+     * horizontal split).
      */
     POSITION_LEFT("PositionLeft", ConfigElementType.INT),
 
     /**
-     * Undocumented
+     * Undocumented, horizontal position of the right view pane if there is a horizontal split
      */
     POSITION_RIGHT("PositionRight", ConfigElementType.INT),
 
     /**
-     * Undocumented
+     * Undocumented, top vertical position of the view pane (or top view pane if there is a
+     * vertical split).
      */
     POSITION_TOP("PositionTop", ConfigElementType.INT),
 
     /**
-     * Undocumented
+     * Undocumented, vertical position of the bottom view pane if there is a vertical split
      */
     POSITION_BOTTOM("PositionBottom", ConfigElementType.INT),
 
