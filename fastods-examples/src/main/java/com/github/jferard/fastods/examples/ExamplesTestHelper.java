@@ -26,26 +26,78 @@ package com.github.jferard.fastods.examples;
 
 import org.odftoolkit.odfvalidator.Main;
 
+import java.io.IOException;
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.logging.Logger;
 
 public class ExamplesTestHelper {
+    private final static Logger logger = Logger.getLogger(ExamplesTestHelper.class.getName());
 
-    public static void validate(final File destFile) {
-//        final File schemaRNG = new File("target/schemas", "OpenDocument-v1.3-schema.rng");
-//        final File manifestSchemaRNG =
-//                new File("target/schemas", "OpenDocument-v1.3-manifest-schema.rng");
-//        final File dsigSchemaRNG = new File("target/schemas", "OpenDocument-v1.3-dsig-schema.rng");
-        final File schemaRNG = new File("target/schemas", "OpenDocument-v1.2-os-schema.rng");
-        final File manifestSchemaRNG =
-                new File("target/schemas", "OpenDocument-v1.2-os-manifest-schema.rng");
-        final File dsigSchemaRNG =
-                new File("target/schemas", "OpenDocument-v1.2-os-dsig-schema.rng");
-        if (schemaRNG.exists() && manifestSchemaRNG.exists() && dsigSchemaRNG.exists()) {
-            Main.main(new String[]{
-                    "-O", schemaRNG.getAbsolutePath(),
-                    "-M", manifestSchemaRNG.getAbsolutePath(),
-                    "-D", dsigSchemaRNG.getAbsolutePath(),
-                    destFile.getAbsolutePath()});
+    public static final String OPEN_DOCUMENT_V_1_2_SCHEMA_RNG = "OpenDocument-v1.2-os-schema.rng";
+    public static final String OPEN_DOCUMENT_V_1_3_SCHEMA_RNG = "OpenDocument-v1.3-schema.rng";
+
+    public static final String OPEN_DOCUMENT_V_1_2_MANIFEST_SCHEMA_RNG =
+            "OpenDocument-v1.2-os-manifest-schema.rng";
+    public static final String OPEN_DOCUMENT_V_1_3_MANIFEST_SCHEMA_RNG =
+            "OpenDocument-v1.3-manifest-schema.rng";
+    public static final String OPEN_DOCUMENT_V_1_2_DSIG_SCHEMA_RNG =
+            "OpenDocument-v1.2-os-dsig-schema.rng";
+    public static final String OPEN_DOCUMENT_V_1_3_DSIG_SCHEMA_RNG =
+            "OpenDocument-v1.3-dsig-schema.rng";
+
+    @Deprecated
+    public static void validate(final File destFile) throws IOException {
+        ExamplesTestHelper.validate(destFile.toPath());
+    }
+
+    public static void validate(final Path destPath) throws IOException {
+        ExamplesTestHelper.validate(destPath, "1.2");
+    }
+
+    private static void validate(final Path destPath, final String version) throws IOException {
+        if (!Files.exists(destPath)) {
+            ExamplesTestHelper.logger.warning("Can't validate a non existing file");
+            return;
         }
+
+        final String schemaRNGName;
+        final String manifestSchemaRNGName;
+        final String dsigSchemaRNGName;
+        if (version.equals("1.2")) {
+            schemaRNGName = OPEN_DOCUMENT_V_1_2_SCHEMA_RNG;
+            manifestSchemaRNGName = OPEN_DOCUMENT_V_1_2_MANIFEST_SCHEMA_RNG;
+            dsigSchemaRNGName = OPEN_DOCUMENT_V_1_2_DSIG_SCHEMA_RNG;
+        } else {
+            schemaRNGName = OPEN_DOCUMENT_V_1_3_SCHEMA_RNG;
+            manifestSchemaRNGName = OPEN_DOCUMENT_V_1_3_MANIFEST_SCHEMA_RNG;
+            dsigSchemaRNGName = OPEN_DOCUMENT_V_1_3_DSIG_SCHEMA_RNG;
+        }
+
+        final Path schemaRNG = Paths.get("target/schemas", schemaRNGName);
+        if (!Files.exists(schemaRNG)) {
+            ExamplesTestHelper.logger.warning("Can't validate: document schema not found");
+            return;
+        }
+
+        final Path manifestSchemaRNG = Paths.get("target/schemas", manifestSchemaRNGName);
+        if (!Files.exists(manifestSchemaRNG)) {
+            ExamplesTestHelper.logger.warning("Can't validate: manifest schema not found");
+            return;
+        }
+
+        final Path dsigSchemaRNG = Paths.get("target/schemas", dsigSchemaRNGName);
+        if (!Files.exists(dsigSchemaRNG)) {
+            ExamplesTestHelper.logger.warning("Can't validate: dsig schema not found");
+            return;
+        }
+
+        Main.main(new String[]{
+                "-O", schemaRNG.toRealPath().toString(),
+                "-M", manifestSchemaRNG.toRealPath().toString(),
+                "-D", dsigSchemaRNG.toRealPath().toString(),
+                destPath.toRealPath().toString()});
     }
 }
