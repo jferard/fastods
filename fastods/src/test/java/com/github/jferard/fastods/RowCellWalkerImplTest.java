@@ -100,7 +100,7 @@ public class RowCellWalkerImplTest {
         PowerMock.resetAll();
         expect(this.row.getOrCreateCell(8)).andReturn(this.cell);
         this.cell.setBooleanValue(true);
-        expect(this.row.getColumnCount()).andReturn(10);
+        expect(this.row.getCurRowSize()).andReturn(10);
 
         PowerMock.replayAll();
         this.cellWalker.to(8);
@@ -117,7 +117,7 @@ public class RowCellWalkerImplTest {
         PowerMock.resetAll();
         expect(this.row.getOrCreateCell(8)).andReturn(this.cell);
         this.cell.setText(t);
-        expect(this.row.getColumnCount()).andReturn(10);
+        expect(this.row.getCurRowSize()).andReturn(10);
 
         PowerMock.replayAll();
         this.cellWalker.to(8);
@@ -244,7 +244,7 @@ public class RowCellWalkerImplTest {
     @Test
     public final void testNext() {
         PowerMock.resetAll();
-        expect(this.row.getColumnCount()).andReturn(10);
+        expect(this.row.getCurRowSize()).andReturn(10);
 
         PowerMock.replayAll();
         this.cellWalker.to(10);

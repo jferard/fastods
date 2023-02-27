@@ -184,23 +184,25 @@ public class RowCellWalkerImpl implements RowCellWalker {
     }
 
     @Override
+    @Deprecated
     public boolean hasNext() {
-        return this.c < this.row.getColumnCount();
+        return this.c < this.row.getCurRowSize();
     }
 
     @Override
+    @Deprecated
     public boolean hasPrevious() {
-        return this.c > 0 && this.c <= this.row.getColumnCount();
+        return 0 < this.c && this.c <= this.row.getCurRowSize();
     }
 
     @Override
     public void last() {
-        this.c = this.row.getColumnCount() - 1;
+        this.c = this.row.getCurRowSize() - 1;
     }
 
     @Override
     public void next() {
-        if (this.c >= this.row.getColumnCount()) {
+        if (this.c >= this.row.getCurRowSize()) {
             throw new IndexOutOfBoundsException();
         }
         this.c++;

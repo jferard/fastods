@@ -44,9 +44,18 @@ public interface TableRow {
     void setRowStyle(TableRowStyle rowStyle);
 
     /**
-     * @return the current column count
+     * Synonym for `getCurRowSize`.
+     * @return the size of the current row
+     * @deprecated use `getCurRowSize`
      */
+    @Deprecated
     int getColumnCount();
+
+    /**
+     * The size of the current row is index of the last cell that was set plus one.
+     * @return the size of the current row
+     */
+    int getCurRowSize();
 
     /**
      * Set the cell style for the cell of this row to ts.

@@ -44,6 +44,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.logging.Logger;
 
 import static org.easymock.EasyMock.expect;
 
@@ -167,7 +168,7 @@ public class TableCellWalkerTest {
     public void last() throws IOException {
         PowerMock.resetAll();
         this.initWalker(0);
-        EasyMock.expect(this.row.getColumnCount()).andReturn(6);
+        EasyMock.expect(this.row.getCurRowSize()).andReturn(6);
         EasyMock.expect(this.row.getOrCreateCell(5)).andReturn(this.cell);
 
         PowerMock.replayAll();
@@ -794,11 +795,25 @@ public class TableCellWalkerTest {
     public void testGetColumnCount() throws IOException {
         PowerMock.resetAll();
         this.initWalker(0);
-        EasyMock.expect(this.row.getColumnCount()).andReturn(2);
+        EasyMock.expect(this.row.getCurRowSize()).andReturn(2);
 
         PowerMock.replayAll();
         this.cellWalker = new TableCellWalker(this.table);
         final int c = this.cellWalker.getColumnCount();
+
+        PowerMock.verifyAll();
+        Assert.assertEquals(2, c);
+    }
+
+    @Test
+    public void testGetRowSize() throws IOException {
+        PowerMock.resetAll();
+        this.initWalker(0);
+        EasyMock.expect(this.row.getCurRowSize()).andReturn(2);
+
+        PowerMock.replayAll();
+        this.cellWalker = new TableCellWalker(this.table);
+        final int c = this.cellWalker.getCurRowSize();
 
         PowerMock.verifyAll();
         Assert.assertEquals(2, c);
@@ -864,7 +879,7 @@ public class TableCellWalkerTest {
     public void testHasNext() throws IOException {
         PowerMock.resetAll();
         this.initWalker(0);
-        EasyMock.expect(this.row.getColumnCount()).andReturn(5);
+        EasyMock.expect(this.row.getCurRowSize()).andReturn(5);
 
         PowerMock.replayAll();
         this.cellWalker = new TableCellWalker(this.table);
@@ -1059,6 +1074,51 @@ public class TableCellWalkerTest {
 
         PowerMock.verifyAll();
         Assert.assertEquals(this.table, table);
+    }
+
+    @Test
+    public void testLastHasNext() throws IOException {
+        final Logger logger = Logger.getLogger("readme example");
+        final Locale locale = Locale.US;
+        final OdsFactoryBuilder odsFactoryBuilder = OdsFactory.builder(logger, locale);
+        final OdsFactory odsFactory = odsFactoryBuilder.build();
+        final AnonymousOdsFileWriter writer = odsFactory.createWriter();
+        final Table table = writer.document().addTable("test");
+        final TableCellWalker walker = table.getWalker();
+
+        Assert.assertEquals(0, walker.colIndex());
+        Assert.assertEquals(1, walker.getCurRowSize());
+        Assert.assertFalse(walker.hasPrevious());
+        Assert.assertTrue(walker.hasNext());
+
+        walker.to(10);
+        Assert.assertEquals(10, walker.colIndex());
+        Assert.assertEquals(11, walker.getCurRowSize());
+        Assert.assertTrue(walker.hasPrevious());
+        Assert.assertTrue(walker.hasNext());
+
+        walker.next();
+        Assert.assertEquals(11, walker.colIndex());
+        Assert.assertEquals(12, walker.getCurRowSize());
+        Assert.assertTrue(walker.hasPrevious());
+        Assert.assertTrue(walker.hasNext());
+
+        walker.to(6);
+        Assert.assertEquals(6, walker.colIndex());
+        Assert.assertEquals(12, walker.getCurRowSize());
+        Assert.assertTrue(walker.hasPrevious());
+        Assert.assertTrue(walker.hasNext());
+
+        walker.last();
+        Assert.assertEquals(11, walker.colIndex());
+        Assert.assertEquals(12, walker.getCurRowSize());
+        Assert.assertTrue(walker.hasPrevious());
+        Assert.assertTrue(walker.hasNext());
+
+        walker.to(0);
+        Assert.assertFalse(walker.hasPrevious());
+        Assert.assertTrue(walker.hasNext());
+
     }
 
     private void to(final int r, final int c) throws IOException {

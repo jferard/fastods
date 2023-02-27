@@ -31,13 +31,19 @@ package com.github.jferard.fastods;
  */
 public interface RowCellWalker extends TableCell {
     /**
-     * @return true if the walker has a next cell on the row
+     * Should always return true
+     * @return true
+     * @deprecated do not use
      */
+    @Deprecated
     boolean hasNext();
 
     /**
-     * @return true if the walker has a previous cell on the row
+     * Should return true if `colIndex() > 0`
+     * @return true if `colIndex() > 0`
+     * @deprecated use colIndex() > 0
      */
+    @Deprecated
     boolean hasPrevious();
 
     /**

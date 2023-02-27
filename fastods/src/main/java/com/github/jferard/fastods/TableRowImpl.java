@@ -262,7 +262,7 @@ public class TableRowImpl implements TableRow {
 
     /**
      * Get the cell at given index. If the cell was not created before, then it is created by
-     * this method.
+     * this method. This may update the value of `getCurRowSize`.
      *
      * @param colIndex the index of the cell in the row
      * @return a cell
@@ -294,7 +294,13 @@ public class TableRowImpl implements TableRow {
     }
 
     @Override
+    @Deprecated
     public int getColumnCount() {
+        return this.getCurRowSize();
+    }
+
+    @Override
+    public int getCurRowSize() {
         return this.cells.usedSize();
     }
 

@@ -57,10 +57,10 @@ public class TableCellWalker implements RowCellWalker, TableRowWalker, TableColu
         this.table = table;
         this.r = 0;
         this.c = 0;
-        this.updateShortcuts(table);
+        this.updateReferences(table);
     }
 
-    private void updateShortcuts(final Table table) throws IOException {
+    private void updateReferences(final Table table) throws IOException {
         this.row = table.getRow(this.r);
         this.cell = this.row.getOrCreateCell(this.c);
     }
@@ -281,8 +281,14 @@ public class TableCellWalker implements RowCellWalker, TableRowWalker, TableColu
     }
 
     @Override
+    @Deprecated
     public int getColumnCount() {
-        return this.row.getColumnCount();
+        return this.getCurRowSize();
+    }
+
+    @Override
+    public int getCurRowSize() {
+        return this.row.getCurRowSize();
     }
 
     @Override
@@ -311,18 +317,20 @@ public class TableCellWalker implements RowCellWalker, TableRowWalker, TableColu
     }
 
     @Override
+    @Deprecated
     public boolean hasNext() {
-        return this.c < this.row.getColumnCount();
+        return this.c < this.row.getCurRowSize();
     }
 
     @Override
+    @Deprecated
     public boolean hasPrevious() {
-        return this.c > 0 && this.c <= this.row.getColumnCount();
+        return 0 < this.c && this.c <= this.row.getCurRowSize();
     }
 
     @Override
     public void last() {
-        this.c = this.row.getColumnCount() - 1;
+        this.c = this.row.getCurRowSize() - 1;
         this.cell = this.row.getOrCreateCell(this.c);
     }
 
@@ -375,14 +383,14 @@ public class TableCellWalker implements RowCellWalker, TableRowWalker, TableColu
     public void lastRow() throws IOException {
         this.r = this.table.getRowCount() - 1;
         this.c = 0;
-        this.updateShortcuts(this.table);
+        this.updateReferences(this.table);
     }
 
     @Override
     public void nextRow() throws IOException {
         this.r++;
         this.c = 0;
-        this.updateShortcuts(this.table);
+        this.updateReferences(this.table);
     }
 
     @Override
@@ -392,7 +400,7 @@ public class TableCellWalker implements RowCellWalker, TableRowWalker, TableColu
         }
         this.r--;
         this.c = 0;
-        this.updateShortcuts(this.table);
+        this.updateReferences(this.table);
     }
 
     @Override
@@ -402,7 +410,7 @@ public class TableCellWalker implements RowCellWalker, TableRowWalker, TableColu
         }
         this.r = r;
         this.c = 0;
-        this.updateShortcuts(this.table);
+        this.updateReferences(this.table);
     }
 
     /**
