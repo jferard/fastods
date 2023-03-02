@@ -1,6 +1,6 @@
 /*
  * FastODS - a Martin Schulz's SimpleODS fork
- *    Copyright (C) 2016-2017 J. Férard <https://github.com/jferard>
+ *    Copyright (C) 2016-2023 J. Férard <https://github.com/jferard>
  * SimpleODS - A lightweight java library to create simple OpenOffice spreadsheets
  *    Copyright (C) 2008-2013 Martin Schulz <mtschulz at users.sourceforge.net>
  *
