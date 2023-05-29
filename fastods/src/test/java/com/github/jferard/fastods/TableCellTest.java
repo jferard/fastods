@@ -833,6 +833,7 @@ public class TableCellTest {
 
         PowerMock.resetAll();
         EasyMock.expect(this.stc.addContentFontFaceContainerStyle(cellStyle)).andReturn(true);
+        EasyMock.expect(this.stc.addDataStyle(dataStyle)).andReturn(true);
         EasyMock.expect(this.stc.addDataStyle(newDs)).andReturn(true);
         EasyMock.expect(this.stc.addChildCellStyle(TableCellStyle.DEFAULT_CELL_STYLE, newDs))
                 .andReturn(null);

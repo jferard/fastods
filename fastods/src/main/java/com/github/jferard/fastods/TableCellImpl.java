@@ -77,7 +77,7 @@ public class TableCellImpl implements WritableTableCell {
     /**
      * Create the table cell implementation
      *
-     * @param cache       an util
+     * @param cache           an util
      * @param xmlUtil         an util
      * @param stylesContainer the styles containers that will dispatch styles to document.xml and
      *                        styles.xml
@@ -86,10 +86,10 @@ public class TableCellImpl implements WritableTableCell {
      * @param parentRow       the parent row
      * @param columnIndex     index in parent row
      */
-    TableCellImpl(final IntegerRepresentationCache cache, final XMLUtil xmlUtil,
-                  final StylesContainer stylesContainer, final DataStyles dataStyles,
-                  final boolean libreOfficeMode, final TableRowImpl parentRow,
-                  final int columnIndex) {
+    public TableCellImpl(final IntegerRepresentationCache cache, final XMLUtil xmlUtil,
+                         final StylesContainer stylesContainer, final DataStyles dataStyles,
+                         final boolean libreOfficeMode, final TableRowImpl parentRow,
+                         final int columnIndex) {
         this.cache = cache;
         this.stylesContainer = stylesContainer;
         this.xmlUtil = xmlUtil;
@@ -117,11 +117,11 @@ public class TableCellImpl implements WritableTableCell {
         }
 
         if (this.type != null && this.type != CellType.VOID) {
-                util.appendAttribute(appendable, "office:value-type", this.type);
-                util.appendEAttribute(appendable, this.type.getValueAttribute(), this.value);
-                if (this.type == CellType.CURRENCY) {
-                    final String currency = this.getCurrency();
-                    util.appendEAttribute(appendable, "office:currency", currency);
+            util.appendAttribute(appendable, "office:value-type", this.type);
+            util.appendEAttribute(appendable, this.type.getValueAttribute(), this.value);
+            if (this.type == CellType.CURRENCY) {
+                final String currency = this.getCurrency();
+                util.appendEAttribute(appendable, "office:currency", currency);
             }
         }
 
@@ -358,19 +358,30 @@ public class TableCellImpl implements WritableTableCell {
             return;
         }
 
+        // the style is added to container there
         this.stylesContainer.addContentFontFaceContainerStyle(style);
 
-        final TableCellStyle curStyle = this.style;
+        // we need the datastyle
+        DataStyle dataStyle = style.getDataStyle();
+        if (dataStyle == null) {                // we don't have it! Let's try something else
+            final TableCellStyle previousStyle = this.style;
 
-        if (curStyle == null) { // we know that data style is null
-            this.style = style; // just set the new style as current style
-        } else {
-            final DataStyle dataStyle = curStyle.getDataStyle();
-            if (dataStyle == null) {
-                this.style = style; // just replace the current style by the new style
-            } else { // a style and a data style => create a custom child cell style
-                this.style = this.stylesContainer.addChildCellStyle(style, dataStyle);
+            if (previousStyle == null) {        // there was NO previous style, so no data style at all
+                this.style = style;
+            } else {                            // there was a previous style
+                dataStyle = previousStyle.getDataStyle(); // may be null, but why not try?
+                if (dataStyle == null) {
+                    this.style = style;         // just set the new style as current style
+                } else {
+                    // the previous was necessarily... a child (see below),
+                    // so we take the initial previous style (the parent).
+                    this.style = this.stylesContainer.addChildCellStyle(
+                            style, dataStyle);
+                }
             }
+        } else {                                // we have a datastyle embedded
+            this.stylesContainer.addDataStyle(dataStyle);
+            this.style = style;
         }
     }
 
