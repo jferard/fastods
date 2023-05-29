@@ -26,16 +26,24 @@ package com.github.jferard.fastods.odselement;
 import com.github.jferard.fastods.Footer;
 import com.github.jferard.fastods.Header;
 import com.github.jferard.fastods.PageSection;
+import com.github.jferard.fastods.TableCellImpl;
+import com.github.jferard.fastods.TableRowImpl;
+import com.github.jferard.fastods.TestHelper;
+import com.github.jferard.fastods.attribute.SimpleColor;
 import com.github.jferard.fastods.attribute.SimpleLength;
 import com.github.jferard.fastods.datastyle.BooleanStyle;
 import com.github.jferard.fastods.datastyle.BooleanStyleBuilder;
 import com.github.jferard.fastods.datastyle.DataStyle;
+import com.github.jferard.fastods.datastyle.DataStylesBuilder;
+import com.github.jferard.fastods.datastyle.FloatStyle;
+import com.github.jferard.fastods.datastyle.FloatStyleBuilder;
 import com.github.jferard.fastods.style.MasterPageStyle;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.PageStyleBuilder;
 import com.github.jferard.fastods.style.TableCellStyle;
 import com.github.jferard.fastods.testlib.DomTester;
 import com.github.jferard.fastods.util.Container.Mode;
+import com.github.jferard.fastods.util.IntegerRepresentationCache;
 import com.github.jferard.fastods.util.XMLUtil;
 import org.easymock.EasyMock;
 import org.junit.Assert;
@@ -485,7 +493,8 @@ public class StylesContainerTest {
         this.stylesContainer.addMasterPageStyle(new MasterPageStyle("ms2", "ms2", new Header(
                 PageSection.simpleBuilder().build()), null));
         final HasFooterHeader ret2 = this.stylesContainer.hasFooterHeader();
-        this.stylesContainer.addMasterPageStyle(new MasterPageStyle("ms3", "ms3", null, new Footer(PageSection.simpleBuilder().build())));
+        this.stylesContainer.addMasterPageStyle(new MasterPageStyle("ms3", "ms3", null,
+                new Footer(PageSection.simpleBuilder().build())));
         final HasFooterHeader ret3 = this.stylesContainer.hasFooterHeader();
         PowerMock.verifyAll();
 
@@ -530,26 +539,72 @@ public class StylesContainerTest {
         PowerMock.verifyAll();
     }
 
-// REMOVED FROM OdsElementsTest
-//    final StringBuilder sb1 = new StringBuilder();
-//        this.stylesContainer.writeMasterPageStyles(XMLUtil.create(), sb1);
-//        Assert.assertEquals("<style:master-page style:name=\"Mpm1\" " +
-//                "style:page-layout-name=\"Mpm1\"><style:header><text:p><text:span " +
-//                "text:style-name=\"none\"></text:span></text:p></style:header><style:header-left " +
-//                "style:display=\"false\"/><style:footer><text:p><text:span " +
-//                "text:style-name=\"none\"></text:span></text:p></style:footer><style:footer-left " +
-//                "style:display=\"false\"/></style:master-page>", sb1.toString());
-//    final StringBuilder sb2 = new StringBuilder();
-//        this.stylesContainer.writePageLayoutStyles(XMLUtil.create(), sb2);
-//        Assert.assertEquals("<style:page-layout style:name=\"Mpm1\">" +
-//                "<style:page-layout-properties fo:page-width=\"21cm\" fo:page-height=\"29.7cm\" " +
-//                "style:num-format=\"1\" style:writing-mode=\"lr-tb\" " +
-//                "style:print-orientation=\"portrait\" " +
-//                "style:print=\"objects charts drawings zero-values\" fo:margin=\"1.5cm\"/>" +
-//                "<style:header-style>" +
-//                "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
-//                "</style:header-style><style:footer-style>" +
-//                "<style:header-footer-properties fo:min-height=\"0cm\" fo:margin=\"0cm\"/>" +
-//                "</style:footer-style>" +
-//                "</style:page-layout>", sb2.toString());
+    @Test
+    public void testSetDataStyle() throws IOException {
+        // see 2., https://github.com/jferard/fastods/issues/247.
+
+        // arrange
+        final Locale locale = Locale.US;
+        final FloatStyle dsf = new FloatStyleBuilder("dsf", locale).decimalPlaces(0)
+                .groupThousands(true).build();
+        final TableCellStyle tcs1 = TableCellStyle.builder("tcs1")
+                .backgroundColor(SimpleColor.ALICEBLUE).build();
+        final TableCellStyle tcs2 = TableCellStyle.builder("tcs2")
+                .fontSize(SimpleLength.pt(14)).hidden().build();
+
+        final TableRowImpl row = PowerMock.createMock(TableRowImpl.class);
+        final TableCellImpl cell1 = new TableCellImpl(
+                IntegerRepresentationCache.create(), XMLUtil.create(), this.stylesContainer,
+                DataStylesBuilder.create(locale).build(), false, row,
+                1);
+        final TableCellImpl cell2 = new TableCellImpl(
+                IntegerRepresentationCache.create(), XMLUtil.create(), this.stylesContainer,
+                DataStylesBuilder.create(locale).build(), false, row,
+                1);
+        PowerMock.resetAll();
+
+        // act
+        PowerMock.replayAll();
+        cell1.setStyle(tcs1);
+        cell1.setDataStyle(dsf);
+
+        cell2.setStyle(tcs2);
+        cell2.setDataStyle(dsf);
+
+        // assert
+        PowerMock.verifyAll();
+        // automatic styles
+        final StringBuilder sb1 = new StringBuilder();
+        this.stylesContainer.writeContentAutomaticStyles(XMLUtil.create(), sb1);
+        DomTester.assertUnsortedEquals(
+                "<style:style style:name=\"tcs2\" style:family=\"table-cell\" " +
+                        "style:parent-style-name=\"Default\">" +
+                        "<style:text-properties fo:font-size=\"14pt\" " +
+                        "style:font-size-asian=\"14pt\" " +
+                        "style:font-size-complex=\"14pt\"/>" +
+                        "</style:style>" +
+
+                        "<style:style style:name=\"tcs1-_-dsf\" style:family=\"table-cell\" " +
+                        "style:parent-style-name=\"tcs1\" style:data-style-name=\"dsf\">" +
+                        "<style:paragraph-properties fo:text-align=\"end\"/>" +
+
+                        "</style:style><style:style style:name=\"tcs2-_-dsf\" " +
+                        "style:family=\"table-cell\" style:parent-style-name=\"Default\" " +
+                        "style:data-style-name=\"dsf\"><style:paragraph-properties " +
+                        "fo:text-align=\"end\"/>" +
+                        "<style:text-properties fo:font-size=\"14pt\" " +
+                        "style:font-size-asian=\"14pt\" style:font-size-complex=\"14pt\"/>" +
+                        "</style:style>",
+                sb1.toString());
+
+        // visible styles
+        final StringBuilder sb2 = new StringBuilder();
+        this.stylesContainer.writeStylesCommonStyles(XMLUtil.create(), sb2);
+        DomTester.assertUnsortedEquals(
+                "<style:style style:name=\"tcs1\" style:family=\"table-cell\" " +
+                        "style:parent-style-name=\"Default\">" +
+                        "<style:table-cell-properties fo:background-color=\"#f0f8ff\"/>" +
+                        "</style:style>",
+                sb2.toString());
+    }
 }

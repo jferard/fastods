@@ -56,7 +56,8 @@ import java.util.logging.Logger;
 public class StylesContainerImpl implements StylesContainer {
     private static final FontFace DEFAULT_FONT_FACE = new FontFace("Liberation Sans");
     /**
-     * A register of existing anonymous styles. Won't be added to document.
+     * A register of existing anonymous styles. Styles are added on the fly and therefore won't be
+     * added to the document at the end.
      */
     private final Map<ChildCellStyleKey, TableCellStyle> anonymousStyleByChildCellStyle;
     /**
@@ -97,8 +98,15 @@ public class StylesContainerImpl implements StylesContainer {
                 this.addContentFontFaceContainerStyle(style);
             }
             final String name = style.getRealName() + "-_-" + dataStyle.getName();
-            final TableCellStyleBuilder anonymousStyleBuilder =
-                    TableCellStyle.builder(name).parentCellStyle(style).dataStyle(dataStyle);
+            // If the style is automatic (hidden), don't use a parent.
+            // see https://github.com/jferard/fastods/issues/247 part 2.
+            final TableCellStyleBuilder anonymousStyleBuilder;
+            if (style.isHidden()) {
+                anonymousStyleBuilder = style.toBuilder(name).dataStyle(dataStyle);
+            } else {
+                anonymousStyleBuilder =
+                        TableCellStyle.builder(name).parentCellStyle(style).dataStyle(dataStyle);
+            }
             if (dataStyle.isHidden()) {
                 anonymousStyleBuilder.hidden();
             }

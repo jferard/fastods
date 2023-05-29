@@ -24,7 +24,6 @@
 
 package com.github.jferard.fastods.datastyle;
 
-import com.github.jferard.fastods.TableCell;
 import com.github.jferard.fastods.TableCellImpl;
 import com.github.jferard.fastods.TableRowImpl;
 import com.github.jferard.fastods.TestHelper;
@@ -99,7 +98,8 @@ public class FloatStyleTest {
         final Locale locale = Locale.US;
         final FloatStyle dsf2 = new FloatStyleBuilder("float-datastyle1", locale).decimalPlaces(0)
                 .groupThousands(true).build();
-        final FloatStyle dsf4 = new FloatStyleBuilder("float-datastyle2", locale).decimalPlaces(2).build();
+        final FloatStyle dsf4 =
+                new FloatStyleBuilder("float-datastyle2", locale).decimalPlaces(2).build();
         final TableCellStyle tcs1 = TableCellStyle.builder("cell-style1")
                 .fontSize(SimpleLength.pt(14))
                 .build();
