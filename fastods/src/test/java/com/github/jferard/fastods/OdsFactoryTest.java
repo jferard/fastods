@@ -69,8 +69,9 @@ public class OdsFactoryTest {
         final String country = locale.getCountry();
         System.out.println(country.length());
         final DataStylesBuilder dataStylesBuilder = DataStylesBuilder.create(locale);
+        final DataStyles ds = dataStylesBuilder.build();
         final OdsFactory factory =
-                OdsFactory.create().dataStyles(dataStylesBuilder.build())
+                OdsFactory.create().dataStyles(ds)
                         .noLibreOfficeMode().metaElement(MetaElement.create()).addNamespaceByPrefix(
                                 new HashMap<>());
         factory.createWriter();
@@ -79,8 +80,6 @@ public class OdsFactoryTest {
     @Test
     public void createFactoryBuilder() {
         final Locale locale = Locale.US;
-        final String country = locale.getCountry();
-        System.out.println(country.length());
         final OdsFactoryBuilder builder = OdsFactory
                 .builder(Logger.getLogger(NamedOdsDocument.class.getName()), locale);
         final DataStylesBuilder dataStylesBuilder = DataStylesBuilder.create(locale);

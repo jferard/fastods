@@ -96,7 +96,7 @@ public class OdsFactory {
      */
     public static OdsFactory create() {
         return OdsFactory
-                .create(Logger.getLogger(NamedOdsDocument.class.getName()), Locale.getDefault());
+                .create(Logger.getLogger(NamedOdsDocument.class.getName()), Locale.US);
     }
 
     /**
