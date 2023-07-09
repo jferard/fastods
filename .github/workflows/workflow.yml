@@ -20,5 +20,6 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: true
-          files: ./**/target/site/jacoco/jacoco.xml
+          # ls ./**/target/site/jacoco/jacoco.xml
+          files: ./fastods-crypto/target/site/jacoco/jacoco.xml  ./fastods-extra/target/site/jacoco/jacoco.xml  ./fastods/target/site/jacoco/jacoco.xml  ./fastods-testlib/target/site/jacoco/jacoco.xml
           verbose: true
