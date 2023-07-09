@@ -65,17 +65,26 @@ public class OdsFactoryTest {
     @Test
     @Deprecated
     public void createFactory() {
+        final Locale locale = Locale.US;
+        final String country = locale.getCountry();
+        System.out.println(country.length());
+        final DataStylesBuilder dataStylesBuilder = DataStylesBuilder.create(locale);
         final OdsFactory factory =
-                OdsFactory.create().dataStyles(DataStylesBuilder.create(Locale.US).build())
-                        .noLibreOfficeMode().metaElement(MetaElement.create()).addNamespaceByPrefix(new HashMap<String, String>());
+                OdsFactory.create().dataStyles(dataStylesBuilder.build())
+                        .noLibreOfficeMode().metaElement(MetaElement.create()).addNamespaceByPrefix(
+                                new HashMap<>());
         factory.createWriter();
     }
 
     @Test
     public void createFactoryBuilder() {
+        final Locale locale = Locale.US;
+        final String country = locale.getCountry();
+        System.out.println(country.length());
         final OdsFactoryBuilder builder = OdsFactory
-                .builder(Logger.getLogger(NamedOdsDocument.class.getName()), Locale.getDefault());
-        final DataStyles ds = DataStylesBuilder.create(Locale.US).build();
+                .builder(Logger.getLogger(NamedOdsDocument.class.getName()), locale);
+        final DataStylesBuilder dataStylesBuilder = DataStylesBuilder.create(locale);
+        final DataStyles ds = dataStylesBuilder.build();
         final OdsFactory factory = builder.dataStyles(ds)
                 .noLibreOfficeMode().metaElement(MetaElement.create())
                 .addNamespaceByPrefix(new HashMap<String, String>()).build();
