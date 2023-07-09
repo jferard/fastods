@@ -77,11 +77,6 @@
         <dependency>
             <groupId>com.github.jferard</groupId>
             <artifactId>fastods-testlib</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.jferard</groupId>
-            <artifactId>fastods-testlib</artifactId>
             <version>0.8.2-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>

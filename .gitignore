@@ -30,3 +30,5 @@ history
 # mvn release
 release.properties
 pom.xml.*
+
+.travis.yml
