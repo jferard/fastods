@@ -15,11 +15,12 @@ jobs:
           java-version: '8'
       - name: Build with Maven
         run: mvn clean install
+      - name: Check coverage reports
+        run: ls */target/site/jacoco/jacoco.xml
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: true
-          # ls ./**/target/site/jacoco/jacoco.xml
-          files: ./fastods-crypto/target/site/jacoco/jacoco.xml  ./fastods-extra/target/site/jacoco/jacoco.xml  ./fastods/target/site/jacoco/jacoco.xml  ./fastods-testlib/target/site/jacoco/jacoco.xml
+          files: ./fastods-crypto/target/site/jacoco/jacoco.xml,./fastods-extra/target/site/jacoco/jacoco.xml,./fastods/target/site/jacoco/jacoco.xml,./fastods-testlib/target/site/jacoco/jacoco.xml
           verbose: true
