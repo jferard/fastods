@@ -46,6 +46,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 
 public class ZipUTF8CryptoWriterTest {
     @Test
@@ -222,11 +223,11 @@ public class ZipUTF8CryptoWriterTest {
                 // Data descriptor
                 'P', 'K', 7, 8, 26, -9, 29, -1, -98, 0, 0, 0, 42, 1, 0, 0,
                 // Central directory file header
-                'P', 'K', 1, 2, 10, 0, 10, 0, 0, 8, 0, 127, 127, 127, 127, 86, -86, -116, -1, 118,
+                'P', 'K', 1, 2, 10, 0, 10, 0, 0, 8, 0, 127, 127, 127, 127, 88, -86, -116, -1, 118,
                 3, 0, 0, 0, 3, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'p',
                 'a', 't', 'h',
                 // Central directory file header
-                'P', 'K', 1, 2, 20, 0, 20, 0, 8, 8, 8, 127, 127, 127, 127, 86, 26, -9, 29, -1, -98,
+                'P', 'K', 1, 2, 20, 0, 20, 0, 8, 8, 8, 127, 127, 127, 127, 88, 26, -9, 29, -1, -98,
                 0, 0, 0, 42, 1, 0, 0, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 37, 0, 0, 0, 'M',
                 'E', 'T', 'A', '-', 'I', 'N', 'F', '/', 'm', 'a', 'n', 'i', 'f',
                 'e', 's', 't', '.', 'x', 'm', 'l',
@@ -304,11 +305,11 @@ public class ZipUTF8CryptoWriterTest {
                 // Data descriptor
                 'P', 'K', 7, 8, -113, -119, -42, -64, -98, 0, 0, 0, 42, 1, 0, 0,
                 // Central directory file header
-                'P', 'K', 1, 2, 10, 0, 10, 0, 0, 8, 0, 127, 127, 127, 127, 86, -86, -116, -1, 118,
+                'P', 'K', 1, 2, 10, 0, 10, 0, 0, 8, 0, 127, 127, 127, 127, 88, -86, -116, -1, 118,
                 3, 0, 0, 0, 3, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'p',
                 'a', 't', 'h',
                 // Central directory file header
-                'P', 'K', 1, 2, 20, 0, 20, 0, 8, 8, 8, 127, 127, 127, 127, 86, -113, -119, -42, -64,
+                'P', 'K', 1, 2, 20, 0, 20, 0, 8, 8, 8, 127, 127, 127, 127, 88, -113, -119, -42, -64,
                 -98, 0, 0, 0, 42, 1, 0, 0, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 37, 0, 0, 0,
                 'M', 'E', 'T', 'A', '-', 'I', 'N', 'F', '/', 'm', 'a', 'n', 'i', 'f', 'e', 's', 't',
                 '.', 'x', 'm', 'l',
