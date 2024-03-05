@@ -40,9 +40,11 @@ import com.github.jferard.fastods.datastyle.TimeStyleBuilder;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+import java.util.TimeZone;
 import java.util.logging.Logger;
 
 /**
@@ -90,8 +92,12 @@ class D_SettingTheCellDataStyle {
         // We can do the same with dates:
         walker.nextRow();
 
-        // A date with the standard format:
-        final Calendar cal = new GregorianCalendar(2018, Calendar.FEBRUARY, 1, 0, 0, 0);
+        // A date with the standard format.
+        // Warning : you probably want to set milliseconds to 0 and use correct time zone
+        final Calendar cal = GregorianCalendar.getInstance(TimeZone.getTimeZone("UTC"));
+        cal.set(Calendar.MILLISECOND, 0);
+        cal.set(2018, Calendar.FEBRUARY, 1, 0, 0, 0);
+
         walker.setDateValue(cal);
 
         // And a custom format:
@@ -162,7 +168,10 @@ class D_SettingTheCellDataStyle {
         final TableCellWalker walker = table.getWalker();
 
         walker.setFloatValue(123456.789);
-        final Calendar cal = new GregorianCalendar(2018, Calendar.FEBRUARY, 1, 0, 0, 0);
+
+        final Calendar cal = GregorianCalendar.getInstance(TimeZone.getTimeZone("UTC"));
+        cal.set(Calendar.MILLISECOND, 0);
+        cal.set(2018, Calendar.FEBRUARY, 1, 0, 0, 0);
         walker.next();
         walker.setDateValue(cal);
 

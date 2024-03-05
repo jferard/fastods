@@ -100,6 +100,7 @@ public interface TableCell {
     /**
      * Set the date value of the cell. Type will be CellType.DATE and data style the
      * default data style for date.
+     * Warning : you probably want to set milliseconds to 0 and use correct time zone
      *
      * @param cal a Calendar object with the date to be used
      */
