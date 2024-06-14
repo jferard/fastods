@@ -197,7 +197,7 @@ public class TableTest {
         this.assertTableXMLEquals("<table:table table:name=\"my_table\" table:style-name=\"ta1\" " +
                 "table:print=\"false\">" +
                 "<table:table-column table:style-name=\"co1\" " +
-                "table:number-columns-repeated=\"1024\" " +
+                "table:number-columns-repeated=\"100\" " +
                 "table:default-cell-style-name=\"Default\"/>" + "<table:table-row " +
                 "table:number-rows-repeated=\"10\" table:style-name=\"ro1\">" +
                 "<table:table-cell/>" + "</table:table-row>" +
@@ -427,7 +427,7 @@ public class TableTest {
         PowerMock.verifyAll();
         DomTester.assertEquals("<table:table table:name=\"my_table\" table:style-name=\"ta1\" " +
                         "table:print=\"false\"><table:table-column " +
-                        "table:style-name=\"co1\" " + "table:number-columns-repeated=\"1024\" " +
+                        "table:style-name=\"co1\" " + "table:number-columns-repeated=\"100\" " +
                         "table:default-cell-style-name=\"Default\"/><table:table-row " +
                         "table:style-name=\"ro1\"><table:table-cell office:value-type=\"boolean\"" +
                         " office:boolean-value=\"true\"/></table:table-row></table:table>",

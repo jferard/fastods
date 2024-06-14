@@ -72,7 +72,7 @@ public class PreambleAppender {
         final Iterator<TableColumnImpl> iterator = this.model.getColumns().iterator();
         if (!iterator.hasNext()) {
             TableColumnImpl.DEFAULT_TABLE_COLUMN
-                    .appendXMLToTable(xmlUtil, appendable, MAX_COLUMN_COUNT);
+                    .appendXMLToTable(xmlUtil, appendable, this.model.getColumnCapacity());
             return;
         }
 

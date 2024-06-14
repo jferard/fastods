@@ -84,13 +84,15 @@ public class PreambleAppenderTest {
         PowerMock.resetAll();
         EasyMock.expect(this.tm.getColumns())
                 .andReturn(FastFullList.<TableColumnImpl>newList());
+        EasyMock.expect(this.tm.getColumnCapacity())
+                .andReturn(42);
 
         PowerMock.replayAll();
         final StringBuilder sb = new StringBuilder();
         this.preambleAppender.appendColumns(this.xmlUtil, sb);
         DomTester.assertEquals(
                         "<table:table-column table:style-name=\"co1\"" +
-                        " table:number-columns-repeated=\"1024\" " +
+                        " table:number-columns-repeated=\"42\" " +
                         "table:default-cell-style-name=\"Default\"/>", sb.toString());
         PowerMock.verifyAll();
     }

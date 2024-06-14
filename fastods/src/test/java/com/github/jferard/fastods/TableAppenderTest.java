@@ -98,13 +98,14 @@ public class TableAppenderTest {
                         appendable.append("FOO");
                     }
                 }));
+        EasyMock.expect(this.tm.getColumnCapacity()).andReturn(100);
 
         PowerMock.replayAll();
         this.assertPreambleXMLEquals(
                 "<table:table table:name=\"table1\" table:style-name=\"table-style1\" " +
                         "table:print=\"false\"><office:forms form:automatic-focus=\"false\" " +
                         "form:apply-design-mode=\"false\">FOO</office:forms><table:table-column " +
-                        "table:style-name=\"co1\" table:number-columns-repeated=\"1024\" " +
+                        "table:style-name=\"co1\" table:number-columns-repeated=\"100\" " +
                         "table:default-cell-style-name=\"Default\"/>");
 
         PowerMock.verifyAll();
@@ -125,7 +126,8 @@ public class TableAppenderTest {
         EasyMock.expect(this.tm.getColumns())
                 .andReturn(FastFullList.<TableColumnImpl>newListWithCapacity(1));
         EasyMock.expect(this.tm.getForms()).andReturn(Collections.<XMLConvertible>emptyList());
-
+        EasyMock.expect(this.tm.getColumnCapacity()).andReturn(100);
+        
         PowerMock.replayAll();
         this.assertPreambleXMLEquals(
                 "<table:table table:name=\"table1\" table:style-name=\"table-style1\" " +
@@ -136,7 +138,7 @@ public class TableAppenderTest {
                         "xlink:show=\"embed\" xlink:actuate=\"onLoad\"/>" +
                         "</draw:frame></table:shapes>" +
                         "<table:table-column table:style-name=\"co1\" " +
-                        "table:number-columns-repeated=\"1024\" " +
+                        "table:number-columns-repeated=\"100\" " +
                         "table:default-cell-style-name=\"Default\"/>"
         );
 
@@ -281,6 +283,7 @@ public class TableAppenderTest {
         EasyMock.expect(this.tm.getShapes()).andReturn(Collections.<Shape>emptyList());
         EasyMock.expect(this.tm.getForms()).andReturn(Collections.<XMLConvertible>emptyList());
         EasyMock.expect(this.tm.getHeaderRowsCount()).andReturn(0);
+        EasyMock.expect(this.tm.getColumnCapacity()).andReturn(100);
 
         PowerMock.replayAll();
         this.tableAppender.appendAllAvailableRows(this.xmlUtil, sb);
@@ -289,7 +292,7 @@ public class TableAppenderTest {
         sb.append("</table:table>");
         DomTester.assertEquals("<table:table table:name=\"tb\" table:style-name=\"tb-style\" " +
                 "table:print=\"false\"><table:table-column " +
-                "table:style-name=\"co1\" " + "table:number-columns-repeated=\"1024\" " +
+                "table:style-name=\"co1\" " + "table:number-columns-repeated=\"100\" " +
                 "table:default-cell-style-name=\"Default\"/></table:table>", sb.toString());
     }
 
@@ -313,6 +316,7 @@ public class TableAppenderTest {
         EasyMock.expect(this.tm.getForms()).andReturn(
                 Collections.<XMLConvertible>emptyList()).times(2);
         EasyMock.expect(this.tm.getHeaderRowsCount()).andReturn(0).times(2);
+        EasyMock.expect(this.tm.getColumnCapacity()).andReturn(100).times(2);
 
         PowerMock.replayAll();
         this.tableAppender.appendXMLToContentEntry(this.xmlUtil, sb1);
@@ -349,6 +353,7 @@ public class TableAppenderTest {
         EasyMock.expect(this.tm.getTableRow(3)).andReturn(tr3);
         EasyMock.expect(this.tm.getTableRow(4)).andReturn(tr4);
         EasyMock.expect(this.tm.getTableRowsUsedSize()).andReturn(5);
+        EasyMock.expect(this.tm.getColumnCapacity()).andReturn(100);
 
         PowerMock.replayAll();
         this.tableAppender.appendXMLToContentEntry(this.xmlUtil, sb);
@@ -358,7 +363,7 @@ public class TableAppenderTest {
                 "table:style-name=\"tb-style\" " +
                 "table:print=\"false\">" +
                 "<table:table-column table:style-name=\"co1\" " +
-                "table:number-columns-repeated=\"1024\" " +
+                "table:number-columns-repeated=\"100\" " +
                 "table:default-cell-style-name=\"Default\"/>" +
                 "<table:table-row table:style-name=\"tr0\">" +
                 "<table:table-cell/>" +
@@ -402,6 +407,7 @@ public class TableAppenderTest {
         EasyMock.expect(this.tm.getTableRow(3)).andReturn(tr3);
         EasyMock.expect(this.tm.getTableRow(4)).andReturn(tr4);
         EasyMock.expect(this.tm.getTableRowsUsedSize()).andReturn(5);
+        EasyMock.expect(this.tm.getColumnCapacity()).andReturn(100);
 
         PowerMock.replayAll();
         this.tableAppender.appendXMLToContentEntry(this.xmlUtil, sb);
@@ -411,7 +417,7 @@ public class TableAppenderTest {
                 "table:style-name=\"tb-style\" " +
                 "table:print=\"false\">" +
                 "<table:table-column table:style-name=\"co1\" " +
-                "table:number-columns-repeated=\"1024\" " +
+                "table:number-columns-repeated=\"100\" " +
                 "table:default-cell-style-name=\"Default\"/>" +
                 "<table:table-header-rows>" +
                 "<table:table-row table:style-name=\"tr0\">" +
@@ -505,6 +511,7 @@ public class TableAppenderTest {
         EasyMock.expect(this.tm.getTableRow(0)).andReturn(tr0);
         EasyMock.expect(this.tm.getTableRow(1)).andReturn(tr1);
         EasyMock.expect(this.tm.getTableRowsUsedSize()).andReturn(2);
+        EasyMock.expect(this.tm.getColumnCapacity()).andReturn(100);
 
         PowerMock.replayAll();
         this.tableAppender.appendSomeAvailableRowsFrom(this.xmlUtil, sb, 0);
@@ -515,7 +522,7 @@ public class TableAppenderTest {
                 "<table:table table:name=\"table\" table:style-name=\"style\" " +
                         "table:print=\"false\">" +
                         "<table:table-column table:style-name=\"co1\" " +
-                        "table:number-columns-repeated=\"1024\" " +
+                        "table:number-columns-repeated=\"100\" " +
                         "table:default-cell-style-name=\"Default\"/>" +
                         "<table:table-row table:style-name=\"tr0\">" +
                         "<table:table-cell/>" +
@@ -549,6 +556,7 @@ public class TableAppenderTest {
         EasyMock.expect(this.tm.getTableRow(3)).andReturn(null);
         EasyMock.expect(this.tm.getTableRow(4)).andReturn(tr0);
         EasyMock.expect(this.tm.getTableRowsUsedSize()).andReturn(5).anyTimes();
+        EasyMock.expect(this.tm.getColumnCapacity()).andReturn(100);
 
         PowerMock.replayAll();
         this.tableAppender.appendXMLToContentEntry(this.xmlUtil, sb);
@@ -558,7 +566,7 @@ public class TableAppenderTest {
                 "table:style-name=\"tb-style\" " +
                 "table:print=\"false\">" +
                 "<table:table-column table:style-name=\"co1\" " +
-                "  table:number-columns-repeated=\"1024\" " +
+                "  table:number-columns-repeated=\"100\" " +
                 "  table:default-cell-style-name=\"Default\"/>" +
                 "<table:table-header-rows>" +
                 "<table:table-row table:style-name=\"tr0\">" +
@@ -658,6 +666,7 @@ public class TableAppenderTest {
         EasyMock.expect(this.tm.getShapes()).andReturn(Collections.<Shape>emptyList());
         EasyMock.expect(this.tm.getColumns())
                 .andReturn(FastFullList.<TableColumnImpl>newListWithCapacity(1));
+        EasyMock.expect(this.tm.getColumnCapacity()).andReturn(100);
 
         PowerMock.replayAll();
         this.tableAppender.appendOpenTagAndPreamble(this.xmlUtil, sb);
@@ -670,7 +679,7 @@ public class TableAppenderTest {
                         "table:protected=\"true\" table:protection-key=\"a\" " +
                         "table:protection-key-digest-algorithm=\"b\" attr=\"value\">" +
                         "<table:table-column table:style-name=\"co1\" " +
-                        "table:number-columns-repeated=\"1024\" " +
+                        "table:number-columns-repeated=\"100\" " +
                         "table:default-cell-style-name=\"Default\"/></table:table>",
                 sb.toString());
     }
