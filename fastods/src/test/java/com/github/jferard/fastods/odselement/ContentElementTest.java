@@ -387,7 +387,7 @@ public class ContentElementTest {
                         "<office:spreadsheet>" +
                         "<table:table table:name=\"t\" table:style-name=\"ta1\" " +
                         "table:print=\"false\"><table:table-column table:style-name=\"co1\" " +
-                        "table:number-columns-repeated=\"1024\" " +
+                        "table:number-columns-repeated=\"100\" " +
                         "table:default-cell-style-name=\"Default\"/>" +
                         "<table:table-row><table:table-cell/></table:table-row>" +
                         "</table:table>" +

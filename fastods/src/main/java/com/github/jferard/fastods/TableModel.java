@@ -683,4 +683,8 @@ class TableModel {
     public int getHeaderColumnsCount() {
         return this.headerColumnsCount;
     }
+
+    public int getColumnCapacity() {
+        return this.columnCapacity;
+    }
 }
