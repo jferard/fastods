@@ -23,9 +23,23 @@
  */
 package com.github.jferard.fastods;
 
+import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Locale;
+import java.util.logging.Logger;
+
+import org.apache.jena.ext.com.google.common.collect.ImmutableMap;
+import org.easymock.EasyMock;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.powermock.api.easymock.PowerMock;
+
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.DataStylesBuilder;
-import com.github.jferard.fastods.odselement.OdsEntry;
 import com.github.jferard.fastods.odselement.StylesContainer;
 import com.github.jferard.fastods.odselement.StylesContainerImpl;
 import com.github.jferard.fastods.odselement.UnregisteredOdsEntry;
@@ -38,20 +52,6 @@ import com.github.jferard.fastods.util.Protection;
 import com.github.jferard.fastods.util.SVGRectangle;
 import com.github.jferard.fastods.util.XMLUtil;
 import com.github.jferard.fastods.util.ZipUTF8Writer;
-import org.apache.jena.ext.com.google.common.collect.ImmutableMap;
-import org.easymock.EasyMock;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.powermock.api.easymock.PowerMock;
-
-import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Locale;
-import java.util.logging.Logger;
 
 public class TableAppenderTest {
     private DataStyles ds;
@@ -70,7 +70,7 @@ public class TableAppenderTest {
                 StylesContainerImpl.class.getDeclaredConstructor(Logger.class);
         constructor.setAccessible(true);
         this.stylesContainer =
-                (StylesContainer) constructor.newInstance(new Object[]{Logger.getLogger("")});
+                (StylesContainer) constructor.newInstance(Logger.getLogger(""));
         this.stc = PowerMock.createMock(StylesContainerImpl.class);
         this.tm = PowerMock.createMock(TableModel.class);
         final XMLUtil xmlUtil = XMLUtil.create();
@@ -127,7 +127,7 @@ public class TableAppenderTest {
                 .andReturn(FastFullList.<TableColumnImpl>newListWithCapacity(1));
         EasyMock.expect(this.tm.getForms()).andReturn(Collections.<XMLConvertible>emptyList());
         EasyMock.expect(this.tm.getColumnCapacity()).andReturn(100);
-        
+
         PowerMock.replayAll();
         this.assertPreambleXMLEquals(
                 "<table:table table:name=\"table1\" table:style-name=\"table-style1\" " +
@@ -158,6 +158,7 @@ public class TableAppenderTest {
                 .andReturn(FastFullList.newList(this.newTC("x")));
         EasyMock.expect(this.tm.getShapes()).andReturn(Collections.<Shape>emptyList());
         EasyMock.expect(this.tm.getForms()).andReturn(Collections.<XMLConvertible>emptyList());
+        EasyMock.expect(this.tm.getColumnCapacity()).andReturn(100);
 
         PowerMock.replayAll();
         this.assertPreambleXMLEquals(
@@ -166,7 +167,7 @@ public class TableAppenderTest {
                         "<table:table-column table:style-name=\"x\" " +
                         "table:default-cell-style-name=\"Default\"/>" +
                         "<table:table-column table:style-name=\"co1\" " +
-                        "table:number-columns-repeated=\"1023\" " +
+                        "table:number-columns-repeated=\"99\" " +
                         "table:default-cell-style-name=\"Default\"/>");
 
         PowerMock.verifyAll();
@@ -185,6 +186,7 @@ public class TableAppenderTest {
                 .andReturn(FastFullList.newList(this.newTC("x"), this.newTC("x")));
         EasyMock.expect(this.tm.getShapes()).andReturn(Collections.<Shape>emptyList());
         EasyMock.expect(this.tm.getForms()).andReturn(Collections.<XMLConvertible>emptyList());
+        EasyMock.expect(this.tm.getColumnCapacity()).andReturn(100);
 
         PowerMock.replayAll();
         this.assertPreambleXMLEquals(
@@ -193,7 +195,7 @@ public class TableAppenderTest {
                         "<table:table-column table:style-name=\"x\" " +
                         "table:number-columns-repeated=\"2\" " +
                         "table:default-cell-style-name=\"Default\"/>" + "<table:table-column " +
-                        "table:style-name=\"co1\"" + " table:number-columns-repeated=\"1022\" " +
+                        "table:style-name=\"co1\"" + " table:number-columns-repeated=\"98\" " +
                         "table:default-cell-style-name=\"Default\"/>");
 
         PowerMock.verifyAll();
@@ -214,6 +216,7 @@ public class TableAppenderTest {
                 .andReturn(FastFullList.newList(x, x, this.newTC("y"), x));
         EasyMock.expect(this.tm.getShapes()).andReturn(Collections.<Shape>emptyList());
         EasyMock.expect(this.tm.getForms()).andReturn(Collections.<XMLConvertible>emptyList());
+        EasyMock.expect(this.tm.getColumnCapacity()).andReturn(100);
 
         PowerMock.replayAll();
         this.assertPreambleXMLEquals(
@@ -227,7 +230,7 @@ public class TableAppenderTest {
                         "table:style-name=\"x\"" + " " +
                         "table:default-cell-style-name=\"Default\"/>" + "<table:table-column " +
                         "table:style-name=\"co1\"" + " " +
-                        "table:number-columns-repeated=\"1020\" " +
+                        "table:number-columns-repeated=\"96\" " +
                         "table:default-cell-style-name=\"Default\"/>");
         PowerMock.verifyAll();
     }
@@ -248,6 +251,7 @@ public class TableAppenderTest {
                 .andReturn(FastFullList.newList(x, x, x, x, x, y, y, y, x, x));
         EasyMock.expect(this.tm.getShapes()).andReturn(Collections.<Shape>emptyList());
         EasyMock.expect(this.tm.getForms()).andReturn(Collections.<XMLConvertible>emptyList());
+        EasyMock.expect(this.tm.getColumnCapacity()).andReturn(100);
 
         PowerMock.replayAll();
         this.assertPreambleXMLEquals(
@@ -262,7 +266,7 @@ public class TableAppenderTest {
                         "<table:table-column table:style-name=\"x\" " +
                         "table:number-columns-repeated=\"2\" " +
                         "table:default-cell-style-name=\"Default\"/>" + "<table:table-column " +
-                        "table:style-name=\"co1\"" + " table:number-columns-repeated=\"1014\" " +
+                        "table:style-name=\"co1\"" + " table:number-columns-repeated=\"90\" " +
                         "table:default-cell-style-name=\"Default\"/>");
         PowerMock.verifyAll();
     }
@@ -627,6 +631,7 @@ public class TableAppenderTest {
         EasyMock.expect(this.tm.getHeaderColumnsCount()).andReturn(2);
         EasyMock.expect(this.tm.getForms()).andReturn(Collections.<XMLConvertible>emptyList());
         EasyMock.expect(this.tm.getShapes()).andReturn(Collections.<Shape>emptyList());
+        EasyMock.expect(this.tm.getColumnCapacity()).andReturn(100);
 
         PowerMock.replayAll();
         this.assertPreambleXMLEquals(
@@ -646,7 +651,7 @@ public class TableAppenderTest {
                         "<table:table-column table:style-name=\"x\" " +
                         "table:number-columns-repeated=\"2\" " +
                         "table:default-cell-style-name=\"Default\"/>" + "<table:table-column " +
-                        "table:style-name=\"co1\"" + " table:number-columns-repeated=\"1014\" " +
+                        "table:style-name=\"co1\"" + " table:number-columns-repeated=\"90\" " +
                         "table:default-cell-style-name=\"Default\"/>");
         PowerMock.verifyAll();
     }

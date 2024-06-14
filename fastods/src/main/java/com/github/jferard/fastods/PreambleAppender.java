@@ -81,7 +81,7 @@ public class PreambleAppender {
             appendable.append("<table:table-header-columns>");
         }
         int count = 1;
-        int endCount = MAX_COLUMN_COUNT;
+        int endCount = this.model.getColumnCapacity();
         TableColumnImpl curColumn = iterator.next(); // will be shifted to prevTCS
         if (curColumn == null) {
             curColumn = TableColumnImpl.DEFAULT_TABLE_COLUMN;
