@@ -31,6 +31,7 @@ import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.TableCellWalker;
 import com.github.jferard.fastods.attribute.FieldOrientation;
 import com.github.jferard.fastods.attribute.PilotStandardFunction;
+import com.github.jferard.fastods.ref.CellRef;
 import com.github.jferard.fastods.ref.PositionUtil;
 import com.github.jferard.fastods.tool.MacroHelper;
 import com.github.jferard.fastods.util.AutoFilter;
@@ -312,7 +313,8 @@ class H_AutofiltersAndDataPilotTables {
 
         // Now we have to build the named range and add it to the document.
         final PositionUtil positionUtil = PositionUtil.create();
-        document.addNamedRange("foo", positionUtil.toRangeAddress(dataTable, 0, 0, 1, 2));
+        final int status = CellRef.ABSOLUTE_TABLE | CellRef.ABSOLUTE_COL | CellRef.ABSOLUTE_ROW;
+        document.addNamedRange("foo", positionUtil.toRangeAddress(dataTable, 0, 0, status, 1, 2, status));
 
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.

@@ -283,6 +283,9 @@ public class ContentElement implements OdsElement {
         if (this.autoFilters != null) {
             this.appendAutoFilters(util, writer);
         }
+        if (this.namedRanges != null) {
+            this.appendNamedRanges(util, writer);
+        }
         if (this.pilotTables != null) {
             this.appendPilotTables(util, writer);
         }
@@ -311,6 +314,15 @@ public class ContentElement implements OdsElement {
             autoFilter.appendXMLContent(util, appendable);
         }
         appendable.append("</table:database-ranges>");
+    }
+
+    private void appendNamedRanges(final XMLUtil util, final Appendable appendable)
+            throws IOException {
+        appendable.append("<table:named-expressions>");
+        for (final NamedRange namedRange : this.namedRanges) {
+            namedRange.appendXMLContent(util, appendable);
+        }
+        appendable.append("</table:named-expressions>");
     }
 
     private void appendPilotTables(final XMLUtil util, final Appendable appendable)

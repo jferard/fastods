@@ -24,6 +24,10 @@
 
 package com.github.jferard.fastods.util;
 
+import com.github.jferard.fastods.XMLConvertible;
+
+import java.io.IOException;
+
 /**
  * 9.4.12 table:named-range
  * <p>
@@ -31,7 +35,7 @@ package com.github.jferard.fastods.util;
  *
  * @author J. Férard
  */
-public class NamedRange {
+public class NamedRange implements XMLConvertible {
     private final String name;
     private final String rangeAddress;
 
@@ -42,5 +46,13 @@ public class NamedRange {
     public NamedRange(final String name, final String rangeAddress) {
         this.name = name;
         this.rangeAddress = rangeAddress;
+    }
+
+    @Override
+    public void appendXMLContent(final XMLUtil util, final Appendable appendable) throws IOException {
+        appendable.append("<table:named-range");
+        util.appendAttribute(appendable, "table:name", this.name);
+        util.appendAttribute(appendable, "table:cell-range-address", this.rangeAddress);
+        appendable.append("/>");
     }
 }

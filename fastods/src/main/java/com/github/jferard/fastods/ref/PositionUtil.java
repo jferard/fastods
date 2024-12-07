@@ -84,14 +84,34 @@ public class PositionUtil {
     }
 
     /**
+     * A new relative cell ref
+     *
      * @param table the table
      * @param row   the row
      * @param col   the col
      * @return the position
      */
     public CellRef newCellRef(final Table table, final int row, final int col) {
-        final TableRef tableRef = new TableRef(this.tableNameUtil, null, table.getName(), 0);
-        return new CellRef(tableRef, new LocalCellRef(row, col, 0));
+        return this.newCellRef(table, row, col, CellRef.RELATIVE);
+    }
+
+    /**
+     * A new cell ref (all parts may be relative or absolute).
+     * Example:
+     * ```
+     * cellRef = positionUtil.newCellRef(table, 0, 0, CellRef.ABSOLUTE_TABLE | ABSOLUTE_COL);
+     * ```
+     * means: "$Sheet1.$A1".
+     *
+     * @param table   the table
+     * @param row     the row
+     * @param col     the col
+     * @param status  the status (
+     * @return the position
+     */
+    public CellRef newCellRef(final Table table, final int row, final int col, final int status) {
+        final TableRef tableRef = new TableRef(this.tableNameUtil, null, table.getName(), status);
+        return new CellRef(tableRef, new LocalCellRef(row, col, status));
     }
 
     /**
@@ -114,7 +134,20 @@ public class PositionUtil {
      * @return the Excel/OO/LO address
      */
     public String toCellAddress(final Table table, final int row, final int col) {
-        return this.newCellRef(table, row, col).toString();
+        return this.toCellAddress(table, row, col, CellRef.RELATIVE);
+    }
+
+    /**
+     * The Excel/OO/LO address of a cell, preceded by the table name. All parts may be relative or absolute
+     *
+     * @param row   the row
+     * @param col   the col
+     * @param table the table
+     * @param status the status
+     * @return the Excel/OO/LO address
+     */
+    public String toCellAddress(final Table table, final int row, final int col, final int status) {
+        return this.newCellRef(table, row, col, status).toString();
     }
 
     /**
@@ -133,17 +166,35 @@ public class PositionUtil {
     /**
      * Return the Excel/OO/LO address of a range, preceded by the table name
      *
+     * @param table the table
      * @param row1  the first row
      * @param col1  the first col
      * @param row2  the last row
      * @param col2  the last col
-     * @param table the table
      * @return the Excel/OO/LO address
      */
-    public String toRangeAddress(final Table table, final int row1, final int col1, final int row2,
-                                 final int col2) {
-        return this.toCellAddress(table, row1, col1) + ":" + this.toCellAddress(table, row2, col2);
+    public String toRangeAddress(final Table table, final int row1, final int col1,
+                                 final int row2, final int col2) {
+        return this.toRangeAddress(table, row1, col1, CellRef.RELATIVE, row2, col2, CellRef.RELATIVE);
     }
+
+    /**
+     * The Excel/OO/LO address of a range, preceded by the table name. All parts may be relative or absolute
+     *
+     * @param table the table
+     * @param row1  the first row
+     * @param col1  the first col
+     * @param status1 the status of the top-left cell ref.
+     * @param row2  the last row
+     * @param col2  the last col
+     * @param status2 the status of the bottom-right cell ref.
+     * @return the Excel/OO/LO address
+     */
+    public String toRangeAddress(final Table table, final int row1, final int col1, final int status1,
+                                 final int row2, final int col2, final int status2) {
+        return this.toCellAddress(table, row1, col1, status1) + ":" + this.toCellAddress(table, row2, col2, status2);
+    }
+
 
     /**
      * Check if the table name is ok. Currently, this does stick to LO limitations (excepted for
