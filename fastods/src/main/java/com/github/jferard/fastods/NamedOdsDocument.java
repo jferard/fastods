@@ -333,8 +333,8 @@ public class NamedOdsDocument implements OdsDocument, StylesContainer {
     }
 
     @Override
-    public void addNamedRange(final String name, final String rangeAddress) {
-        this.commonOdsDocument.addNamedRange(name, rangeAddress);
+    public void addNamedRange(final NamedRange namedRange) {
+        this.commonOdsDocument.addNamedRange(namedRange);
     }
 
     /**

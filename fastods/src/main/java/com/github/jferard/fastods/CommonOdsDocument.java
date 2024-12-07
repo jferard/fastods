@@ -186,8 +186,7 @@ class CommonOdsDocument implements OdsDocument {
     @Deprecated
     public void addAutoFilter(final String rangeName, final Table table, final int r1, final int c1,
                               final int r2, final int c2) {
-        final AutoFilter autoFilter = AutoFilter.builder(rangeName, table, r1, c1, r2, c2).build();
-        this.odsElements.addAutoFilter(autoFilter);
+        throw ThisShouldNotHappen.illegalState();
     }
 
     @Override
@@ -253,8 +252,7 @@ class CommonOdsDocument implements OdsDocument {
     }
 
     @Override
-    public void addNamedRange(final String name, final String rangeAddress) {
-        final NamedRange namedRange = new NamedRange(name, rangeAddress);
+    public void addNamedRange(final NamedRange namedRange) {
         this.odsElements.addNamedRange(namedRange);
     }
 }

@@ -114,13 +114,33 @@ public class TableCellTest {
     }
 
     @Test
+    public final void testBooleanWithCurStyle() throws IOException {
+        final TableCellStyle cs = PowerMock.createMock(TableCellStyle.class);
+        final TableCellStyle parentCs = PowerMock.createMock(TableCellStyle.class);
+        final DataStyle booleanDataStyle = this.ds.getBooleanDataStyle();
+        final DataStyle curDataStyle = this.ds.getCurrencyDataStyle();
+
+        PowerMock.resetAll();
+        EasyMock.expect(this.table.findDefaultCellStyle(COLUMN_INDEX)).andReturn(cs);
+        EasyMock.expect(this.stc.addDataStyle(curDataStyle)).andReturn(true);
+        EasyMock.expect(cs.getDataStyle()).andReturn(curDataStyle);
+        EasyMock.expect(cs.getParentCellStyle()).andReturn(parentCs);
+        EasyMock.expect(this.stc.addChildCellStyle(parentCs, curDataStyle)).andReturn(this.tcs);
+
+        PowerMock.replayAll();
+        this.cell.setBooleanValue(true);
+
+        PowerMock.verifyAll();
+        this.assertCellXMLEquals(
+                "<table:table-cell table:style-name=\"name\" office:value-type=\"boolean\" " +
+                        "office:boolean-value=\"true\"/>");
+    }
+
+    @Test
     public final void testBooleanWithPreviousDataStyle() throws IOException {
         final TableCellStyle cs = PowerMock.createMock(TableCellStyle.class);
-        System.out.println("cs"+cs);
         final DataStyle booleanDataStyle = this.ds.getBooleanDataStyle();
-        System.out.println("ds"+booleanDataStyle);
         final BooleanStyle anotherBooleanStyle = new BooleanStyleBuilder("bs", Locale.US).language("FR").build();
-        System.out.println("ads"+anotherBooleanStyle);
         final TableCellStyle childCellStyle = TableCellStyle.builder("child").build();
 
 
@@ -1048,6 +1068,18 @@ public class TableCellTest {
 
         PowerMock.verifyAll();
         Assert.assertEquals(COLUMN_INDEX, colIndex);
+    }
+
+    @Test
+    public void testSetAttribute() throws IOException {
+        PowerMock.resetAll();
+        EasyMock.expect(TableColdCell.create(EasyMock.eq(this.xmlUtil))).andReturn(this.tcc);
+
+        PowerMock.replayAll();
+        this.cell.setAttribute("attr", "value");
+
+        PowerMock.verifyAll();
+        Assert.assertEquals("<table:table-cell attr=\"value\"/>", this.getCellXML());
     }
 
     private void assertCellXMLEquals(final String xml) throws IOException {

@@ -312,9 +312,7 @@ class H_AutofiltersAndDataPilotTables {
         }
 
         // Now we have to build the named range and add it to the document.
-        final PositionUtil positionUtil = PositionUtil.create();
-        final int status = CellRef.ABSOLUTE_TABLE | CellRef.ABSOLUTE_COL | CellRef.ABSOLUTE_ROW;
-        document.addNamedRange("foo", positionUtil.toRangeAddress(dataTable, 0, 0, status, 1, 2, status));
+        dataTable.addNamedRange("foo", 0, 0, 1, 2);
 
         // << END TUTORIAL (directive to extract part of a tutorial from this file)
         // And save the file.

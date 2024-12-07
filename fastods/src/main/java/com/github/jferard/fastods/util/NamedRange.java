@@ -24,7 +24,10 @@
 
 package com.github.jferard.fastods.util;
 
+import com.github.jferard.fastods.Table;
 import com.github.jferard.fastods.XMLConvertible;
+import com.github.jferard.fastods.ref.CellRef;
+import com.github.jferard.fastods.ref.PositionUtil;
 
 import java.io.IOException;
 
@@ -36,22 +39,39 @@ import java.io.IOException;
  * @author J. Férard
  */
 public class NamedRange implements XMLConvertible {
-    private final String name;
+    private final String rangeName;
     private final String rangeAddress;
 
     /**
-     * @param name the name of the range
+     * Create a new NamedRange object.
+     *
+     * @param rangeName the name of the range
+     * @param table the table
+     * @param r1 the top row
+     * @param c1 the left col
+     * @param r2 the bottom row
+     * @param c2 the right col
+     * @return a NamedRange
+     */
+    public static NamedRange create(final String rangeName, final Table table, final int r1, final int c1, final int r2, final int c2) {
+        final int status = CellRef.ABSOLUTE_TABLE | CellRef.ABSOLUTE_COL | CellRef.ABSOLUTE_ROW;
+        final String rangeAddress = PositionUtil.create().toRangeAddress(table, r1, c1, status, r2, c2, status);
+        return new NamedRange(rangeName, rangeAddress);
+    }
+
+    /**
+     * @param rangeName         the name of the range
      * @param rangeAddress the address of the range
      */
-    public NamedRange(final String name, final String rangeAddress) {
-        this.name = name;
+    public NamedRange(final String rangeName, final String rangeAddress) {
+        this.rangeName = rangeName;
         this.rangeAddress = rangeAddress;
     }
 
     @Override
     public void appendXMLContent(final XMLUtil util, final Appendable appendable) throws IOException {
         appendable.append("<table:named-range");
-        util.appendAttribute(appendable, "table:name", this.name);
+        util.appendAttribute(appendable, "table:name", this.rangeName);
         util.appendAttribute(appendable, "table:cell-range-address", this.rangeAddress);
         appendable.append("/>");
     }

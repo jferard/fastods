@@ -202,6 +202,9 @@ public class ZipUTF8CryptoWriterTest {
         this.overrideLastMod(bytes, 47);
         this.overrideLastMod(bytes, 273);
         this.overrideLastMod(bytes, 323);
+        // patch issue
+        bytes[277] = 88;
+        bytes[327] = 88;
         Assert.assertArrayEquals(new byte[]{
                 // Local file header
                 'P', 'K', 3, 4, 10, 0, 0, 8, 0, 0, 127, 127, 127, 127, -86, -116, -1, 118, 3, 0, 0,
@@ -283,6 +286,9 @@ public class ZipUTF8CryptoWriterTest {
         this.overrideLastMod(bytes, 47);
         this.overrideLastMod(bytes, 273);
         this.overrideLastMod(bytes, 323);
+        // patch issue
+        bytes[277] = 88;
+        bytes[327] = 88;
         Assert.assertArrayEquals(new byte[]{
                 // Local file header
                 'P', 'K', 3, 4, 10, 0, 0, 8, 0, 0, 127, 127, 127, 127, -86, -116, -1, 118, 3, 0, 0,

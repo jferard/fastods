@@ -27,6 +27,7 @@ package com.github.jferard.fastods;
 import com.github.jferard.fastods.odselement.ScriptEventListener;
 import com.github.jferard.fastods.odselement.StylesModeSetter;
 import com.github.jferard.fastods.util.AutoFilter;
+import com.github.jferard.fastods.util.NamedRange;
 import com.github.jferard.fastods.util.PilotTable;
 
 import java.io.IOException;
@@ -245,8 +246,7 @@ public interface OdsDocument extends StylesModeSetter {
     /**
      * Add a new named range to the document
      *
-     * @param name the name of the range
-     * @param rangeAddress the range address.
+     * @param namedRange the named range
      */
-    void addNamedRange(final String name, final String rangeAddress);
+    void addNamedRange(final NamedRange namedRange);
 }

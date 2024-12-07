@@ -26,11 +26,7 @@ package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.odselement.ScriptEventListener;
-import com.github.jferard.fastods.util.AutoFilter;
-import com.github.jferard.fastods.util.Container;
-import com.github.jferard.fastods.util.PilotTable;
-import com.github.jferard.fastods.util.XMLUtil;
-import com.github.jferard.fastods.util.ZipUTF8Writer;
+import com.github.jferard.fastods.util.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -141,8 +137,8 @@ public final class AnonymousOdsDocument implements OdsDocument {
     }
 
     @Override
-    public void addNamedRange(final String name, final String rangeAddress) {
-        this.commonOdsDocument.addNamedRange(name, rangeAddress);
+    public void addNamedRange(final NamedRange namedRange) {
+        this.commonOdsDocument.addNamedRange(namedRange);
     }
 
     @Override

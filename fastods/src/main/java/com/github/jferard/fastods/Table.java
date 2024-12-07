@@ -36,6 +36,7 @@ import com.github.jferard.fastods.style.TableStyle;
 import com.github.jferard.fastods.util.AutoFilter;
 import com.github.jferard.fastods.util.IntegerRepresentationCache;
 import com.github.jferard.fastods.util.NamedObject;
+import com.github.jferard.fastods.util.NamedRange;
 import com.github.jferard.fastods.util.Protection;
 import com.github.jferard.fastods.util.XMLUtil;
 
@@ -387,6 +388,21 @@ public class Table implements NamedObject, FrameContent {
                               final int c2) {
         this.contentElement
                 .addAutoFilter(AutoFilter.builder(rangeName, this, r1, c1, r2, c2).build());
+    }
+
+    /**
+     * Add a new named range
+     *
+     * @param rangeName the name of the range
+     * @param r1        first row of the range
+     * @param c1        first col of the range
+     * @param r2        last row
+     * @param c2        last col
+     */
+    public void addNamedRange(final String rangeName, final int r1, final int c1, final int r2,
+                              final int c2) {
+        this.contentElement
+                .addNamedRange(NamedRange.create(rangeName, this, r1, c1, r2, c2));
     }
 
     /**
