@@ -31,13 +31,7 @@ import com.github.jferard.fastods.datastyle.DataStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.ref.PositionUtil;
 import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.util.AutoFilter;
-import com.github.jferard.fastods.util.IntegerRepresentationCache;
-import com.github.jferard.fastods.util.PilotTable;
-import com.github.jferard.fastods.util.UniqueList;
-import com.github.jferard.fastods.util.Validation;
-import com.github.jferard.fastods.util.XMLUtil;
-import com.github.jferard.fastods.util.ZipUTF8Writer;
+import com.github.jferard.fastods.util.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -81,6 +75,7 @@ public class ContentElement implements OdsElement {
     private final Map<String, String> additionalNamespaceByPrefix;
     private List<AutoFilter> autoFilters;
     private List<PilotTable> pilotTables;
+    private List<NamedRange> namedRanges;
 
     /**
      * @param positionUtil                an util object for positions (e.g. "A1")
@@ -338,6 +333,18 @@ public class ContentElement implements OdsElement {
             this.autoFilters = new ArrayList<>();
         }
         this.autoFilters.add(autoFilter);
+    }
+
+    /**
+     * Add a new named range to the document
+     *
+     * @param namedRange the named range
+     */
+    public void addNamedRange(final NamedRange namedRange) {
+        if (this.namedRanges == null) {
+            this.namedRanges = new ArrayList<>();
+        }
+        this.namedRanges.add(namedRange);
     }
 
     /**

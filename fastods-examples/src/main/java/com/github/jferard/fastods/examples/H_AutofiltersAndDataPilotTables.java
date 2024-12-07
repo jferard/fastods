@@ -286,4 +286,38 @@ class H_AutofiltersAndDataPilotTables {
         writer.saveAs(destPath);
         ExamplesTestHelper.validate(destPath);
     }
+
+    /**
+     * @throws IOException if the file can't be written
+     */
+    static void example3() throws IOException {
+        final OdsFactory odsFactory = OdsFactory.create(Logger.getLogger("namedrange"), Locale.US);
+        final AnonymousOdsFileWriter writer = odsFactory.createWriter();
+        final OdsDocument document = writer.document();
+        final Table dataTable = document.addTable("namedrange");
+        final TableCellWalker walker = dataTable.getWalker();
+        // >> BEGIN TUTORIAL (directive to extract part of a tutorial from this file)
+        // ## A Named range
+        // Let's start with some data (no need of something interesting):
+
+        for (final String s : Arrays.asList("A", "B", "C")) {
+            walker.setStringValue(s);
+            walker.next();
+        }
+        walker.nextRow();
+        for (final int i : Arrays.asList(1, 2, 3)) {
+            walker.setFloatValue(i);
+            walker.next();
+        }
+
+        // Now we have to build the named range and add it to the document.
+        final PositionUtil positionUtil = PositionUtil.create();
+        document.addNamedRange("foo", positionUtil.toRangeAddress(dataTable, 0, 0, 1, 2));
+
+        // << END TUTORIAL (directive to extract part of a tutorial from this file)
+        // And save the file.
+        final Path destPath = Paths.get("generated_files", "h_named_range.ods");
+        writer.saveAs(destPath);
+        ExamplesTestHelper.validate(destPath);
+    }
 }

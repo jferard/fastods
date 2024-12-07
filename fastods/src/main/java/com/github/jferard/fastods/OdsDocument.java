@@ -241,4 +241,12 @@ public interface OdsDocument extends StylesModeSetter {
      * @param autoFilter the filter
      */
     void addAutoFilter(final AutoFilter autoFilter);
+
+    /**
+     * Add a new named range to the document
+     *
+     * @param name the name of the range
+     * @param rangeAddress the range address.
+     */
+    void addNamedRange(final String name, final String rangeAddress);
 }

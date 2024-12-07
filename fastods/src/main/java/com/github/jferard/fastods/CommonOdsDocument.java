@@ -26,17 +26,13 @@ package com.github.jferard.fastods;
 
 import com.github.jferard.fastods.odselement.OdsElements;
 import com.github.jferard.fastods.odselement.ScriptEventListener;
-import com.github.jferard.fastods.style.PageStyle;
-import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.style.TableColumnStyle;
-import com.github.jferard.fastods.style.TableRowStyle;
-import com.github.jferard.fastods.style.TableStyle;
+import com.github.jferard.fastods.style.*;
 import com.github.jferard.fastods.util.AutoFilter;
 import com.github.jferard.fastods.util.Container;
+import com.github.jferard.fastods.util.NamedRange;
 import com.github.jferard.fastods.util.PilotTable;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -254,5 +250,11 @@ class CommonOdsDocument implements OdsDocument {
     @Override
     public void addAutoFilter(final AutoFilter autoFilter) {
         this.odsElements.addAutoFilter(autoFilter);
+    }
+
+    @Override
+    public void addNamedRange(final String name, final String rangeAddress) {
+        final NamedRange namedRange = new NamedRange(name, rangeAddress);
+        this.odsElements.addNamedRange(namedRange);
     }
 }

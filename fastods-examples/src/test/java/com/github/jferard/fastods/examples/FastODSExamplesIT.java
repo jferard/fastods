@@ -113,6 +113,11 @@ public class FastODSExamplesIT {
     }
 
     @Test
+    public void filtersAndPilotTest3() throws IOException {
+        H_AutofiltersAndDataPilotTables.example3();
+    }
+
+    @Test
     public void embeddingFileTest() throws IOException {
         I_Embedding.exampleWithFile();
     }

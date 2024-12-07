@@ -42,12 +42,7 @@ import com.github.jferard.fastods.style.ObjectStyle;
 import com.github.jferard.fastods.style.PageLayoutStyle;
 import com.github.jferard.fastods.style.PageStyle;
 import com.github.jferard.fastods.style.TableCellStyle;
-import com.github.jferard.fastods.util.AutoFilter;
-import com.github.jferard.fastods.util.Container;
-import com.github.jferard.fastods.util.IntegerRepresentationCache;
-import com.github.jferard.fastods.util.PilotTable;
-import com.github.jferard.fastods.util.XMLUtil;
-import com.github.jferard.fastods.util.ZipUTF8Writer;
+import com.github.jferard.fastods.util.*;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -543,6 +538,15 @@ public class OdsElements implements StylesContainer {
      */
     public void addAutoFilter(final AutoFilter autoFilter) {
         this.contentElement.addAutoFilter(autoFilter);
+    }
+
+    /**
+     * Add a new named range to the document
+     *
+     * @param namedRange the named range
+     */
+    public void addNamedRange(final NamedRange namedRange) {
+        this.contentElement.addNamedRange(namedRange);
     }
 
     /**

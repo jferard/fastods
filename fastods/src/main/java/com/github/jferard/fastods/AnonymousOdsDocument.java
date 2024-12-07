@@ -141,6 +141,11 @@ public final class AnonymousOdsDocument implements OdsDocument {
     }
 
     @Override
+    public void addNamedRange(final String name, final String rangeAddress) {
+        this.commonOdsDocument.addNamedRange(name, rangeAddress);
+    }
+
+    @Override
     public Table getTable(final int n) throws FastOdsException {
         return this.commonOdsDocument.getTable(n);
     }

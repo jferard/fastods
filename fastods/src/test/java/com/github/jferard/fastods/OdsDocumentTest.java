@@ -307,6 +307,8 @@ public abstract class OdsDocumentTest<E extends OdsDocument> {
         PowerMock.verifyAll();
     }
 
+
+
     /*
     @Test
     public final void testAddAutoFilterTableRowCol() {
