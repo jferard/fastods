@@ -69,7 +69,7 @@ public class TableRowTest {
         this.row =
                 new TableRowImpl(cache, this.xmlUtil, this.stc, this.ds, false, this.table, 10,
                         100, this.vc);
-        this.tcs = TableCellStyle.builder("---").build();
+        this.tcs = TableCellStyle.builder("foo").build();
         PowerMock.mockStatic(TableColdCell.class);
         PowerMock.resetAll();
     }
@@ -220,7 +220,7 @@ public class TableRowTest {
         this.assertTableXMLEquals(
                 "<table:table-row table:style-name=\"ro1\">" + "<table:table-cell " +
                         "table:number-columns-repeated=\"5\"/>" +
-                        "<table:table-cell table:style-name=\"---\" " +
+                        "<table:table-cell table:style-name=\"foo\" " +
                         "office:value-type=\"boolean\" office:boolean-value=\"true\"/>" +
                         "<table:table-cell table:number-columns-repeated=\"4\"/>" +
                         "<table:table-cell office:value-type=\"string\" " +

@@ -39,12 +39,15 @@ public class NameCheckerTest {
 
     @Test
     public void testNameStartChar() {
+        /*
+        https://www.w3.org/TR/REC-xml/#NT-NameStartChar
+        [4]   	NameStartChar	   ::=   	":" | [A-Z] | "_" | [a-z] | [#xC0-#xD6] | [#xD8-#xF6] | [#xF8-#x2FF] | [#x370-#x37D] | [#x37F-#x1FFF] | [#x200C-#x200D] | [#x2070-#x218F] | [#x2C00-#x2FEF] | [#x3001-#xD7FF] | [#xF900-#xFDCF] | [#xFDF0-#xFFFD] | [#x10000-#xEFFFF]
+         */
         Assert.assertEquals(
-                "'-' | ':' | [A-Z] | [a-z] | [#xc0-#xd6] | [#xd8-#xf6] | [#xf8-#x2ff] | " +
-                        "[#x370-#x37d] | " +
-                        "[#x37f-#x1fff] | [#x200c-#x200d] | [#x2070-#x218f] | [#x2c00-#x2fef] " +
-                        "" + "" + "| " + "[#x3001-#xd7ff] | " +
-                        "[#xf900-#xfdcf] | [#xfdf0-#xfffd] | [#x10000-#xeffff]",
+                "':' | [A-Z] | '_' | [a-z] | [#xc0-#xd6] | [#xd8-#xf6] | [#xf8-#x2ff] | " +
+                        "[#x370-#x37d] | [#x37f-#x1fff] | [#x200c-#x200d] | [#x2070-#x218f] | " +
+                        "[#x2c00-#x2fef] | [#x3001-#xd7ff] | [#xf900-#xfdcf] | [#xfdf0-#xfffd] | " +
+                        "[#x10000-#xeffff]",
                 CodePointTester.codePointsAsString(new CodePointTester.CategoryFilter() {
                     @Override
                     public boolean check(final int codePoint) {
@@ -55,12 +58,17 @@ public class NameCheckerTest {
 
     @Test
     public void testNameChar() {
-        Assert.assertEquals("[--.] | [0-:] | [A-Z] | '_' | [a-z] | #xb7 | [#xc0-#xd6] | " +
-                        "[#xd8-#xf6] | [#xf8-#x37d] | " +
-                        "[#x37f-#x1fff] | [#x200c-#x200d] | [#x203f-#x2040] | " +
-                        "[#x2070-#x218f] | [#x2c00-#x2fef] " +
-                        "| [#x3001-#xd7ff] | [#xf900-#xfdcf] | [#xfdf0-#xfffd] | " + "[#x10000" +
-                        "-#xeffff]",
+        /*
+        https://www.w3.org/TR/REC-xml/#NT-NameStartChar
+        [4a]   	NameChar	   ::=   	NameStartChar | "-" | "." | [0-9] | #xB7 | [#x0300-#x036F] | [#x203F-#x2040]
+
+        ::= "-" | "." | [0-9] | ":" | [A-Z] | "_" | [a-z] | #xB7 | [#xC0-#xD6] | [#xD8-#xF6] | [#xF8-#x2FF] | [#x0300-#x036F] | [#x370-#x37D] | [#x37F-#x1FFF] | [#x200C-#x200D] | [#x203F-#x2040] | [#x2070-#x218F] | [#x2C00-#x2FEF] | [#x3001-#xD7FF] | [#xF900-#xFDCF] | [#xFDF0-#xFFFD] | [#x10000-#xEFFFF]
+         */
+        Assert.assertEquals(
+                "[--.] | [0-:] | [A-Z] | '_' | [a-z] | #xb7 | [#xc0-#xd6] | " +
+                        "[#xd8-#xf6] | [#xf8-#x37d] | [#x37f-#x1fff] | [#x200c-#x200d] | " +
+                        "[#x203f-#x2040] | [#x2070-#x218f] | [#x2c00-#x2fef] | [#x3001-#xd7ff] | " +
+                        "[#xf900-#xfdcf] | [#xfdf0-#xfffd] | [#x10000-#xeffff]",
                 CodePointTester.codePointsAsString(new CodePointTester.CategoryFilter() {
                     @Override
                     public boolean check(final int codePoint) {
@@ -71,7 +79,7 @@ public class NameCheckerTest {
 
     @Test
     public void testNCNameStartChar() {
-        Assert.assertEquals("'-' | [A-Z] | [a-z] | [#xc0-#xd6] | [#xd8-#xf6] | [#xf8-#x2ff] | " +
+        Assert.assertEquals("[A-Z] | '_' | [a-z] | [#xc0-#xd6] | [#xd8-#xf6] | [#xf8-#x2ff] | " +
                         "[#x370-#x37d] | " +
                         "[#x37f-#x1fff] | [#x200c-#x200d] | [#x2070-#x218f] | [#x2c00-#x2fef] " + "" + "" +
                         "| " + "[#x3001-#xd7ff] | " +

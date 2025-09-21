@@ -274,4 +274,31 @@ public class TableCellStyleTest {
 
         PowerMock.verifyAll();
     }
+
+    @Test
+    public final void testEmptyName() {
+        Assert.assertThrows(IllegalArgumentException.class, () -> TableCellStyle.builder("").build());
+    }
+
+    @Test
+    public final void testNameWithDash() {
+        Assert.assertThrows(IllegalArgumentException.class, () -> TableCellStyle.builder("-").build());
+    }
+
+    @Test
+    public final void testNameWithUnderscode() {
+        final TableCellStyle style = TableCellStyle.builder("_").build();
+
+        PowerMock.resetAll();
+        PowerMock.replayAll();
+
+        Assert.assertEquals("_", style.getName());
+        PowerMock.replayAll();
+    }
+
+    @Test
+    public final void testNameWithColon() {
+        Assert.assertThrows(IllegalArgumentException.class, () -> TableCellStyle.builder("a:b").build());
+    }
+
 }

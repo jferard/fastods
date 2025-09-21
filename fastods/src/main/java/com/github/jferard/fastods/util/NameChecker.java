@@ -26,19 +26,20 @@ package com.github.jferard.fastods.util;
 
 /**
  * 18.3.32 styleNameRef
+ * <p>
  * A NCName as specified in [xmlschema-2] that is the name of a referenced style, or an empty value.
+ * </p><p>
  * In [xmlschema-2] (https://www.w3.org/TR/xmlschema-2/):
  * NCName represents XML "non-colonized" Names. The ·value space· of NCName is the set of all
- * strings which ·match·
- * the NCName production of [Namespaces in XML]. "Non-colonized" equals non qualified.
+ * strings which ·match· the NCName production of [Namespaces in XML]. "Non-colonized" equals non qualified.
+ * </p><p>
  * In [Namespaces in XML] (https://www.w3.org/TR/REC-xml-names/):
  * [4]   	NCName	   ::=   	Name - (Char* ':' Char*)	// An XML Name, minus the ":"
+ * </p><p>
  * In https://www.w3.org/TR/REC-xml/#NT-Name:
  * [4]   	NameStartChar	   ::=   	":" | [A-Z] | "_" | [a-z] | [#xC0-#xD6] | [#xD8-#xF6] |
- * [#xF8-#x2FF] |
- * [#x370-#x37D] | [#x37F-#x1FFF] | [#x200C-#x200D] | [#x2070-#x218F] | [#x2C00-#x2FEF] |
- * [#x3001-#xD7FF] |
- * [#xF900-#xFDCF] | [#xFDF0-#xFFFD] | [#x10000-#xEFFFF]
+ * [#xF8-#x2FF] | [#x370-#x37D] | [#x37F-#x1FFF] | [#x200C-#x200D] | [#x2070-#x218F] | [#x2C00-#x2FEF] |
+ * [#x3001-#xD7FF] | [#xF900-#xFDCF] | [#xFDF0-#xFFFD] | [#x10000-#xEFFFF]
  * [4a]   	NameChar	   ::=   	NameStartChar | "-" | "." | [0-9] | #xB7 | [#x0300-#x036F] |
  * [#x203F-#x2040]
  * [5]   	Name	   ::=   	NameStartChar (NameChar)*
@@ -96,8 +97,7 @@ public class NameChecker {
      * @return true if the character is a non qualified name start char
      */
     public boolean isNCNameStartChar(final int codePoint) {
-        return 'a' <= codePoint && codePoint <= 'z' || 'A' <= codePoint && codePoint <= 'Z' ||
-                codePoint == '-' ||
+        return 'a' <= codePoint && codePoint <= 'z' || codePoint == '_' || 'A' <= codePoint && codePoint <= 'Z' ||
                 0xc0 <= codePoint && codePoint <= 0x2ff && codePoint != 0xd7 && codePoint != 0xf7 ||
                 0x370 <= codePoint && codePoint <= 0x1fff && codePoint != 0x37e ||
                 codePoint == 0x200c || codePoint == 0x200d ||
@@ -114,7 +114,7 @@ public class NameChecker {
      * @return true if the character is a non qualified name char
      */
     public boolean isNCNameChar(final int codePoint) {
-        return '0' <= codePoint && codePoint <= '9' || codePoint == '_' || codePoint == '.' ||
+        return '0' <= codePoint && codePoint <= '9' || codePoint == '_' || codePoint == '-' || codePoint == '.' ||
                 this.isNCNameStartChar(codePoint) || codePoint == 0xb7 ||
                 0x300 <= codePoint && codePoint <= 0x36F ||
                 0x203F <= codePoint && codePoint <= 0x2040;

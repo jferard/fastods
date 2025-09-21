@@ -478,6 +478,7 @@ public class TableModelTest {
         Assert.assertNull(columns.get(2));
     }
 
+
     @Test
     public final void testAddPrintRange() {
         PowerMock.resetAll();
