@@ -25,16 +25,17 @@
 package com.github.jferard.fastods;
 
 
-import com.github.jferard.fastods.style.TableColumnStyle;
-import com.github.jferard.fastods.testlib.DomTester;
-import com.github.jferard.fastods.util.FastFullList;
-import com.github.jferard.fastods.util.XMLUtil;
+import java.io.IOException;
+
 import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
-import java.io.IOException;
+import com.github.jferard.fastods.style.TableColumnStyle;
+import com.github.jferard.fastods.testlib.DomTester;
+import com.github.jferard.fastods.util.FastFullList;
+import com.github.jferard.fastods.util.XMLUtil;
 
 public class PreambleAppenderTest {
     private PreambleAppender preambleAppender;
@@ -57,6 +58,7 @@ public class PreambleAppenderTest {
         EasyMock.expect(this.tm.getHeaderColumnsCount()).andReturn(0);
         EasyMock.expect(this.tm.getColumns())
                 .andReturn(FastFullList.newList(x, x, x, x, x, y, y, y, x, x));
+        EasyMock.expect(this.tm.getColumnCapacity()).andReturn(100);
 
         PowerMock.replayAll();
         final StringBuilder sb = new StringBuilder();
@@ -72,7 +74,7 @@ public class PreambleAppenderTest {
                         "table:number-columns-repeated=\"2\" " +
                         "table:default-cell-style-name=\"Default\"/>" +
                         "<table:table-column table:style-name=\"co1\"" +
-                        " table:number-columns-repeated=\"1014\" " +
+                        " table:number-columns-repeated=\"90\" " +
                         "table:default-cell-style-name=\"Default\"/>", sb.toString());
         PowerMock.verifyAll();
     }
@@ -84,13 +86,15 @@ public class PreambleAppenderTest {
         PowerMock.resetAll();
         EasyMock.expect(this.tm.getColumns())
                 .andReturn(FastFullList.<TableColumnImpl>newList());
+        EasyMock.expect(this.tm.getColumnCapacity())
+                .andReturn(42);
 
         PowerMock.replayAll();
         final StringBuilder sb = new StringBuilder();
         this.preambleAppender.appendColumns(this.xmlUtil, sb);
         DomTester.assertEquals(
                         "<table:table-column table:style-name=\"co1\"" +
-                        " table:number-columns-repeated=\"1024\" " +
+                        " table:number-columns-repeated=\"42\" " +
                         "table:default-cell-style-name=\"Default\"/>", sb.toString());
         PowerMock.verifyAll();
     }
@@ -103,6 +107,7 @@ public class PreambleAppenderTest {
         EasyMock.expect(this.tm.getHeaderColumnsCount()).andReturn(0);
         EasyMock.expect(this.tm.getColumns())
                 .andReturn(FastFullList.newList(null, null, x));
+        EasyMock.expect(this.tm.getColumnCapacity()).andReturn(100);
 
         PowerMock.replayAll();
         final StringBuilder sb = new StringBuilder();
@@ -114,7 +119,7 @@ public class PreambleAppenderTest {
                         "<table:table-column table:style-name=\"x\" " +
                         "table:default-cell-style-name=\"Default\"/>" +
                         "<table:table-column table:style-name=\"co1\" " +
-                        "table:number-columns-repeated=\"1021\" " +
+                        "table:number-columns-repeated=\"97\" " +
                         "table:default-cell-style-name=\"Default\"/>", sb.toString());
         PowerMock.verifyAll();
     }
@@ -128,6 +133,7 @@ public class PreambleAppenderTest {
         EasyMock.expect(this.tm.getHeaderColumnsCount()).andReturn(2);
         EasyMock.expect(this.tm.getColumns())
                 .andReturn(FastFullList.newList(x, x, x, x, x, y, y, y, x, x));
+        EasyMock.expect(this.tm.getColumnCapacity()).andReturn(100);
 
         PowerMock.replayAll();
         final StringBuilder sb = new StringBuilder();
@@ -148,7 +154,7 @@ public class PreambleAppenderTest {
                         "table:number-columns-repeated=\"2\" " +
                         "table:default-cell-style-name=\"Default\"/>" +
                         "<table:table-column table:style-name=\"co1\"" +
-                        " table:number-columns-repeated=\"1014\" " +
+                        " table:number-columns-repeated=\"90\" " +
                         "table:default-cell-style-name=\"Default\"/>", sb.toString());
         PowerMock.verifyAll();
     }
@@ -162,6 +168,7 @@ public class PreambleAppenderTest {
         EasyMock.expect(this.tm.getHeaderColumnsCount()).andReturn(5);
         EasyMock.expect(this.tm.getColumns())
                 .andReturn(FastFullList.newList(x, x, x, x, x, y, y, y, x, x));
+        EasyMock.expect(this.tm.getColumnCapacity()).andReturn(100);
 
         PowerMock.replayAll();
         final StringBuilder sb = new StringBuilder();
@@ -179,7 +186,7 @@ public class PreambleAppenderTest {
                         "table:number-columns-repeated=\"2\" " +
                         "table:default-cell-style-name=\"Default\"/>" +
                         "<table:table-column table:style-name=\"co1\"" +
-                        " table:number-columns-repeated=\"1014\" " +
+                        " table:number-columns-repeated=\"90\" " +
                         "table:default-cell-style-name=\"Default\"/>", sb.toString());
         PowerMock.verifyAll();
     }
@@ -193,6 +200,7 @@ public class PreambleAppenderTest {
         EasyMock.expect(this.tm.getHeaderColumnsCount()).andReturn(10);
         EasyMock.expect(this.tm.getColumns())
                 .andReturn(FastFullList.newList(x, x, x, x, x, y, y, y, x, x));
+        EasyMock.expect(this.tm.getColumnCapacity()).andReturn(100);
 
         PowerMock.replayAll();
         final StringBuilder sb = new StringBuilder();
@@ -210,7 +218,7 @@ public class PreambleAppenderTest {
                         "table:default-cell-style-name=\"Default\"/>" +
                         "</table:table-header-columns>" +
                         "<table:table-column table:style-name=\"co1\"" +
-                        " table:number-columns-repeated=\"1014\" " +
+                        " table:number-columns-repeated=\"90\" " +
                         "table:default-cell-style-name=\"Default\"/>", sb.toString());
         PowerMock.verifyAll();
     }
@@ -224,6 +232,7 @@ public class PreambleAppenderTest {
         EasyMock.expect(this.tm.getHeaderColumnsCount()).andReturn(11);
         EasyMock.expect(this.tm.getColumns())
                 .andReturn(FastFullList.newList(x, x, x, x, x, y, y, y, x, x));
+        EasyMock.expect(this.tm.getColumnCapacity()).andReturn(100);
 
         PowerMock.replayAll();
         final StringBuilder sb = new StringBuilder();
@@ -243,7 +252,7 @@ public class PreambleAppenderTest {
                         "table:default-cell-style-name=\"Default\"/>" +
                         "</table:table-header-columns>" +
                         "<table:table-column table:style-name=\"co1\" " +
-                        "table:number-columns-repeated=\"1013\" " +
+                        "table:number-columns-repeated=\"89\" " +
                         "table:default-cell-style-name=\"Default\"/>", sb.toString());
         PowerMock.verifyAll();
     }

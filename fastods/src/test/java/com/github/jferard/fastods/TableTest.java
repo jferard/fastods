@@ -23,6 +23,22 @@
  */
 package com.github.jferard.fastods;
 
+import static com.github.jferard.fastods.odselement.config.ConfigElement.ZOOM_VALUE;
+
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
+import org.easymock.Capture;
+import org.easymock.EasyMock;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.powermock.api.easymock.PowerMock;
+
 import com.github.jferard.fastods.datastyle.BooleanStyle;
 import com.github.jferard.fastods.datastyle.DataStyles;
 import com.github.jferard.fastods.datastyle.DataStylesBuilder;
@@ -41,21 +57,6 @@ import com.github.jferard.fastods.util.IntegerRepresentationCache;
 import com.github.jferard.fastods.util.Protection;
 import com.github.jferard.fastods.util.SVGRectangle;
 import com.github.jferard.fastods.util.XMLUtil;
-import org.easymock.Capture;
-import org.easymock.EasyMock;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.powermock.api.easymock.PowerMock;
-
-import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
-import static com.github.jferard.fastods.odselement.config.ConfigElement.ZOOM_VALUE;
 
 public class TableTest {
     private DataStyles ds;
@@ -119,7 +120,7 @@ public class TableTest {
                 "table:style-name=\"test2\" table:default-cell-style-name=\"Default\"/>" +
                 "<table:table-column table:style-name=\"co1\" " +
                 "table:default-cell-style-name=\"Default\" " +
-                "table:number-columns-repeated=\"1021\"/>" + "<table:table-row " +
+                "table:number-columns-repeated=\"97\"/>" + "<table:table-row " +
                 "table:number-rows-repeated=\"100\" table:style-name=\"ro1\">" +
                 "<table:table-cell/>" + "</table:table-row>" +
                 "<table:table-row table:style-name=\"ro1\">" +
@@ -197,7 +198,7 @@ public class TableTest {
         this.assertTableXMLEquals("<table:table table:name=\"my_table\" table:style-name=\"ta1\" " +
                 "table:print=\"false\">" +
                 "<table:table-column table:style-name=\"co1\" " +
-                "table:number-columns-repeated=\"1024\" " +
+                "table:number-columns-repeated=\"100\" " +
                 "table:default-cell-style-name=\"Default\"/>" + "<table:table-row " +
                 "table:number-rows-repeated=\"10\" table:style-name=\"ro1\">" +
                 "<table:table-cell/>" + "</table:table-row>" +
@@ -427,7 +428,7 @@ public class TableTest {
         PowerMock.verifyAll();
         DomTester.assertEquals("<table:table table:name=\"my_table\" table:style-name=\"ta1\" " +
                         "table:print=\"false\"><table:table-column " +
-                        "table:style-name=\"co1\" " + "table:number-columns-repeated=\"1024\" " +
+                        "table:style-name=\"co1\" " + "table:number-columns-repeated=\"100\" " +
                         "table:default-cell-style-name=\"Default\"/><table:table-row " +
                         "table:style-name=\"ro1\"><table:table-cell office:value-type=\"boolean\"" +
                         " office:boolean-value=\"true\"/></table:table-row></table:table>",
